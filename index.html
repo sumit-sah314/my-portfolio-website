@@ -48,6 +48,7 @@
       <div class="hero-content">
         <p class="tagline">Computer Science • Applied Mathematics • Machine Learning</p>
         <h2>Hi, I'm <span id="typewriter-name"></span><span class="tw-cursor">|</span></h2>
+        <p class="hero-note"><span id="typewriter-line"></span><span class="tw-cursor">|</span></p>
         <p class="hero-text">
           I build machine learning, data visualization, and mathematical storytelling projects
           that connect code, research, and creativity.
@@ -121,26 +122,18 @@
       <h2>Photo Gallery</h2>
       <p class="gallery-note">Replace these image files in <code>assets/images</code> with your own photos.</p>
 
-      <div class="gallery-grid">
-        <figure class="gallery-item">
-          <img src="assets/images/profile.jpg" alt="Gallery image 1" loading="lazy" />
+      <div class="gallery-slider" aria-label="Photo gallery slider">
+        <button class="gallery-nav" id="gallery-prev" aria-label="Previous photo">&#10094;</button>
+
+        <figure class="gallery-frame">
+          <img id="gallery-image" src="assets/images/profile.jpg" alt="Gallery photo" loading="lazy" />
         </figure>
-        <figure class="gallery-item">
-          <img src="assets/images/profile.jpg" alt="Gallery image 2" loading="lazy" />
-        </figure>
-        <figure class="gallery-item">
-          <img src="assets/images/profile.jpg" alt="Gallery image 3" loading="lazy" />
-        </figure>
-        <figure class="gallery-item">
-          <img src="assets/images/profile.jpg" alt="Gallery image 4" loading="lazy" />
-        </figure>
-        <figure class="gallery-item">
-          <img src="assets/images/profile.jpg" alt="Gallery image 5" loading="lazy" />
-        </figure>
-        <figure class="gallery-item">
-          <img src="assets/images/profile.jpg" alt="Gallery image 6" loading="lazy" />
-        </figure>
+
+        <button class="gallery-nav" id="gallery-next" aria-label="Next photo">&#10095;</button>
       </div>
+
+      <p class="gallery-caption" id="gallery-caption">Profile portrait - replace with your own caption.</p>
+      <p class="gallery-meta"><span id="gallery-index">1</span> / <span id="gallery-total">6</span></p>
     </section>
 
     <section id="awards" class="section">
