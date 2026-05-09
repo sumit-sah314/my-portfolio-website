@@ -15,3 +15,18 @@ const observer = new IntersectionObserver((entries) => {
 }, { threshold: 0.4 });
 
 sections.forEach(s => observer.observe(s));
+
+// Typewriter effect for name only
+function typeWriter(el, text, speed) {
+  let i = 0;
+  el.textContent = "";
+  function tick() {
+    if (i < text.length) {
+      el.textContent += text[i++];
+      setTimeout(tick, speed);
+    }
+  }
+  tick();
+}
+
+typeWriter(document.getElementById("typewriter-name"), "Sumit Sah.", 80);

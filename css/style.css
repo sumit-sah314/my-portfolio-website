@@ -221,6 +221,19 @@ header {
   box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
 }
 
+.tw-cursor {
+  display: inline-block;
+  color: var(--accent);
+  font-weight: 300;
+  animation: blink 0.75s step-end infinite;
+  margin-left: 2px;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
 .hero-buttons {
   display: flex;
   gap: 16px;
