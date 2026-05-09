@@ -69,6 +69,38 @@ header {
   color: var(--accent);
 }
 
+.nav-socials {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.social-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #c7c7c7;
+  text-decoration: none;
+  transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+}
+
+.social-icon svg {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+}
+
+.social-icon:hover {
+  color: #b8a46f;
+  border-color: #b8a46f;
+  background: rgba(184, 164, 111, 0.1);
+  transform: translateY(-2px);
+}
+
 .hero {
   min-height: 90vh;
   width: 88%;
@@ -276,5 +308,14 @@ footer {
   .hero-buttons {
     flex-direction: column;
     width: fit-content;
+  }
+
+  .nav-socials {
+    gap: 10px;
+  }
+
+  .social-icon {
+    width: 32px;
+    height: 32px;
   }
 }
