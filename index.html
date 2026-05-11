@@ -3,17 +3,32 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="dark light" />
+  <meta name="theme-color" content="#0b0b0f" />
   <title>Sumit Sah | Portfolio</title>
   <link rel="stylesheet" href="css/style.css" />
-
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem("portfolio-theme");
+        if (t === "light" || t === "ocean" || t === "dark") {
+          document.documentElement.dataset.theme = t;
+          var colors = { dark: "#0b0b0f", light: "#f6f4ef", ocean: "#060a12" };
+          var m = document.querySelector('meta[name="theme-color"]');
+          if (m && colors[t]) m.setAttribute("content", colors[t]);
+        }
+      } catch (e) { /* ignore */ }
+    })();
+  </script>
 </head>
 <body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
 
   <header>
-    <nav class="navbar">
-      <h1 class="logo"><span class="logo-sigma">Σ</span><span class="logo-paren">(</span><span class="logo-it">it</span><span class="logo-paren">)</span></h1>
+    <nav class="navbar" aria-label="Primary">
+      <a href="#home" class="logo" aria-label="Sumit Sah — Home"><span class="logo-sigma">Σ</span><span class="logo-paren">(</span><span class="logo-it">it</span><span class="logo-paren">)</span></a>
 
-      <ul class="nav-links">
+      <ul class="nav-links" id="primary-nav">
         <li><a href="#home">Home</a></li>
         <li><a href="#about">About</a></li>
         <li><a href="#experience">Experience</a></li>
@@ -23,7 +38,8 @@
       </ul>
 
       <div class="nav-right">
-        <div class="nav-divider"></div>
+        <button type="button" class="theme-btn" id="theme-btn" aria-label="Cycle theme (current: dark)" title="Theme: dark"></button>
+        <div class="nav-divider" aria-hidden="true"></div>
         <div class="nav-socials">
         <a href="https://mail.google.com/mail/?view=cm&fs=1&to=sahsumit.dsml@gmail.com" target="_blank" rel="noopener" aria-label="Email" class="social-icon">
           <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.89 2 1.99 2H20c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>
@@ -38,11 +54,19 @@
           <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
         </a>
         </div>
+        <button type="button" class="menu-toggle" id="menu-toggle" aria-expanded="false" aria-controls="primary-nav" aria-label="Open menu">
+          <span class="menu-toggle-inner" aria-hidden="true">
+            <span class="menu-bar"></span>
+            <span class="menu-bar"></span>
+            <span class="menu-bar"></span>
+          </span>
+        </button>
       </div>
     </nav>
+    <div class="nav-backdrop" id="nav-backdrop" aria-hidden="true"></div>
   </header>
 
-  <main>
+  <main id="main-content">
 
     <section id="home" class="hero">
       <div class="hero-content">
