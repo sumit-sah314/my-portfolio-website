@@ -667,41 +667,12 @@ header {
   z-index: -1;
 }
 
-.section-head {
-  position: relative;
-  margin-bottom: clamp(22px, 4vw, 32px);
-  padding-bottom: clamp(18px, 3vw, 24px);
-  border-bottom: 1px solid var(--surface-border);
-}
-
-.section-index {
-  position: absolute;
-  right: 0;
-  top: -0.15rem;
-  font-family: var(--font-display);
-  font-size: clamp(3rem, 8vw, 4.75rem);
-  font-weight: 700;
-  line-height: 1;
-  color: color-mix(in srgb, var(--accent) 18%, transparent);
-  pointer-events: none;
-}
-
-.section-eyebrow {
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--accent);
-  margin-bottom: 8px;
-}
-
-.section-head h2 {
+.section > h2 {
   font-family: var(--font-display);
   font-size: clamp(26px, 4vw, 38px);
   font-weight: 700;
-  margin: 0;
   letter-spacing: -0.02em;
-  max-width: 18ch;
+  margin-bottom: 24px;
 }
 
 .section > p {
