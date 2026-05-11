@@ -398,10 +398,11 @@ header {
   min-height: min(90vh, 900px);
   width: min(1120px, 92%);
   margin: auto;
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
-  justify-content: space-between;
-  gap: 48px;
+  column-gap: clamp(28px, 4vw, 48px);
+  row-gap: 32px;
   padding: 48px 0 64px;
 }
 
@@ -438,14 +439,15 @@ header {
 }
 
 .hero-image-wrap {
-  width: min(360px, 82vw);
-  height: min(360px, 82vw);
+  width: min(360px, 85vw);
+  aspect-ratio: 1;
+  height: auto;
   padding: 14px;
   border-radius: 50%;
   position: relative;
   display: grid;
   place-items: center;
-  flex-shrink: 0;
+  justify-self: end;
   transform: translateY(-10px);
   background:
     radial-gradient(circle at 30% 25%, var(--accent-soft), transparent 55%),
@@ -729,17 +731,22 @@ footer {
 
 @media (max-width: 960px) {
   .hero {
+    display: flex;
     flex-direction: column-reverse;
-    justify-content: center;
-    gap: 32px;
-    text-align: center;
+    justify-content: flex-start;
+    align-items: stretch;
+    min-height: unset;
     padding-top: 28px;
+    padding-bottom: clamp(40px, 10vh, 72px);
+    gap: clamp(28px, 5vw, 40px);
+    text-align: center;
   }
 
   .hero-content {
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 100%;
   }
 
   .hero-text {
@@ -748,7 +755,9 @@ footer {
   }
 
   .hero-image-wrap {
+    align-self: center;
     transform: translateY(0);
+    width: min(300px, 78vw);
   }
 }
 
