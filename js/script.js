@@ -96,24 +96,69 @@ function prefersReducedMotion() {
   return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 }
 
-// Active nav link on scroll
-const sections = document.querySelectorAll("section[id]");
+// Scroll spy — navbar + sidebar rail dots
+const sections = Array.from(document.querySelectorAll("section[id]"));
 const navLinks = document.querySelectorAll(".nav-links a");
+const railLinks = document.querySelectorAll(".rail-nav a");
 
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach((entry) => {
-    if (entry.isIntersecting) {
-      navLinks.forEach((link) => {
-        link.classList.toggle(
-          "active",
-          link.getAttribute("href") === "#" + entry.target.id
-        );
-      });
+function syncSectionHighlight(activeId) {
+  navLinks.forEach((link) => {
+    link.classList.toggle("active", link.getAttribute("href") === `#${activeId}`);
+  });
+
+  railLinks.forEach((link) => {
+    const href = link.getAttribute("href");
+    const match = href && href.startsWith("#") && href.slice(1) === activeId;
+    if (match) {
+      link.setAttribute("aria-current", "true");
+    } else {
+      link.removeAttribute("aria-current");
     }
   });
-}, { threshold: 0.4 });
+}
 
-sections.forEach((s) => observer.observe(s));
+const spyObserver = new IntersectionObserver(
+  (entries) => {
+    const visible = entries
+      .filter((e) => e.isIntersecting)
+      .sort((a, b) => {
+        const r = (b.intersectionRatio || 0) - (a.intersectionRatio || 0);
+        return r !== 0 ? r : a.target.id.localeCompare(b.target.id);
+      });
+    if (visible[0]?.target?.id) {
+      syncSectionHighlight(visible[0].target.id);
+    }
+  },
+  {
+    threshold: [0.08, 0.14, 0.22, 0.34, 0.5],
+    rootMargin: "-38% 0px -42% 0px",
+  }
+);
+
+sections.forEach((s) => spyObserver.observe(s));
+
+function initScrollReveal() {
+  if (prefersReducedMotion()) {
+    document.querySelectorAll(".section.section-reveal").forEach((el) => el.classList.add("is-in-view"));
+    return;
+  }
+
+  const revealObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-in-view");
+        }
+      });
+    },
+    {
+      threshold: 0,
+      rootMargin: "0px 0px -6% 0px",
+    }
+  );
+
+  document.querySelectorAll(".section.section-reveal").forEach((el) => revealObserver.observe(el));
+}
 
 // Typewriter effect
 function typeWriter(el, text, speed, done) {
@@ -196,3 +241,8 @@ if (
 
 initTheme();
 initMobileNav();
+initScrollReveal();
+
+if (sections[0]?.id) {
+  syncSectionHighlight(sections[0].id);
+}

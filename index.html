@@ -6,6 +6,9 @@
   <meta name="color-scheme" content="dark light" />
   <meta name="theme-color" content="#0b0b0f" />
   <title>Sumit Sah | Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Fraunces:ital,opsz,wght@0,9..144,600..800;1,9..144,550&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
   <script>
     (function () {
@@ -22,10 +25,11 @@
   </script>
 </head>
 <body>
+  <div class="page-atmosphere" aria-hidden="true"></div>
   <a class="skip-link" href="#main-content">Skip to main content</a>
 
   <header>
-    <nav class="navbar" aria-label="Primary">
+    <nav class="navbar" aria-label="Primary navigation">
       <a href="#home" class="logo" aria-label="Sumit Sah — Home"><span class="logo-sigma">Σ</span><span class="logo-paren">(</span><span class="logo-it">it</span><span class="logo-paren">)</span></a>
 
       <ul class="nav-links" id="primary-nav">
@@ -66,6 +70,15 @@
     <div class="nav-backdrop" id="nav-backdrop" aria-hidden="true"></div>
   </header>
 
+  <nav class="rail-nav" aria-label="On this page">
+    <a href="#home" class="rail-link" aria-label="Intro"></a>
+    <a href="#about" class="rail-link" aria-label="About"></a>
+    <a href="#experience" class="rail-link" aria-label="Experience"></a>
+    <a href="#projects" class="rail-link" aria-label="Projects"></a>
+    <a href="#gallery" class="rail-link" aria-label="Gallery"></a>
+    <a href="#awards" class="rail-link" aria-label="Awards"></a>
+  </nav>
+
   <main id="main-content">
 
     <section id="home" class="hero">
@@ -88,8 +101,12 @@
       </div>
     </section>
 
-    <section id="about" class="section">
-      <h2>About Me</h2>
+    <section id="about" class="section section-reveal">
+      <header class="section-head">
+        <span class="section-index" aria-hidden="true">01</span>
+        <p class="section-eyebrow">Who I am</p>
+        <h2>About Me</h2>
+      </header>
       <p>
         I’m a Computer Science and Applied Mathematics student at Texas State University,
         with interests in machine learning, data science, research, and visual math education.
@@ -97,8 +114,12 @@
       </p>
     </section>
 
-    <section id="experience" class="section">
-      <h2>Experience</h2>
+    <section id="experience" class="section section-reveal">
+      <header class="section-head">
+        <span class="section-index" aria-hidden="true">02</span>
+        <p class="section-eyebrow">Path</p>
+        <h2>Experience</h2>
+      </header>
 
       <div class="card">
         <h3>Data Analysis & Visualization Assistant</h3>
@@ -113,8 +134,12 @@
       </div>
     </section>
 
-    <section id="projects" class="section">
-      <h2>Projects</h2>
+    <section id="projects" class="section section-reveal">
+      <header class="section-head">
+        <span class="section-index" aria-hidden="true">03</span>
+        <p class="section-eyebrow">Build</p>
+        <h2>Projects</h2>
+      </header>
 
       <div class="project-grid">
         <div class="card">
@@ -142,8 +167,12 @@
       </div>
     </section>
 
-    <section id="gallery" class="section">
-      <h2>Photo Gallery</h2>
+    <section id="gallery" class="section section-reveal">
+      <header class="section-head">
+        <span class="section-index" aria-hidden="true">04</span>
+        <p class="section-eyebrow">Snapshots</p>
+        <h2>Photo Gallery</h2>
+      </header>
       <p class="gallery-note">Replace these image files in <code>assets/images</code> with your own photos.</p>
 
       <div class="gallery-slider" aria-label="Photo gallery slider">
@@ -160,8 +189,12 @@
       <p class="gallery-meta"><span id="gallery-index">1</span> / <span id="gallery-total">6</span></p>
     </section>
 
-    <section id="awards" class="section">
-      <h2>Awards</h2>
+    <section id="awards" class="section section-reveal">
+      <header class="section-head">
+        <span class="section-index" aria-hidden="true">05</span>
+        <p class="section-eyebrow">Honors</p>
+        <h2>Awards</h2>
+      </header>
 
       <div class="card">
         <h3>Add Award Title</h3>
