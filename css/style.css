@@ -564,12 +564,12 @@ header {
 }
 
 .hero-image-wrap {
+  position: relative;
   width: min(360px, 85vw);
   aspect-ratio: 1;
   height: auto;
   padding: 14px;
   border-radius: 50%;
-  position: relative;
   display: grid;
   place-items: center;
   justify-self: end;
@@ -601,6 +601,63 @@ header {
   object-position: center 20%;
   border: 3px solid color-mix(in srgb, var(--accent) 90%, transparent);
   box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+}
+
+.hero-carousel .hero-image {
+  transition: opacity 0.45s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-carousel .hero-image {
+    transition: none;
+  }
+}
+
+.hero-carousel .hero-image.is-fading {
+  opacity: 0;
+}
+
+.hero-carousel .hero-carousel-dots {
+  position: absolute;
+  left: 50%;
+  bottom: 22px;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 6px;
+  padding: 8px 10px;
+  border-radius: 999px;
+  background: rgba(6, 6, 10, 0.5);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  z-index: 2;
+}
+
+.hero-dot {
+  width: 7px;
+  height: 7px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.28);
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.hero-dot:hover {
+  background: rgba(255, 255, 255, 0.55);
+  transform: scale(1.15);
+}
+
+.hero-dot.is-active {
+  background: var(--accent);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 45%, transparent);
+  transform: scale(1.25);
+}
+
+.hero-dot:focus-visible {
+  outline: 2px solid var(--accent-strong);
+  outline-offset: 2px;
 }
 
 .tw-cursor {
