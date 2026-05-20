@@ -102,32 +102,32 @@ function prefersReducedMotion() {
  */
 const PORTFOLIO_PHOTOS = [
   {
-    src: "assets/images/profile.jpg",
+    src: "assets/images/profile.png",
     alt: "Sumit Sah with an academic award.",
     caption: "Featured portrait — lead with your strongest shot.",
   },
   {
-    src: "assets/images/profile.jpg",
+    src: "assets/images/profile.png",
     alt: "Sumit Sah — campus or event photo.",
     caption: "Replace this entry with a second image path (e.g. assets/images/photo-02.jpg).",
   },
   {
-    src: "assets/images/profile.jpg",
+    src: "assets/images/profile.png",
     alt: "Sumit Sah — research or presentation.",
     caption: "Third highlight — conference, lab, or team moment.",
   },
   {
-    src: "assets/images/profile.jpg",
+    src: "assets/images/profile.png",
     alt: "Sumit Sah — project or visualization snapshot.",
     caption: "Fourth — data / ML / creative work frame.",
   },
   {
-    src: "assets/images/profile.jpg",
+    src: "assets/images/profile.png",
     alt: "Sumit Sah — casual or travel moment.",
     caption: "Fifth — personality shot.",
   },
   {
-    src: "assets/images/profile.jpg",
+    src: "assets/images/profile.png",
     alt: "Sumit Sah — another favorite.",
     caption: "Sixth — swap paths so each line uses a different file.",
   },
@@ -319,6 +319,95 @@ function initScrollReveal() {
   document.querySelectorAll(".section.section-reveal").forEach((el) => revealObserver.observe(el));
 }
 
+const MATH_CS_ML_INSIGHTS = [
+  {
+    formula: "P(A\\mid B)=\\frac{P(B\\mid A)P(A)}{P(B)}",
+    fallback: "P(A|B) = P(B|A)P(A) / P(B)",
+    meaning: "Bayes theorem updates beliefs after seeing new evidence.",
+  },
+  {
+    formula: "L(\\theta)=\\frac{1}{n}\\sum_{i=1}^{n}(y_i-\\hat{y}_i)^2",
+    fallback: "L(theta) = (1/n) sum (y_i - y_hat_i)^2",
+    meaning: "Least squares converts prediction error into an optimization objective.",
+  },
+  {
+    formula: "\\mathbf{w}\\leftarrow\\mathbf{w}-\\alpha\\nabla L(\\mathbf{w})",
+    fallback: "w <- w - alpha * grad(L(w))",
+    meaning: "Gradient descent is calculus implemented as an iterative algorithm.",
+  },
+  {
+    formula: "e^{i\\pi}+1=0",
+    fallback: "e^(i*pi) + 1 = 0",
+    meaning: "Euler's formula elegantly links exponential growth, trigonometry, and complex numbers.",
+  },
+  {
+    formula: "\\hat{y}=\\arg\\max_{c}\\,P(y=c\\mid x)",
+    fallback: "y_hat = argmax_c P(y=c | x)",
+    meaning: "In code, classifiers choose the label with maximum posterior probability.",
+  },
+  {
+    formula: "\\sigma(z)=\\frac{1}{1+e^{-z}}",
+    fallback: "sigma(z) = 1 / (1 + e^(-z))",
+    meaning: "The sigmoid maps real-valued scores into probabilities.",
+  },
+  {
+    formula: "\\mathrm{softmax}(z_i)=\\frac{e^{z_i}}{\\sum_j e^{z_j}}",
+    fallback: "softmax(z_i) = e^(z_i) / sum_j e^(z_j)",
+    meaning: "Softmax turns logits into a normalized class distribution.",
+  },
+  {
+    formula: "\\theta=(X^TX)^{-1}X^Ty",
+    fallback: "theta = (X^T X)^(-1) X^T y",
+    meaning: "The normal equation gives a closed-form least squares solution.",
+  },
+  {
+    formula: "\\frac{d}{dx}f(g(x))=f'(g(x))g'(x)",
+    fallback: "d/dx f(g(x)) = f'(g(x)) g'(x)",
+    meaning: "The chain rule powers backpropagation through neural networks.",
+  },
+  {
+    formula: "H(p)=-\\sum_i p_i\\log p_i",
+    fallback: "H(p) = -sum_i p_i log p_i",
+    meaning: "Entropy measures uncertainty and appears in cross-entropy losses.",
+  },
+  {
+    formula: "J(\\theta)=L(\\theta)+\\lambda\\lVert\\theta\\rVert_2^2",
+    fallback: "J(theta) = L(theta) + lambda ||theta||_2^2",
+    meaning: "L2 regularization controls model complexity and overfitting.",
+  },
+];
+
+function initMathCsMlWidget() {
+  const host = document.getElementById("math-cs-ml-widget");
+  const formulaEl = document.getElementById("insight-formula");
+  const meaningEl = document.getElementById("insight-meaning");
+  if (!host || !formulaEl || !meaningEl || MATH_CS_ML_INSIGHTS.length === 0) return;
+
+  let index = 0;
+
+  function paint(i) {
+    const item = MATH_CS_ML_INSIGHTS[i % MATH_CS_ML_INSIGHTS.length];
+    if (window.katex && typeof window.katex.render === "function") {
+      window.katex.render(item.formula, formulaEl, { throwOnError: false, displayMode: false });
+    } else {
+      formulaEl.textContent = item.fallback || item.formula;
+    }
+    meaningEl.textContent = item.meaning;
+  }
+
+  paint(0);
+  if (prefersReducedMotion() || MATH_CS_ML_INSIGHTS.length < 2) return;
+
+  window.setInterval(() => {
+    host.classList.add("is-switching");
+    window.setTimeout(() => {
+      index = (index + 1) % MATH_CS_ML_INSIGHTS.length;
+      paint(index);
+      host.classList.remove("is-switching");
+    }, 160);
+  }, 3600);
+}
+
 // Typewriter effect
 function typeWriter(el, text, speed, done) {
   let i = 0;
@@ -396,6 +485,7 @@ initTheme();
 initMobileNav();
 initScrollReveal();
 initHeroCarousel();
+initMathCsMlWidget();
 
 if (sections[0]?.id) {
   syncSectionHighlight(sections[0].id);

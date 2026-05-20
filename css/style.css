@@ -563,6 +563,52 @@ header {
   margin-bottom: 32px;
 }
 
+.math-cs-ml-widget {
+  max-width: 720px;
+  margin: -10px 0 28px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: linear-gradient(145deg, var(--surface) 0%, color-mix(in srgb, var(--surface-2) 85%, var(--accent-soft)) 100%);
+  border: 1px solid color-mix(in srgb, var(--surface-border) 72%, var(--accent-soft));
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.14);
+}
+
+.widget-kicker {
+  margin: 0 0 8px;
+  color: var(--accent);
+  font-size: 12px;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.widget-row {
+  display: grid;
+  gap: 8px;
+}
+
+.widget-formula {
+  font-family: "JetBrains Mono", "Consolas", monospace;
+  font-size: clamp(13px, 2vw, 15px);
+  color: color-mix(in srgb, var(--text-main) 90%, white);
+}
+
+.widget-meaning {
+  color: var(--text-muted);
+  font-size: clamp(14px, 2vw, 16px);
+}
+
+.math-cs-ml-widget.is-switching {
+  opacity: 0.72;
+  transition: opacity 0.22s ease;
+}
+
+@media (max-width: 680px) {
+  .math-cs-ml-widget {
+    margin-top: -6px;
+  }
+}
+
 .hero-image-wrap {
   --hero-frame-radius: clamp(14px, 2.2vw, 22px);
   position: relative;

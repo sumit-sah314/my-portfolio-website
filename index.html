@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Fraunces:ital,opsz,wght@0,9..144,600..800;1,9..144,550&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" />
   <link rel="stylesheet" href="css/style.css" />
   <script>
     (function () {
@@ -91,6 +92,14 @@
           that connect code, research, and creativity.
         </p>
 
+        <div class="math-cs-ml-widget" id="math-cs-ml-widget" aria-live="polite">
+          <p class="widget-kicker">Favorite Equations: Math x Code x ML</p>
+          <div class="widget-row">
+            <span class="widget-formula" id="insight-formula">P(A|B) = P(B|A)P(A) / P(B)</span>
+            <span class="widget-meaning" id="insight-meaning">Bayesian updating turns prior beliefs into data-driven probabilities.</span>
+          </div>
+        </div>
+
         <div class="hero-buttons">
           <a href="assets/Sumit-Sah-Resume.pdf" class="btn primary-btn" target="_blank">View Resume</a>
         </div>
@@ -105,7 +114,7 @@
       >
         <img
           id="hero-slide-img"
-          src="assets/images/profile.jpg"
+          src="assets/images/profile.png"
           alt="Portrait of Sumit Sah"
           class="hero-image"
         />
@@ -175,7 +184,7 @@
         <button class="gallery-nav" id="gallery-prev" aria-label="Previous photo">&#10094;</button>
 
         <figure class="gallery-frame">
-          <img id="gallery-image" src="assets/images/profile.jpg" alt="Gallery photo" loading="lazy" />
+          <img id="gallery-image" src="assets/images/profile.png" alt="Gallery photo" loading="lazy" />
         </figure>
 
         <button class="gallery-nav" id="gallery-next" aria-label="Next photo">&#10095;</button>
@@ -213,6 +222,8 @@
     <p>© 2026 Sumit Sah. Built with HTML, CSS, JavaScript, Git, and GitHub.</p>
   </footer>
 
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
   <script src="js/script.js"></script>
 </body>
 </html>
