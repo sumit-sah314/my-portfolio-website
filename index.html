@@ -86,7 +86,7 @@
     <section id="home" class="cover-picture-section" aria-label="Cover picture">
       <div class="cover-shell">
         <div class="cover-image-wrap">
-          <img src="assets/images/profile.png" alt="Creative cover portrait of Sumit Sah" class="cover-image" loading="lazy" />
+          <img src="assets/images/profile/profile.png" alt="Creative cover portrait of Sumit Sah" class="cover-image" loading="lazy" />
           <div class="cover-overlay" aria-hidden="true"></div>
 
           <div class="cover-content">
@@ -143,7 +143,7 @@
       <div class="featured-grid">
         <article class="featured-story featured-story-wide">
           <figure class="featured-media">
-            <img src="assets/images/microsoft.jpg" alt="Microsoft internship update highlight" loading="lazy" />
+            <img src="assets/images/projects/microsoft.jpg" alt="Microsoft internship update highlight" loading="lazy" />
             <figcaption>Internship highlight • Redmond, WA</figcaption>
           </figure>
           <div class="featured-body">
@@ -159,7 +159,7 @@
 
         <article class="featured-story">
           <figure class="featured-media">
-            <img class="featured-award-image" src="assets/images/profile.png" alt="Outstanding student award reflection highlight" loading="lazy" />
+            <img class="featured-award-image" src="assets/images/awards/profile.png" alt="Outstanding student award reflection highlight" loading="lazy" />
             <figcaption>Award highlight</figcaption>
           </figure>
           <div class="featured-body">
@@ -176,7 +176,7 @@
         <article class="featured-story featured-story-brand">
           <figure class="featured-media featured-media-brand">
             <video class="featured-brand-video" autoplay muted loop playsinline preload="metadata" aria-label="Intuimation YouTube feature video">
-              <source src="assets/images/intuimation.mp4" type="video/mp4" />
+              <source src="assets/images/projects/intuimation.mp4" type="video/mp4" />
             </video>
             <figcaption>Visual learning with Manim</figcaption>
           </figure>
@@ -232,66 +232,104 @@
     <section id="projects" class="section section-reveal">
       <h2>Projects</h2>
 
-      <div class="projects-grid">
+      <div class="section-carousel" id="projects-carousel" aria-label="Projects carousel">
+        <div class="section-carousel-slider">
+          <article class="card section-carousel-card project-slide">
+            <figure class="section-carousel-media">
+              <img src="assets/images/projects/intuimation.png" alt="Intuimation project visual" loading="lazy" />
+            </figure>
+            <h3>Intuimation (YouTube Channel)</h3>
+            <p>
+              Created visual-first educational content using Manim to explain concepts from
+              mathematics, physics, and computer science in an intuitive and engaging way.
+            </p>
+            <p><a href="https://youtube.com/@intuimation.314" target="_blank" rel="noopener">Visit Intuimation on YouTube</a></p>
+          </article>
 
-      <div class="card project-card">
-        <h3>Intuimation (YouTube Channel)</h3>
-        <p>
-          Created visual-first educational content using Manim to explain concepts from
-          mathematics, physics, and computer science in an intuitive and engaging way.
-        </p>
-        <p><a href="https://youtube.com/@intuimation.314" target="_blank" rel="noopener">Visit Intuimation on YouTube</a></p>
-      </div>
+          <article class="card section-carousel-card project-slide">
+            <figure class="section-carousel-media">
+              <img src="assets/images/projects/profile.png" alt="RMF Bias Analysis project visual" loading="lazy" />
+            </figure>
+            <h3>RMF Bias Analysis</h3>
+            <p>
+              TXST Datathon 2025 (3rd Place): analyzed 20K+ RateMyProfessor reviews using Python,
+              Pandas, and Matplotlib to identify bias in grading leniency, sampling, and review extremity.
+              Created 5+ visualizations and presented actionable recommendations to improve fairness
+              in student evaluations.
+            </p>
+            <p><a href="https://github.com/sumit-sah314/professor-rating-bias-analysis" target="_blank" rel="noopener">View RMF Bias Analysis on GitHub</a></p>
+          </article>
 
-      <div class="card project-card">
-        <h3>RMF Bias Analysis</h3>
-        <p>
-          TXST Datathon 2025 (3rd Place): analyzed 20K+ RateMyProfessor reviews using Python,
-          Pandas, and Matplotlib to identify bias in grading leniency, sampling, and review extremity.
-          Created 5+ visualizations and presented actionable recommendations to improve fairness
-          in student evaluations.
-        </p>
-        <p><a href="https://github.com/sumit-sah314/professor-rating-bias-analysis" target="_blank" rel="noopener">View RMF Bias Analysis on GitHub</a></p>
-      </div>
+          <article class="card section-carousel-card project-slide">
+            <figure class="section-carousel-media">
+              <img src="assets/images/projects/microsoft.jpg" alt="Machine learning research visual" loading="lazy" />
+            </figure>
+            <h3>Machine Learning Research</h3>
+            <p>
+              Investigated adversarial robustness using optimal transport-based metrics.
+            </p>
+            <p><a href="https://github.com/sumit-sah314/my-ml-learning-journey" target="_blank" rel="noopener">View ML Learning Journey on GitHub</a></p>
+          </article>
 
-      <div class="card project-card">
-        <h3>Machine Learning Research</h3>
-        <p>
-          Investigated adversarial robustness using optimal transport-based metrics.
-        </p>
-        <p><a href="https://github.com/sumit-sah314/my-ml-learning-journey" target="_blank" rel="noopener">View ML Learning Journey on GitHub</a></p>
-      </div>
+          <article class="card section-carousel-card project-slide">
+            <figure class="section-carousel-media">
+              <img src="assets/images/projects/microsoft.jpg" alt="AI Study Tool project visual" loading="lazy" />
+            </figure>
+            <h3>AI Study Tool (SWE Class Project)</h3>
+            <p>
+              Built an AI-powered study assistant for software engineering coursework to help with
+              topic revision, structured learning, and quick concept lookup.
+            </p>
+            <p><a href="https://github.com/sumit-sah314/ai-study-tool-repository" target="_blank" rel="noopener">View AI Study Tool on GitHub</a></p>
+          </article>
+        </div>
 
-      <div class="card project-card">
-        <h3>AI Study Tool (SWE Class Project)</h3>
-        <p>
-          Built an AI-powered study assistant for software engineering coursework to help with
-          topic revision, structured learning, and quick concept lookup.
-        </p>
-        <p><a href="https://github.com/sumit-sah314/ai-study-tool-repository" target="_blank" rel="noopener">View AI Study Tool on GitHub</a></p>
-      </div>
+        <div class="section-carousel-controls" aria-label="Project carousel controls">
+          <button class="gallery-nav" id="projects-prev" aria-label="Previous project">&#10094;</button>
+          <p class="section-carousel-meta"><span id="projects-index">1</span> / <span id="projects-total">4</span></p>
+          <button class="gallery-nav" id="projects-next" aria-label="Next project">&#10095;</button>
+        </div>
       </div>
     </section>
 
     <section id="awards" class="section section-reveal">
       <h2>Awards</h2>
 
-      <div class="card">
-        <h3>Outstanding Undergraduate Student Award</h3>
-        <p>Recognized by the TXST Mathematics Department for academic achievement, leadership, and contribution.</p>
-        <span>2026</span>
-      </div>
+      <div class="section-carousel" id="awards-carousel" aria-label="Awards carousel">
+        <div class="section-carousel-slider">
+          <article class="card section-carousel-card award-slide">
+            <figure class="section-carousel-media">
+              <img src="assets/images/awards/profile.png" alt="Outstanding Undergraduate Student Award photo" loading="lazy" />
+            </figure>
+            <h3>Outstanding Undergraduate Student Award</h3>
+            <p>Recognized by the TXST Mathematics Department for academic achievement, leadership, and contribution.</p>
+            <span>2026</span>
+          </article>
 
-      <div class="card">
-        <h3>MAA Math Bowl - 3rd Place (Team TXST)</h3>
-        <p>Placed 3rd among 25 teams at the Mathematical Association of America Texas Section Math Bowl at Baylor University.</p>
-        <span>2026</span>
-      </div>
+          <article class="card section-carousel-card award-slide">
+            <figure class="section-carousel-media">
+              <img src="assets/images/awards/microsoft.jpg" alt="Math Bowl achievement photo" loading="lazy" />
+            </figure>
+            <h3>MAA Math Bowl - 3rd Place (Team TXST)</h3>
+            <p>Placed 3rd among 25 teams at the Mathematical Association of America Texas Section Math Bowl at Baylor University.</p>
+            <span>2026</span>
+          </article>
 
-      <div class="card">
-        <h3>TSUS Regents' Student Scholar Award Nominee</h3>
-        <p>Nominated by the department for system-level academic distinction and student impact.</p>
-        <span>2026</span>
+          <article class="card section-carousel-card award-slide">
+            <figure class="section-carousel-media">
+              <img src="assets/images/awards/profile.png" alt="TSUS Regents Student Scholar Award nominee visual" loading="lazy" />
+            </figure>
+            <h3>TSUS Regents' Student Scholar Award Nominee</h3>
+            <p>Nominated by the department for system-level academic distinction and student impact.</p>
+            <span>2026</span>
+          </article>
+        </div>
+
+        <div class="section-carousel-controls" aria-label="Awards carousel controls">
+          <button class="gallery-nav" id="awards-prev" aria-label="Previous award">&#10094;</button>
+          <p class="section-carousel-meta"><span id="awards-index">1</span> / <span id="awards-total">3</span></p>
+          <button class="gallery-nav" id="awards-next" aria-label="Next award">&#10095;</button>
+        </div>
       </div>
     </section>
 
@@ -303,7 +341,7 @@
         <button class="gallery-nav" id="gallery-prev" aria-label="Previous photo">&#10094;</button>
 
         <figure class="gallery-frame">
-          <img id="gallery-image" src="assets/images/microsoft.jpg" alt="Gallery photo" loading="lazy" />
+          <img id="gallery-image" src="assets/images/gallery/microsoft.jpg" alt="Gallery photo" loading="lazy" />
         </figure>
 
         <button class="gallery-nav" id="gallery-next" aria-label="Next photo">&#10095;</button>
