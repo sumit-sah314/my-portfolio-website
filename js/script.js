@@ -96,164 +96,39 @@ function prefersReducedMotion() {
   return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 }
 
-/**
- * Best photos first — hero auto-rotates in this order; gallery uses the same set.
- * Add files under assets/images/ and point `src` here (update alt + caption).
- */
 const PORTFOLIO_PHOTOS = [
   {
-    src: "assets/images/profile.png",
+    src: "assets/images/microsoft.jpg",
     alt: "Sumit Sah with an academic award.",
-    caption: "Featured portrait — lead with your strongest shot.",
+    caption: "Featured portrait - lead with your strongest shot.",
   },
   {
-    src: "assets/images/profile.png",
-    alt: "Sumit Sah — campus or event photo.",
+    src: "assets/images/microsoft.jpg",
+    alt: "Sumit Sah - campus or event photo.",
     caption: "Replace this entry with a second image path (e.g. assets/images/photo-02.jpg).",
   },
   {
-    src: "assets/images/profile.png",
-    alt: "Sumit Sah — research or presentation.",
-    caption: "Third highlight — conference, lab, or team moment.",
+    src: "assets/images/microsoft.jpg",
+    alt: "Sumit Sah - research or presentation.",
+    caption: "Third highlight - conference, lab, or team moment.",
   },
   {
-    src: "assets/images/profile.png",
-    alt: "Sumit Sah — project or visualization snapshot.",
-    caption: "Fourth — data / ML / creative work frame.",
+    src: "assets/images/microsoft.jpg",
+    alt: "Sumit Sah - project or visualization snapshot.",
+    caption: "Fourth - data / ML / creative work frame.",
   },
   {
-    src: "assets/images/profile.png",
-    alt: "Sumit Sah — casual or travel moment.",
-    caption: "Fifth — personality shot.",
+    src: "assets/images/microsoft.jpg",
+    alt: "Sumit Sah - casual or travel moment.",
+    caption: "Fifth - personality shot.",
   },
   {
-    src: "assets/images/profile.png",
-    alt: "Sumit Sah — another favorite.",
-    caption: "Sixth — swap paths so each line uses a different file.",
+    src: "assets/images/microsoft.jpg",
+    alt: "Sumit Sah - another favorite.",
+    caption: "Sixth - swap paths so each line uses a different file.",
   },
 ];
 
-const HERO_AUTOPLAY_MS = 5200;
-const HERO_FADE_MS = 380;
-
-function initHeroCarousel() {
-  const carousel = document.getElementById("hero-carousel");
-  const img = document.getElementById("hero-slide-img");
-  const dotsHost = document.getElementById("hero-carousel-dots");
-  if (!carousel || !img || !dotsHost || PORTFOLIO_PHOTOS.length === 0) return;
-
-  let index = 0;
-  let timerId = null;
-  let heroInView = true;
-
-  function norm(i) {
-    return (i + PORTFOLIO_PHOTOS.length) % PORTFOLIO_PHOTOS.length;
-  }
-
-  function updateDots() {
-    dotsHost.querySelectorAll(".hero-dot").forEach((btn, i) => {
-      const on = i === index;
-      btn.classList.toggle("is-active", on);
-      btn.setAttribute("aria-selected", on ? "true" : "false");
-    });
-  }
-
-  function applySlide(i) {
-    index = norm(i);
-    const shot = PORTFOLIO_PHOTOS[index];
-    img.src = shot.src;
-    img.alt = shot.alt || "Photo";
-    updateDots();
-  }
-
-  function crossfadeTo(nextIndex) {
-    const next = norm(nextIndex);
-    const shot = PORTFOLIO_PHOTOS[next];
-    const useFade = !prefersReducedMotion() && PORTFOLIO_PHOTOS.length > 1 && HERO_FADE_MS > 0;
-
-    const finish = () => {
-      index = next;
-      img.src = shot.src;
-      img.alt = shot.alt || "Photo";
-      updateDots();
-      if (useFade) {
-        requestAnimationFrame(() => img.classList.remove("is-fading"));
-      }
-    };
-
-    if (!useFade) {
-      finish();
-      return;
-    }
-
-    img.classList.add("is-fading");
-    window.setTimeout(finish, HERO_FADE_MS);
-  }
-
-  if (PORTFOLIO_PHOTOS.length < 2) {
-    dotsHost.innerHTML = "";
-    dotsHost.setAttribute("hidden", "");
-    applySlide(0);
-    return;
-  }
-
-  dotsHost.removeAttribute("hidden");
-  dotsHost.innerHTML = "";
-  dotsHost.setAttribute("role", "tablist");
-  PORTFOLIO_PHOTOS.forEach((_, i) => {
-    const btn = document.createElement("button");
-    btn.type = "button";
-    btn.className = "hero-dot";
-    btn.setAttribute("role", "tab");
-    btn.setAttribute("aria-label", `Show photo ${i + 1} of ${PORTFOLIO_PHOTOS.length}`);
-    btn.addEventListener("click", () => {
-      crossfadeTo(i);
-      restartAutoplay();
-    });
-    dotsHost.appendChild(btn);
-  });
-
-  applySlide(0);
-
-  function stopAutoplay() {
-    if (timerId !== null) {
-      clearInterval(timerId);
-      timerId = null;
-    }
-  }
-
-  function startAutoplay() {
-    stopAutoplay();
-    if (prefersReducedMotion() || PORTFOLIO_PHOTOS.length < 2) return;
-    if (document.hidden || !heroInView) return;
-    timerId = window.setInterval(() => crossfadeTo(index + 1), HERO_AUTOPLAY_MS);
-  }
-
-  function restartAutoplay() {
-    stopAutoplay();
-    startAutoplay();
-  }
-
-  carousel.addEventListener("mouseenter", stopAutoplay);
-  carousel.addEventListener("mouseleave", startAutoplay);
-
-  document.addEventListener("visibilitychange", () => {
-    if (document.hidden) stopAutoplay();
-    else startAutoplay();
-  });
-
-  const io = new IntersectionObserver(
-    (entries) => {
-      heroInView = Boolean(entries[0]?.isIntersecting);
-      if (heroInView && !document.hidden) startAutoplay();
-      else stopAutoplay();
-    },
-    { threshold: 0.25 }
-  );
-  io.observe(carousel);
-
-  startAutoplay();
-}
 
 // Scroll spy — navbar + sidebar rail dots
 const sections = Array.from(document.querySelectorAll("section[id]"));
@@ -428,7 +303,7 @@ const lineEl = document.getElementById("typewriter-line");
 
 if (nameEl && lineEl) {
   const nameText = "Sumit Sah.";
-  const lineText = "I go by Sum. Yeah, like the summation in math - a math lover, lol.";
+  const lineText = "MLE Intern @ Microsoft | Applied Math & CS @ TXST | MANIM Creator";
 
   if (prefersReducedMotion()) {
     nameEl.textContent = nameText;
@@ -440,7 +315,6 @@ if (nameEl && lineEl) {
   }
 }
 
-// Gallery slider (same images as hero — see PORTFOLIO_PHOTOS)
 const galleryImageEl = document.getElementById("gallery-image");
 const galleryPrevBtn = document.getElementById("gallery-prev");
 const galleryNextBtn = document.getElementById("gallery-next");
@@ -484,7 +358,6 @@ if (
 initTheme();
 initMobileNav();
 initScrollReveal();
-initHeroCarousel();
 initMathCsMlWidget();
 
 if (sections[0]?.id) {

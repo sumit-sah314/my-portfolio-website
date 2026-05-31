@@ -38,8 +38,8 @@
         <li><a href="#about">About</a></li>
         <li><a href="#experience">Experience</a></li>
         <li><a href="#projects">Projects</a></li>
-        <li><a href="#gallery">Gallery</a></li>
         <li><a href="#awards">Awards</a></li>
+        <li><a href="#gallery">Gallery</a></li>
       </ul>
 
       <div class="nav-right">
@@ -76,103 +76,222 @@
     <a href="#about" class="rail-link" aria-label="About"></a>
     <a href="#experience" class="rail-link" aria-label="Experience"></a>
     <a href="#projects" class="rail-link" aria-label="Projects"></a>
-    <a href="#gallery" class="rail-link" aria-label="Gallery"></a>
     <a href="#awards" class="rail-link" aria-label="Awards"></a>
+    <a href="#featured" class="rail-link" aria-label="Featured"></a>
+    <a href="#gallery" class="rail-link" aria-label="Gallery"></a>
   </nav>
 
   <main id="main-content">
 
-    <section id="home" class="hero">
-      <div class="hero-content">
-        <p class="tagline">Computer Science • Applied Mathematics • Machine Learning</p>
-        <h2>Hi, I'm <span id="typewriter-name"></span><span class="tw-cursor">|</span></h2>
-        <p class="hero-note"><span id="typewriter-line"></span><span class="tw-cursor">|</span></p>
-        <p class="hero-text">
-          I build machine learning, data visualization, and mathematical storytelling projects
-          that connect code, research, and creativity.
-        </p>
+    <section id="home" class="cover-picture-section" aria-label="Cover picture">
+      <div class="cover-shell">
+        <div class="cover-image-wrap">
+          <img src="assets/images/profile.png" alt="Creative cover portrait of Sumit Sah" class="cover-image" loading="lazy" />
+          <div class="cover-overlay" aria-hidden="true"></div>
 
-        <div class="math-cs-ml-widget" id="math-cs-ml-widget" aria-live="polite">
-          <p class="widget-kicker">Favorite Equations: Math x Code x ML</p>
-          <div class="widget-row">
-            <span class="widget-formula" id="insight-formula">P(A|B) = P(B|A)P(A) / P(B)</span>
-            <span class="widget-meaning" id="insight-meaning">Bayesian updating turns prior beliefs into data-driven probabilities.</span>
+          <div class="cover-content">
+            <p class="tagline">Computer Science • Applied Mathematics • Machine Learning</p>
+            <h2>Hi, I'm <span id="typewriter-name"></span><span class="tw-cursor">|</span></h2>
+            <p class="hero-note"><span id="typewriter-line"></span><span class="tw-cursor">|</span></p>
+            <p class="home-meta">San Marcos, Texas, United States | Texas State University | 500+ connections</p>
+
+            <div class="math-cs-ml-widget" id="math-cs-ml-widget" aria-live="polite">
+              <p class="widget-kicker">Favorite Equations: Math x Code x ML</p>
+              <div class="widget-row">
+                <span class="widget-formula" id="insight-formula">P(A|B) = P(B|A)P(A) / P(B)</span>
+                <span class="widget-meaning" id="insight-meaning">Bayesian updating turns prior beliefs into data-driven probabilities.</span>
+              </div>
+            </div>
+
+            <div class="hero-buttons">
+              <a href="assets/Sumit-Sah-Resume.pdf" class="btn primary-btn" target="_blank">View Resume</a>
+            </div>
           </div>
-        </div>
 
-        <div class="hero-buttons">
-          <a href="assets/Sumit-Sah-Resume.pdf" class="btn primary-btn" target="_blank">View Resume</a>
         </div>
-      </div>
-
-      <div
-        class="hero-image-wrap hero-carousel"
-        id="hero-carousel"
-        role="region"
-        aria-roledescription="carousel"
-        aria-label="Profile photos"
-      >
-        <img
-          id="hero-slide-img"
-          src="assets/images/profile.png"
-          alt="Portrait of Sumit Sah"
-          class="hero-image"
-        />
-        <div class="hero-carousel-dots" id="hero-carousel-dots"></div>
       </div>
     </section>
 
     <section id="about" class="section section-reveal">
       <h2>About Me</h2>
       <p>
-        I’m a Computer Science and Applied Mathematics student at Texas State University,
-        with interests in machine learning, data science, research, and visual math education.
-        I enjoy building projects that are not only technically strong but also easy to understand.
+        I am an aspiring machine learning and data scientist with a simple motivation: I love figuring out how things work.
+        Ever since I was a kid, I have enjoyed solving math problems not just for answers, but to understand the reason behind them.
+        Programming made that curiosity practical, and that blend of math and code naturally pulled me toward machine learning.
       </p>
+      <p>
+        What excites me most is how computers can learn, adapt, and mimic parts of human intelligence.
+        I am especially interested in the algorithms, optimization methods, and decision processes that make this possible.
+        That curiosity has guided everything I have done, from regression and classification modeling to AI robustness research.
+      </p>
+      <p>
+        At Texas State University, my work focuses on the mathematical side of machine learning.
+        I study optimization methods such as gradient descent and stochastic gradient descent,
+        and deep learning architectures including CNNs and ResNets.
+        I use Python and PyTorch for experimentation, and document results in LaTeX and GitHub.
+      </p>
+      <p>
+        Outside research, I enjoy sharing what I learn through blogs, Manim animations, and YouTube videos.
+        I also spend time solving algorithmic problems on LeetCode and Codeforces.
+        For me, learning is not just about building skills - it is also about sparking curiosity and helping others.
+      </p>
+    </section>
+
+    <section id="featured" class="section section-reveal">
+      <h2>Featured</h2>
+
+      <div class="featured-grid">
+        <article class="featured-story featured-story-wide">
+          <figure class="featured-media">
+            <img src="assets/images/microsoft.jpg" alt="Microsoft internship update highlight" loading="lazy" />
+            <figcaption>Internship highlight • Redmond, WA</figcaption>
+          </figure>
+          <div class="featured-body">
+            <p class="featured-kicker">Career Highlight</p>
+            <h3>Machine Learning Engineering Internship</h3>
+            <p>
+              Joined Microsoft as a Machine Learning Engineering Intern in Redmond,
+              contributing to impactful ML systems with the ODSP team.
+            </p>
+            <span class="featured-meta">Microsoft • Summer 2026</span>
+          </div>
+        </article>
+
+        <article class="featured-story">
+          <figure class="featured-media">
+            <img class="featured-award-image" src="assets/images/profile.png" alt="Outstanding student award reflection highlight" loading="lazy" />
+            <figcaption>Award highlight</figcaption>
+          </figure>
+          <div class="featured-body">
+            <p class="featured-kicker">Achievement Highlight</p>
+            <h3>Outstanding Undergraduate Student Award</h3>
+            <p>
+              Received departmental recognition for academic excellence, leadership, and student impact,
+              alongside Math Bowl and TXST Math Club contributions.
+            </p>
+            <span class="featured-meta">Texas State University • 2026</span>
+          </div>
+        </article>
+
+        <article class="featured-story featured-story-brand">
+          <figure class="featured-media featured-media-brand">
+            <video class="featured-brand-video" autoplay muted loop playsinline preload="metadata" aria-label="Intuimation YouTube feature video">
+              <source src="assets/images/intuimation.mp4" type="video/mp4" />
+            </video>
+            <figcaption>Visual learning with Manim</figcaption>
+          </figure>
+          <div class="featured-body">
+            <p class="featured-kicker">Link Highlight</p>
+            <h3>Intuimation YouTube</h3>
+            <p>
+              Built educational animations that make math, physics, and computer science concepts intuitive using Manim.
+            </p>
+            <p><a class="featured-link" href="https://youtube.com/@intuimation.314" target="_blank" rel="noopener">Visit Intuimation channel</a></p>
+          </div>
+        </article>
+      </div>
     </section>
 
     <section id="experience" class="section section-reveal">
       <h2>Experience</h2>
 
       <div class="card">
-        <h3>Data Analysis & Visualization Assistant</h3>
-        <p>University Libraries – Research & Data Services, Texas State University</p>
-        <span>Sep 2025 – Present</span>
+        <h3>Machine Learning Engineering Intern</h3>
+        <p>Microsoft (Full-time) - Redmond, Washington, United States (On-site)</p>
+        <span>May 2026 - Present</span>
+        <p>
+          Collaborating with the ODSP-DEEDS team to improve hierarchical RAG systems for stronger Copilot grounding.
+          Evaluating diverse query sets for container summarization and semantic search, and comparing flat vs hierarchical retrieval
+          to improve retrieval quality and optimize recall.
+        </p>
       </div>
 
       <div class="card">
-        <h3>Undergraduate Research Assistant — Machine Learning</h3>
-        <p>Department of Mathematics, Texas State University</p>
-        <span>Apr 2025 – Present</span>
+        <h3>Data Analysis & Visualisation Assistant</h3>
+        <p>Texas State University Libraries (Part-time) - San Marcos, Texas, United States (On-site)</p>
+        <span>Aug 2025 - May 2026</span>
+        <p>
+          Assisted students, faculty, and staff with analysis and visualization for research projects,
+          supported DataSpace documentation and tutorials, improved metadata in TXST Dataverse,
+          and helped run workshops and outreach activities.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>Undergrad Research Assistant - Machine Learning</h3>
+        <p>TXST Math - San Marcos, Texas, United States (On-site)</p>
+        <span>May 2025 - May 2026</span>
+        <p>
+          Focused on mathematical foundations and implementation of machine learning methods.
+          Developed and tested optimization algorithms (Gradient Descent, SGD), built PyTorch models (fully connected, CNNs, ResNets),
+          and designed experiments across architectures and parameter counts.
+        </p>
       </div>
     </section>
 
     <section id="projects" class="section section-reveal">
       <h2>Projects</h2>
 
-      <div class="project-grid">
-        <div class="card">
-          <h3>Credit Risk Modeling</h3>
-          <p>
-            Built classification models using Logistic Regression, Decision Trees, and XGBoost
-            for credit default prediction.
-          </p>
-        </div>
+      <div class="projects-grid">
 
-        <div class="card">
-          <h3>RMF Bias Analysis</h3>
-          <p>
-            Analyzed professor rating data to identify bias in grading leniency,
-            sampling, and review extremity.
-          </p>
-        </div>
+      <div class="card project-card">
+        <h3>Intuimation (YouTube Channel)</h3>
+        <p>
+          Created visual-first educational content using Manim to explain concepts from
+          mathematics, physics, and computer science in an intuitive and engaging way.
+        </p>
+        <p><a href="https://youtube.com/@intuimation.314" target="_blank" rel="noopener">Visit Intuimation on YouTube</a></p>
+      </div>
 
-        <div class="card">
-          <h3>Machine Learning Research</h3>
-          <p>
-            Investigated adversarial robustness using optimal transport-based metrics.
-          </p>
-        </div>
+      <div class="card project-card">
+        <h3>RMF Bias Analysis</h3>
+        <p>
+          TXST Datathon 2025 (3rd Place): analyzed 20K+ RateMyProfessor reviews using Python,
+          Pandas, and Matplotlib to identify bias in grading leniency, sampling, and review extremity.
+          Created 5+ visualizations and presented actionable recommendations to improve fairness
+          in student evaluations.
+        </p>
+        <p><a href="https://github.com/sumit-sah314/professor-rating-bias-analysis" target="_blank" rel="noopener">View RMF Bias Analysis on GitHub</a></p>
+      </div>
+
+      <div class="card project-card">
+        <h3>Machine Learning Research</h3>
+        <p>
+          Investigated adversarial robustness using optimal transport-based metrics.
+        </p>
+        <p><a href="https://github.com/sumit-sah314/my-ml-learning-journey" target="_blank" rel="noopener">View ML Learning Journey on GitHub</a></p>
+      </div>
+
+      <div class="card project-card">
+        <h3>AI Study Tool (SWE Class Project)</h3>
+        <p>
+          Built an AI-powered study assistant for software engineering coursework to help with
+          topic revision, structured learning, and quick concept lookup.
+        </p>
+        <p><a href="https://github.com/sumit-sah314/ai-study-tool-repository" target="_blank" rel="noopener">View AI Study Tool on GitHub</a></p>
+      </div>
+      </div>
+    </section>
+
+    <section id="awards" class="section section-reveal">
+      <h2>Awards</h2>
+
+      <div class="card">
+        <h3>Outstanding Undergraduate Student Award</h3>
+        <p>Recognized by the TXST Mathematics Department for academic achievement, leadership, and contribution.</p>
+        <span>2026</span>
+      </div>
+
+      <div class="card">
+        <h3>MAA Math Bowl - 3rd Place (Team TXST)</h3>
+        <p>Placed 3rd among 25 teams at the Mathematical Association of America Texas Section Math Bowl at Baylor University.</p>
+        <span>2026</span>
+      </div>
+
+      <div class="card">
+        <h3>TSUS Regents' Student Scholar Award Nominee</h3>
+        <p>Nominated by the department for system-level academic distinction and student impact.</p>
+        <span>2026</span>
       </div>
     </section>
 
@@ -184,7 +303,7 @@
         <button class="gallery-nav" id="gallery-prev" aria-label="Previous photo">&#10094;</button>
 
         <figure class="gallery-frame">
-          <img id="gallery-image" src="assets/images/profile.png" alt="Gallery photo" loading="lazy" />
+          <img id="gallery-image" src="assets/images/microsoft.jpg" alt="Gallery photo" loading="lazy" />
         </figure>
 
         <button class="gallery-nav" id="gallery-next" aria-label="Next photo">&#10095;</button>
@@ -192,28 +311,6 @@
 
       <p class="gallery-caption" id="gallery-caption">Profile portrait - replace with your own caption.</p>
       <p class="gallery-meta"><span id="gallery-index">1</span> / <span id="gallery-total">6</span></p>
-    </section>
-
-    <section id="awards" class="section section-reveal">
-      <h2>Awards</h2>
-
-      <div class="card">
-        <h3>Add Award Title</h3>
-        <p>Short description of the award, scholarship, or recognition.</p>
-        <span>Year</span>
-      </div>
-
-      <div class="card">
-        <h3>Add Award Title</h3>
-        <p>Short description of the award, scholarship, or recognition.</p>
-        <span>Year</span>
-      </div>
-
-      <div class="card">
-        <h3>Add Award Title</h3>
-        <p>Short description of the award, scholarship, or recognition.</p>
-        <span>Year</span>
-      </div>
     </section>
 
   </main>
