@@ -85,16 +85,11 @@
 
     <section id="home" class="cover-picture-section" aria-label="Cover picture">
       <div class="cover-shell">
-        <div class="cover-image-wrap">
-          <img src="assets/images/profile/profile.png" alt="Creative cover portrait of Sumit Sah" class="cover-image" loading="lazy" />
-          <div class="cover-overlay" aria-hidden="true"></div>
-
-          <div class="cover-content">
+        <div class="home-hero-layout">
+          <div class="cover-content home-copy">
             <p class="tagline">Computer Science • Applied Mathematics • Machine Learning</p>
-            <h2>Hi, I'm <span id="typewriter-name"></span><span class="tw-cursor">|</span></h2>
+            <h2>Hi, I am Sumit Sah</h2>
             <p class="hero-note"><span id="typewriter-line"></span><span class="tw-cursor">|</span></p>
-            <p class="home-meta">San Marcos, Texas, United States | Texas State University | 500+ connections</p>
-
             <div class="math-cs-ml-widget" id="math-cs-ml-widget" aria-live="polite">
               <p class="widget-kicker">Favorite Equations: Math x Code x ML</p>
               <div class="widget-row">
@@ -107,6 +102,10 @@
               <a href="assets/Sumit-Sah-Resume.pdf" class="btn primary-btn" target="_blank">View Resume</a>
             </div>
           </div>
+
+          <figure class="home-profile-figure">
+            <img src="assets/images/profile/profile.png" alt="Profile portrait of Sumit Sah" class="home-profile-image" loading="lazy" />
+          </figure>
 
         </div>
       </div>
@@ -150,8 +149,8 @@
             <p class="featured-kicker">Career Highlight</p>
             <h3>Machine Learning Engineering Internship</h3>
             <p>
-              Joined Microsoft as a Machine Learning Engineering Intern in Redmond,
-              contributing to impactful ML systems with the ODSP team.
+              Working as an MLE Intern at Microsoft, contributing to ODSP systems and
+              improving retrieval quality for Copilot grounding workflows.
             </p>
             <span class="featured-meta">Microsoft • Summer 2026</span>
           </div>
@@ -159,15 +158,15 @@
 
         <article class="featured-story">
           <figure class="featured-media">
-            <img class="featured-award-image" src="assets/images/awards/profile.png" alt="Outstanding student award reflection highlight" loading="lazy" />
+            <img class="featured-award-image" src="assets/images/awards/award.jpg" alt="Outstanding student award reflection highlight" loading="lazy" />
             <figcaption>Award highlight</figcaption>
           </figure>
           <div class="featured-body">
             <p class="featured-kicker">Achievement Highlight</p>
             <h3>Outstanding Undergraduate Student Award</h3>
             <p>
-              Received departmental recognition for academic excellence, leadership, and student impact,
-              alongside TXST Datathon and TXST Math Club contributions.
+              Recognized by the Texas State Mathematics Department for academic excellence,
+              leadership, and campus impact through research, datathon, and math club work.
             </p>
             <span class="featured-meta">Texas State University • 2026</span>
           </div>
@@ -184,7 +183,8 @@
             <p class="featured-kicker">Link Highlight</p>
             <h3>Intuimation YouTube</h3>
             <p>
-              Built educational animations that make math, physics, and computer science concepts intuitive using Manim.
+              Create visual-first lessons with Manim to make math, physics, and computer science
+              concepts intuitive, engaging, and easier to retain.
             </p>
             <p><a class="featured-link" href="https://youtube.com/@intuimation.314" target="_blank" rel="noopener">Visit Intuimation channel</a></p>
           </div>
@@ -240,8 +240,9 @@
             </figure>
             <h3>AI Study Tool (SWE Class Project)</h3>
             <p>
-              Built an AI-powered study assistant for software engineering coursework to help with
-              topic revision, structured learning, and quick concept lookup.
+              Built an AI-powered study assistant for software engineering coursework with quiz generation based on notes,
+              progress tracking through charts, weak-topic detection, quiz history retrieval, and visual analytics.
+              Also supported viewing past quiz attempts, reviewing previous answers, and retaking quizzes to reinforce learning.
             </p>
             <p><a href="https://github.com/sumit-sah314/ai-study-tool-repository" target="_blank" rel="noopener">View AI Study Tool on GitHub</a></p>
           </article>
@@ -252,7 +253,9 @@
             </figure>
             <h3>Machine Learning Research</h3>
             <p>
-              Investigated adversarial robustness using optimal transport-based metrics.
+              Researched adversarial robustness using optimal transport-based models and explored how deep learning robust training
+              techniques can be adapted to classical regression settings for stronger stability and performance.
+              The poster shown here was presented at the Texas State undergraduate research conference.
             </p>
             <p><a href="https://github.com/sumit-sah314/my-ml-learning-journey" target="_blank" rel="noopener">View ML Learning Journey on GitHub</a></p>
           </article>
@@ -263,8 +266,9 @@
             </figure>
             <h3>Intuimation (YouTube Channel)</h3>
             <p>
-              Created visual-first educational content using Manim to explain concepts from
-              mathematics, physics, and computer science in an intuitive and engaging way.
+              Create visual-first educational videos using Manim to make mathematics, physics,
+              and computer science concepts intuitive, engaging, and easier to understand.
+              Feel free to DM for collaboration!
             </p>
             <p><a href="https://youtube.com/@intuimation.314" target="_blank" rel="noopener">Visit Intuimation on YouTube</a></p>
           </article>
@@ -307,13 +311,13 @@
     </section>
 
     <section id="awards" class="section section-reveal">
-      <h2>Awards</h2>
+      <h2>Awrads and Honors</h2>
 
       <div class="section-carousel" id="awards-carousel" aria-label="Awards carousel">
         <div class="section-carousel-slider">
           <article class="card section-carousel-card award-slide">
             <figure class="section-carousel-media">
-              <img class="award-outstanding-image" src="assets/images/awards/profile.png" alt="Outstanding Undergraduate Student Award photo" loading="lazy" />
+              <img class="award-outstanding-image" src="assets/images/awards/award.jpg" alt="Outstanding Undergraduate Student Award photo" loading="lazy" />
             </figure>
             <h3>Outstanding Undergraduate Student Award</h3>
             <p>Recognized by the TXST Mathematics Department for academic achievement, leadership, and contribution.</p>
@@ -331,6 +335,17 @@
 
           <article class="card section-carousel-card award-slide">
             <figure class="section-carousel-media">
+              <img src="assets/images/awards/award.jpg" alt="Dean's List recognition visual" loading="lazy" />
+            </figure>
+            <h3>Dean's / President's List</h3>
+            <p>Recognized for outstanding academic performance at Texas State University by being named to the Dean's List.
+              Achieved a perfect 4.0/4.0 GPA in Fall 2024, placing among the top students for academic excellence.
+            </p>
+            <span>Fall 2024</span>
+          </article>
+
+          <article class="card section-carousel-card award-slide">
+            <figure class="section-carousel-media">
               <img src="assets/images/awards/rmf_bias.jpg" alt="RMF Bias Analysis Recognition" loading="lazy" />
             </figure>
             <h3>RMF Bias Analysis Recognition</h3>
@@ -343,17 +358,8 @@
               <img src="assets/images/awards/presidents-honor.jpg" alt="President's Honor Scholarship recognition" loading="lazy" />
             </figure>
             <h3>President's Honor Scholarship</h3>
-            <p>Awarded for strong academic performance and continued excellence at Texas State University.</p>
-            <span>2026</span>
-          </article>
-
-          <article class="card section-carousel-card award-slide">
-            <figure class="section-carousel-media">
-              <img src="assets/images/awards/boss.png" alt="BOSS honorable scholarships recognition" loading="lazy" />
-            </figure>
-            <h3>Multiple BOSS Honorable Scholarships</h3>
-            <p>Received multiple BOSS-related scholarships, including Lulen Anderson, Honors College, and Student Government support.</p>
-            <span>2025 - 2026</span>
+            <p>Issued by Texas State University in recognition of outstanding academic credentials. The scholarship provides $48,000 over four years.</p>
+            <span>Jan 2024</span>
           </article>
 
           <article class="card section-carousel-card award-slide">
@@ -364,11 +370,20 @@
             <p>Won the Texas State University Calculus Bee through fast and accurate problem solving.</p>
             <span>2024</span>
           </article>
+
+          <article class="card section-carousel-card award-slide">
+            <figure class="section-carousel-media">
+              <img src="assets/images/awards/boss.png" alt="BOSS honorable scholarships recognition" loading="lazy" />
+            </figure>
+            <h3>Multiple BOSS Honorable Scholarships</h3>
+            <p>Received multiple BOSS-related scholarships, including Lulen Anderson, Honors College, and Student Government support.</p>
+            <span>2025 - 2026</span>
+          </article>
         </div>
 
         <div class="section-carousel-controls" aria-label="Awards carousel controls">
           <button class="gallery-nav" id="awards-prev" aria-label="Previous award">&#10094;</button>
-          <p class="section-carousel-meta"><span id="awards-index">1</span> / <span id="awards-total">6</span></p>
+          <p class="section-carousel-meta"><span id="awards-index">1</span> / <span id="awards-total">8</span></p>
           <button class="gallery-nav" id="awards-next" aria-label="Next award">&#10095;</button>
         </div>
       </div>

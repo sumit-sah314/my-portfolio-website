@@ -301,17 +301,23 @@ function typeWriter(el, text, speed, done) {
 const nameEl = document.getElementById("typewriter-name");
 const lineEl = document.getElementById("typewriter-line");
 
-if (nameEl && lineEl) {
-  const nameText = "Sumit Sah.";
-  const lineText = "MLE Intern @ Microsoft | Applied Math & CS @ TXST | MANIM Creator";
+if (lineEl) {
+  const nameText = "Sum.";
+  const lineText = "I go by Sum (like summation in math) | Math lover | Aspiring MLE (MLE Intern at Microsoft)";
 
   if (prefersReducedMotion()) {
-    nameEl.textContent = nameText;
     lineEl.textContent = lineText;
+    if (nameEl) {
+      nameEl.textContent = nameText;
+    }
   } else {
-    typeWriter(nameEl, nameText, 80, () => {
+    if (nameEl) {
+      typeWriter(nameEl, nameText, 80, () => {
+        typeWriter(lineEl, lineText, 35);
+      });
+    } else {
       typeWriter(lineEl, lineText, 35);
-    });
+    }
   }
 }
 
