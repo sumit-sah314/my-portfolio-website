@@ -568,11 +568,90 @@ function initSectionCarousel({
   startAuto();
 }
 
+function initFeaturedMicrosoftCarousel() {
+  const carousel = document.getElementById("featured-msft-carousel");
+  const dotsHost = document.getElementById("featured-msft-dots");
+  if (!carousel || !dotsHost) return;
+
+  const slides = Array.from(carousel.querySelectorAll(".featured-media-slide"));
+  if (slides.length < 2) {
+    dotsHost.setAttribute("hidden", "");
+    return;
+  }
+
+  let index = 0;
+  let timerId = null;
+
+  function norm(i) {
+    return (i + slides.length) % slides.length;
+  }
+
+  function render(i) {
+    index = norm(i);
+    slides.forEach((slide, idx) => {
+      const active = idx === index;
+      slide.classList.toggle("is-active", active);
+      slide.toggleAttribute("hidden", !active);
+    });
+
+    dotsHost.querySelectorAll(".featured-media-dot").forEach((dot, idx) => {
+      const active = idx === index;
+      dot.classList.toggle("is-active", active);
+      dot.setAttribute("aria-selected", active ? "true" : "false");
+    });
+  }
+
+  function stopAuto() {
+    if (timerId !== null) {
+      clearInterval(timerId);
+      timerId = null;
+    }
+  }
+
+  function startAuto() {
+    stopAuto();
+    if (prefersReducedMotion() || document.hidden) return;
+    timerId = window.setInterval(() => render(index + 1), 5000);
+  }
+
+  function restartAuto() {
+    stopAuto();
+    startAuto();
+  }
+
+  dotsHost.innerHTML = "";
+  dotsHost.setAttribute("role", "tablist");
+  slides.forEach((_, i) => {
+    const dot = document.createElement("button");
+    dot.type = "button";
+    dot.className = "featured-media-dot";
+    dot.setAttribute("role", "tab");
+    dot.setAttribute("aria-label", `Show Microsoft photo ${i + 1} of ${slides.length}`);
+    dot.addEventListener("click", () => {
+      render(i);
+      restartAuto();
+    });
+    dotsHost.appendChild(dot);
+  });
+
+  carousel.addEventListener("mouseenter", stopAuto);
+  carousel.addEventListener("mouseleave", startAuto);
+
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) stopAuto();
+    else startAuto();
+  });
+
+  render(0);
+  startAuto();
+}
+
 initTheme();
 initMobileNav();
 initScrollReveal();
 initHeroCarousel();
 initMathCsMlWidget();
+initFeaturedMicrosoftCarousel();
 
 initSectionCarousel({
   containerId: "projects-carousel",
