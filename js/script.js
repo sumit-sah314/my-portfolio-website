@@ -255,6 +255,7 @@ function initHeroCarousel() {
   startAutoplay();
 }
 
+
 // Scroll spy — navbar + sidebar rail dots
 const sections = Array.from(document.querySelectorAll("section[id]"));
 const navLinks = document.querySelectorAll(".nav-links a");
@@ -481,11 +482,117 @@ if (
   galleryNextBtn.addEventListener("click", () => updateGalleryImage(galleryCurrent + 1));
 }
 
+function initSectionCarousel({
+  containerId,
+  slideSelector,
+  prevBtnId,
+  nextBtnId,
+  indexId,
+  totalId,
+  autoMs = 5200,
+}) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+
+  const slides = Array.from(container.querySelectorAll(slideSelector));
+  const prevBtn = document.getElementById(prevBtnId);
+  const nextBtn = document.getElementById(nextBtnId);
+  const indexEl = document.getElementById(indexId);
+  const totalEl = document.getElementById(totalId);
+
+  if (!slides.length || !prevBtn || !nextBtn || !indexEl || !totalEl) return;
+
+  let current = 0;
+  let timerId = null;
+
+  function norm(i) {
+    return (i + slides.length) % slides.length;
+  }
+
+  function render(i) {
+    current = norm(i);
+    slides.forEach((slide, idx) => {
+      const active = idx === current;
+      slide.classList.toggle("is-active", active);
+      slide.toggleAttribute("hidden", !active);
+    });
+    indexEl.textContent = String(current + 1);
+  }
+
+  function stopAuto() {
+    if (timerId !== null) {
+      clearInterval(timerId);
+      timerId = null;
+    }
+  }
+
+  function startAuto() {
+    stopAuto();
+    if (prefersReducedMotion() || slides.length < 2) return;
+    if (document.hidden) return;
+    timerId = window.setInterval(() => render(current + 1), autoMs);
+  }
+
+  function restartAuto() {
+    stopAuto();
+    startAuto();
+  }
+
+  totalEl.textContent = String(slides.length);
+  render(0);
+
+  if (slides.length < 2) {
+    prevBtn.disabled = true;
+    nextBtn.disabled = true;
+    return;
+  }
+
+  prevBtn.addEventListener("click", () => {
+    render(current - 1);
+    restartAuto();
+  });
+
+  nextBtn.addEventListener("click", () => {
+    render(current + 1);
+    restartAuto();
+  });
+
+  container.addEventListener("mouseenter", stopAuto);
+  container.addEventListener("mouseleave", startAuto);
+
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) stopAuto();
+    else startAuto();
+  });
+
+  startAuto();
+}
+
 initTheme();
 initMobileNav();
 initScrollReveal();
 initHeroCarousel();
 initMathCsMlWidget();
+
+initSectionCarousel({
+  containerId: "projects-carousel",
+  slideSelector: ".project-slide",
+  prevBtnId: "projects-prev",
+  nextBtnId: "projects-next",
+  indexId: "projects-index",
+  totalId: "projects-total",
+  autoMs: 5600,
+});
+
+initSectionCarousel({
+  containerId: "awards-carousel",
+  slideSelector: ".award-slide",
+  prevBtnId: "awards-prev",
+  nextBtnId: "awards-next",
+  indexId: "awards-index",
+  totalId: "awards-total",
+  autoMs: 6000,
+});
 
 if (sections[0]?.id) {
   syncSectionHighlight(sections[0].id);
