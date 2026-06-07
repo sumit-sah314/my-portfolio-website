@@ -1142,6 +1142,10 @@ header {
   object-position: 80% 24%;
 }
 
+.award-nominations-image {
+  object-position: center 68%;
+}
+
 .section-carousel-card h3 {
   margin-bottom: 10px;
 }
