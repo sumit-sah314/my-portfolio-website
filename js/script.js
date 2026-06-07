@@ -97,39 +97,62 @@ function prefersReducedMotion() {
 }
 
 /**
- * Best photos first — hero auto-rotates in this order; gallery uses the same set.
- * Add files under assets/images/ and point `src` here (update alt + caption).
+ * Home profile carousel — use only assets/images/profile photos here.
  */
 const PORTFOLIO_PHOTOS = [
   {
-    src: "assets/images/profile.png",
-    alt: "Sumit Sah with an academic award.",
-    caption: "Featured portrait — lead with your strongest shot.",
+    src: "assets/images/profile/profile.png",
+    alt: "Sumit Sah portrait.",
+    caption: "Profile portrait.",
   },
   {
-    src: "assets/images/profile.png",
-    alt: "Sumit Sah — campus or event photo.",
-    caption: "Replace this entry with a second image path (e.g. assets/images/photo-02.jpg).",
+    src: "assets/images/profile/microsoft_night.jpg",
+    alt: "Sumit Sah at Microsoft campus at night.",
+    caption: "Microsoft night profile photo.",
+  },
+];
+
+// Gallery photos are managed separately from profile carousel photos.
+const GALLERY_PHOTOS = [
+  {
+    src: "assets/images/gallery/jrmf.jpeg",
+    alt: "JRFM photo highlight.",
+    caption: "JRFM moment.",
   },
   {
-    src: "assets/images/profile.png",
-    alt: "Sumit Sah — research or presentation.",
-    caption: "Third highlight — conference, lab, or team moment.",
+    src: "assets/images/gallery/njtemple.jpg",
+    alt: "NJ Temple visit photo.",
+    caption: "NJ Temple visit.",
   },
   {
-    src: "assets/images/profile.png",
-    alt: "Sumit Sah — project or visualization snapshot.",
-    caption: "Fourth — data / ML / creative work frame.",
+    src: "assets/images/gallery/bigbend.jpg",
+    alt: "Big Bend trip photo.",
+    caption: "Big Bend adventure.",
   },
   {
-    src: "assets/images/profile.png",
-    alt: "Sumit Sah — casual or travel moment.",
-    caption: "Fifth — personality shot.",
+    src: "assets/images/gallery/bayloruniv.jpeg",
+    alt: "Baylor University campus photo.",
+    caption: "Baylor University visit.",
   },
   {
-    src: "assets/images/profile.png",
-    alt: "Sumit Sah — another favorite.",
-    caption: "Sixth — swap paths so each line uses a different file.",
+    src: "assets/images/gallery/microsoft.jpg",
+    alt: "Microsoft campus highlight.",
+    caption: "Microsoft campus highlight.",
+  },
+  {
+    src: "assets/images/gallery/pi_day.jpg",
+    alt: "Pi Day event photo.",
+    caption: "Pi Day celebration.",
+  },
+  {
+    src: "assets/images/gallery/dataspace.jpeg",
+    alt: "DataSpace event photo.",
+    caption: "DataSpace event.",
+  },
+  {
+    src: "assets/images/gallery/mathclubdinner.jpeg",
+    alt: "Math Club dinner photo.",
+    caption: "Math Club dinner.",
   },
 ];
 
@@ -441,7 +464,7 @@ if (nameEl && lineEl) {
   }
 }
 
-// Gallery slider (same images as hero — see PORTFOLIO_PHOTOS)
+// Gallery slider (custom list — see GALLERY_PHOTOS)
 const galleryImageEl = document.getElementById("gallery-image");
 const galleryPrevBtn = document.getElementById("gallery-prev");
 const galleryNextBtn = document.getElementById("gallery-next");
@@ -458,18 +481,18 @@ if (
   galleryCaptionEl
 ) {
   let galleryCurrent = 0;
-  galleryTotalEl.textContent = String(PORTFOLIO_PHOTOS.length);
-  galleryCaptionEl.textContent = PORTFOLIO_PHOTOS[galleryCurrent].caption;
-  galleryImageEl.src = PORTFOLIO_PHOTOS[galleryCurrent].src;
-  galleryImageEl.alt = PORTFOLIO_PHOTOS[galleryCurrent].alt || "Gallery photo";
+  galleryTotalEl.textContent = String(GALLERY_PHOTOS.length);
+  galleryCaptionEl.textContent = GALLERY_PHOTOS[galleryCurrent].caption;
+  galleryImageEl.src = GALLERY_PHOTOS[galleryCurrent].src;
+  galleryImageEl.alt = GALLERY_PHOTOS[galleryCurrent].alt || "Gallery photo";
 
   const flickerMs = prefersReducedMotion() ? 0 : 140;
 
   function updateGalleryImage(newIndex) {
     galleryImageEl.classList.add("is-changing");
     setTimeout(() => {
-      galleryCurrent = (newIndex + PORTFOLIO_PHOTOS.length) % PORTFOLIO_PHOTOS.length;
-      const item = PORTFOLIO_PHOTOS[galleryCurrent];
+      galleryCurrent = (newIndex + GALLERY_PHOTOS.length) % GALLERY_PHOTOS.length;
+      const item = GALLERY_PHOTOS[galleryCurrent];
       galleryImageEl.src = item.src;
       galleryImageEl.alt = item.alt || `Gallery image ${galleryCurrent + 1}`;
       galleryIndexEl.textContent = String(galleryCurrent + 1);
