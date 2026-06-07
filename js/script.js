@@ -128,6 +128,12 @@ const GALLERY_PHOTOS = [
     objectPosition: "center 65%",
   },
   {
+    src: "assets/images/gallery/brooklyn.jpg",
+    alt: "Brooklyn Bridge visit photo.",
+    caption: "Brooklyn - one of the best moments of my life: visiting the Brooklyn Bridge, enjoying spectacular views, and watching a sunset I could not take my eyes off.",
+    location: "Brooklyn Bridge, New York",
+  },
+  {
     src: "assets/images/gallery/bigbend.jpg",
     alt: "Big Bend trip photo.",
     caption: "Big Bend adventure - one of my favorite hobbies, exploring trails, hills, and mountains.",
@@ -162,6 +168,12 @@ const GALLERY_PHOTOS = [
     alt: "University of Washington campus photo.",
     caption: "University of Washington - such a beautiful campus to visit in my life.",
     location: "University of Washington",
+  },
+  {
+    src: "assets/images/gallery/golf.jpg",
+    alt: "Golf outing photo.",
+    caption: "Golf - I am not usually a big fan of outdoor games, but I gave golf a shot and it was worth playing.",
+    location: "Golf Course",
   },
 ];
 
