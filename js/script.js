@@ -117,42 +117,51 @@ const GALLERY_PHOTOS = [
   {
     src: "assets/images/gallery/jrmf.jpeg",
     alt: "JRFM photo highlight.",
-    caption: "JRFM moment.",
+    caption: "JRMF volunteering - playing with kids at a fun event at San Marcos Public Library.",
+    location: "San Marcos Public Library",
   },
   {
     src: "assets/images/gallery/njtemple.jpg",
     alt: "NJ Temple visit photo.",
-    caption: "NJ Temple visit.",
+    caption: "An unusual hobby of mine is visiting temples - a peaceful way to worship, strengthen faith, and keep my mind calm.",
+    location: "New Jersey Temple",
+    objectPosition: "center 65%",
   },
   {
     src: "assets/images/gallery/bigbend.jpg",
     alt: "Big Bend trip photo.",
-    caption: "Big Bend adventure.",
+    caption: "Big Bend adventure - one of my favorite hobbies, exploring trails, hills, and mountains.",
+    location: "Big Bend National Park",
   },
   {
     src: "assets/images/gallery/bayloruniv.jpeg",
     alt: "Baylor University campus photo.",
-    caption: "Baylor University visit.",
-  },
-  {
-    src: "assets/images/gallery/microsoft.jpg",
-    alt: "Microsoft campus highlight.",
-    caption: "Microsoft campus highlight.",
+    caption: "Baylor University visit - a memorable MAA conference experience with TXST professors and teammates.",
+    location: "Baylor University",
   },
   {
     src: "assets/images/gallery/pi_day.jpg",
     alt: "Pi Day event photo.",
-    caption: "Pi Day celebration.",
+    caption: "Pi Day celebration - selling pies, pieing professors, and one of the most memorable and fun Texas State Math Department events as president.",
+    location: "Texas State University",
   },
   {
     src: "assets/images/gallery/dataspace.jpeg",
     alt: "DataSpace event photo.",
-    caption: "DataSpace event.",
+    caption: "DataSpace and University Libraries event - a successful team effort with participants, and a fun experience organizing such a big campuswide event.",
+    location: "Texas State University Libraries",
   },
   {
     src: "assets/images/gallery/mathclubdinner.jpeg",
     alt: "Math Club dinner photo.",
-    caption: "Math Club dinner.",
+    caption: "Math Club dinner - sharing Nepali cuisine with our American advisors and officers, and enjoying a fun dinner together.",
+    location: "Texas State Math Department",
+  },
+  {
+    src: "assets/images/gallery/uni.jpg",
+    alt: "University of Washington campus photo.",
+    caption: "University of Washington - such a beautiful campus to visit in my life.",
+    location: "University of Washington",
   },
 ];
 
@@ -471,6 +480,7 @@ const galleryNextBtn = document.getElementById("gallery-next");
 const galleryIndexEl = document.getElementById("gallery-index");
 const galleryTotalEl = document.getElementById("gallery-total");
 const galleryCaptionEl = document.getElementById("gallery-caption");
+const galleryLocationEl = document.getElementById("gallery-location");
 
 if (
   galleryImageEl &&
@@ -478,13 +488,16 @@ if (
   galleryNextBtn &&
   galleryIndexEl &&
   galleryTotalEl &&
-  galleryCaptionEl
+  galleryCaptionEl &&
+  galleryLocationEl
 ) {
   let galleryCurrent = 0;
   galleryTotalEl.textContent = String(GALLERY_PHOTOS.length);
   galleryCaptionEl.textContent = GALLERY_PHOTOS[galleryCurrent].caption;
+  galleryLocationEl.textContent = GALLERY_PHOTOS[galleryCurrent].location || "";
   galleryImageEl.src = GALLERY_PHOTOS[galleryCurrent].src;
   galleryImageEl.alt = GALLERY_PHOTOS[galleryCurrent].alt || "Gallery photo";
+  galleryImageEl.style.objectPosition = GALLERY_PHOTOS[galleryCurrent].objectPosition || "center";
 
   const flickerMs = prefersReducedMotion() ? 0 : 140;
 
@@ -497,6 +510,8 @@ if (
       galleryImageEl.alt = item.alt || `Gallery image ${galleryCurrent + 1}`;
       galleryIndexEl.textContent = String(galleryCurrent + 1);
       galleryCaptionEl.textContent = item.caption;
+      galleryLocationEl.textContent = item.location || "";
+      galleryImageEl.style.objectPosition = item.objectPosition || "center";
       galleryImageEl.classList.remove("is-changing");
     }, flickerMs);
   }

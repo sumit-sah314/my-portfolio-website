@@ -1465,6 +1465,7 @@ header {
 
 .gallery-frame {
   margin: 0;
+  position: relative;
   border-radius: 18px;
   overflow: hidden;
   border: 1px solid var(--surface-border);
@@ -1484,6 +1485,24 @@ header {
 
 #gallery-image.is-changing {
   opacity: 0.35;
+}
+
+.gallery-location {
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  margin: 0;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(8, 10, 16, 0.58);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 1;
 }
 
 .gallery-nav {
@@ -1514,9 +1533,18 @@ header {
 
 .gallery-caption {
   margin-top: 14px;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 760px;
   text-align: center;
   color: var(--text-muted);
   font-size: clamp(14px, 2.2vw, 16px);
+}
+
+.gallery-meta {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 760px;
 }
 
 footer {
