@@ -1139,7 +1139,7 @@ header {
 }
 
 .award-outstanding-image {
-  object-position: center 40%;
+  object-position: 80% 24%;
 }
 
 .section-carousel-card h3 {
@@ -1217,6 +1217,19 @@ header {
   opacity: 1;
 }
 
+.featured-media img.featured-msft-slide {
+  object-position: center top;
+  transform: scale(1.2);
+}
+
+.featured-story:hover .featured-media img.featured-msft-slide {
+  transform: scale(1.26);
+}
+
+.featured-media img.featured-msft-bridge-slide {
+  object-position: center;
+}
+
 .featured-media-dots {
   position: absolute;
   left: 50%;
@@ -1274,7 +1287,7 @@ header {
 }
 
 .featured-award-image {
-  object-position: center 48%;
+  object-position: 18% center;
 }
 
 .featured-media figcaption {
@@ -1311,6 +1324,10 @@ header {
 
 .featured-brand-video {
   transform: scale(3);
+}
+
+.featured-intuimation-video {
+  object-position: 56% center;
 }
 
 .featured-story-brand:hover .featured-brand-video {

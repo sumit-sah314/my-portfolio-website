@@ -155,9 +155,9 @@
         <article class="featured-story featured-story-wide">
           <figure class="featured-media">
             <div class="featured-media-carousel" id="featured-msft-carousel" role="region" aria-roledescription="carousel" aria-label="Microsoft internship highlights">
-              <img class="featured-media-slide is-active" src="assets/images/projects/microsoft.jpg" alt="Microsoft internship update highlight" loading="lazy" />
-              <img class="featured-media-slide" src="assets/images/gallery/microsoft.jpg" alt="Microsoft campus moment during internship" loading="lazy" hidden />
-              <img class="featured-media-slide" src="assets/images/projects/microsoft.jpg" alt="Microsoft internship highlight portrait" loading="lazy" hidden />
+              <img class="featured-media-slide featured-msft-slide is-active" src="assets/images/gallery/msft.jpg" alt="Microsoft campus moment during internship" loading="lazy" />
+              <img class="featured-media-slide featured-msft-bridge-slide" src="assets/images/gallery/msft_bridge.jpg" alt="Microsoft bridge view during internship" loading="lazy" hidden />
+              <img class="featured-media-slide" src="assets/images/projects/microsoft.jpg" alt="Microsoft internship update highlight" loading="lazy" hidden />
               <div class="featured-media-dots" id="featured-msft-dots" aria-label="Select Microsoft highlight"></div>
             </div>
             <figcaption>Internship highlight • Redmond, WA</figcaption>
@@ -167,7 +167,9 @@
             <h3>Machine Learning Engineering Internship</h3>
             <p>
               Working as an MLE Intern at Microsoft, contributing to ODSP systems and
-              improving retrieval quality for Copilot grounding workflows.
+              improving Copilot response accuracy with RAG pipelines. Exploring different
+              LLMs to generate better retrieval queries and running recall-focused testing
+              to optimize grounding quality.
             </p>
             <span class="featured-meta">Microsoft • Summer 2026</span>
           </div>
@@ -183,7 +185,8 @@
             <h3>Outstanding Undergraduate Student Award</h3>
             <p>
               Recognized by the Texas State Mathematics Department for academic excellence,
-              leadership, and campus impact through research, datathon, and math club work.
+              leadership, and service through research, datathon work, contributions to the
+              department, serving as President of the Math Club, and delivering departmental talks.
             </p>
             <span class="featured-meta">Texas State University • 2026</span>
           </div>
@@ -191,7 +194,7 @@
 
         <article class="featured-story featured-story-brand">
           <figure class="featured-media featured-media-brand">
-            <video class="featured-brand-video" autoplay muted loop playsinline preload="metadata" aria-label="Intuimation YouTube feature video">
+            <video class="featured-brand-video featured-intuimation-video" autoplay muted loop playsinline preload="metadata" aria-label="Intuimation YouTube feature video">
               <source src="assets/images/projects/intuimation.mp4" type="video/mp4" />
             </video>
             <figcaption>Visual learning with Manim</figcaption>
@@ -242,6 +245,16 @@
           Focused on mathematical foundations and implementation of machine learning methods.
           Developed and tested optimization algorithms (Gradient Descent, SGD), built PyTorch models (fully connected, CNNs, ResNets),
           and designed experiments across architectures and parameter counts.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>Academic Mentor & STEM Tutor</h3>
+        <p>TRIO Programs (Part-time)</p>
+        <span>Aug 2024 - Aug 2025</span>
+        <p>
+          Provided individualized tutoring in Calculus, Physics, and Computer Science for first-generation and low-income college scholars.
+          Served as a Summer Counselor, mentoring high school students from underserved backgrounds to strengthen college readiness and STEM interest.
         </p>
       </div>
     </section>
@@ -334,10 +347,10 @@
         <div class="section-carousel-slider">
           <article class="card section-carousel-card award-slide">
             <figure class="section-carousel-media">
-              <img class="award-outstanding-image" src="assets/images/awards/award.jpg" alt="Outstanding Undergraduate Student Award photo" loading="lazy" />
+              <img class="award-outstanding-image" src="assets/images/awards/outstanding.png" alt="Outstanding Undergraduate Student Award photo" loading="lazy" />
             </figure>
             <h3>Outstanding Undergraduate Student Award</h3>
-            <p>Recognized by the TXST Mathematics Department for academic achievement, leadership, and contribution.</p>
+            <p>Recognized by the TXST Mathematics Department for academic achievement, contributions to the department, serving as President of the Math Club, and delivering departmental talks.</p>
             <span>2026</span>
           </article>
 
@@ -346,19 +359,19 @@
               <img src="assets/images/awards/math_bowl.jpeg" alt="MAA Math Bowl second runner-up team award" loading="lazy" />
             </figure>
             <h3>MAA Math Bowl 2nd Runner-Up (Team TXST)</h3>
-            <p>Placed as second runner-up at the MAA Math Bowl, representing Texas State with strong team-based competitive problem solving.</p>
+            <p>MAA Math Bowl (Second Runner-Up): Represented Texas State University at the 105th Annual Mathematical Association of America Regional Conference at Baylor University and competed against 25 teams.</p>
             <span>2026</span>
           </article>
 
           <article class="card section-carousel-card award-slide">
             <figure class="section-carousel-media">
-              <img src="assets/images/awards/award.jpg" alt="Dean's List recognition visual" loading="lazy" />
+              <img src="assets/images/awards/deanslist.png" alt="Dean's List recognition visual" loading="lazy" />
             </figure>
             <h3>Dean's / President's List</h3>
             <p>Recognized for outstanding academic performance at Texas State University by being named to the Dean's List.
-              Achieved a perfect 4.0/4.0 GPA in Fall 2024, placing among the top students for academic excellence.
+              Achieved a perfect 4.0/4.0 GPA multiple semesters, placing among the top students for academic excellence.
             </p>
-            <span>Fall 2024</span>
+            <span>Multiple Semesters</span>
           </article>
 
           <article class="card section-carousel-card award-slide">
@@ -381,7 +394,7 @@
 
           <article class="card section-carousel-card award-slide">
             <figure class="section-carousel-media">
-              <img src="assets/images/awards/math_bowl.jpeg" alt="Calculus Bee Champion at Texas State University" loading="lazy" />
+              <img src="assets/images/awards/calcbee.jpeg" alt="Calculus Bee Champion at Texas State University" loading="lazy" />
             </figure>
             <h3>Calculus Bee Champion (TXST)</h3>
             <p>Won the Texas State University Calculus Bee through fast and accurate problem solving.</p>
@@ -392,8 +405,8 @@
             <figure class="section-carousel-media">
               <img src="assets/images/awards/boss.png" alt="BOSS honorable scholarships recognition" loading="lazy" />
             </figure>
-            <h3>Multiple BOSS Honorable Scholarships</h3>
-            <p>Received multiple BOSS-related scholarships, including Lulen Anderson, Honors College, and Student Government support.</p>
+            <h3>Named BOSS Scholar</h3>
+            <p>Recipient of multiple scholarships, including the Lullene and Anderson Family Association Scholarship, Merry Kontz Honors College Scholarship, Student Government Scholarship, and Department of Mathematics Scholarship.</p>
             <span>2025 - 2026</span>
           </article>
         </div>
