@@ -113,7 +113,7 @@ const PORTFOLIO_PHOTOS = [
 ];
 
 // Gallery photos are managed separately from profile carousel photos.
-const GALLERY_PHOTOS = [
+const DEFAULT_GALLERY_PHOTOS = [
   {
     src: "assets/images/gallery/jrmf.jpeg",
     alt: "JRFM photo highlight.",
@@ -176,6 +176,113 @@ const GALLERY_PHOTOS = [
     location: "Golf Course",
   },
 ];
+
+const GALLERY_STORAGE_KEY = "portfolio-gallery-photos";
+const GALLERY_PIN_HASH_KEY = "portfolio-gallery-pin-hash";
+const GALLERY_ADMIN_SESSION_KEY = "portfolio-gallery-admin";
+const DEFAULT_GALLERY_PIN = "4170";
+const GALLERY_MAX_SOURCE_BYTES = 20_000_000;
+const GALLERY_IMAGE_MAX_DIMENSION = 1800;
+const GALLERY_TARGET_DATA_URL_LENGTH = 1_250_000;
+
+/** @param {any} item */
+function normalizeGalleryPhoto(item) {
+  return {
+    src: String(item?.src || ""),
+    alt: String(item?.alt || "Gallery photo"),
+    caption: String(item?.caption || "Untitled photo"),
+    description: String(item?.description || ""),
+    location: String(item?.location || ""),
+    objectPosition: String(item?.objectPosition || "center"),
+  };
+}
+
+function defaultGalleryPhotos() {
+  return DEFAULT_GALLERY_PHOTOS.map((item) => normalizeGalleryPhoto(item));
+}
+
+function loadGalleryPhotos() {
+  try {
+    const raw = localStorage.getItem(GALLERY_STORAGE_KEY);
+    if (!raw) return defaultGalleryPhotos();
+    const parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed) || parsed.length === 0) return defaultGalleryPhotos();
+    return parsed.map((item) => normalizeGalleryPhoto(item)).filter((item) => item.src);
+  } catch (error) {
+    return defaultGalleryPhotos();
+  }
+}
+
+/** @param {ReturnType<typeof defaultGalleryPhotos>} photos */
+function saveGalleryPhotos(photos) {
+  localStorage.setItem(GALLERY_STORAGE_KEY, JSON.stringify(photos));
+}
+
+/** @param {string} value */
+function hashPin(value) {
+  let hash = 5381;
+  for (const char of value) {
+    hash = (hash * 33) ^ char.charCodeAt(0);
+  }
+  return String(hash >>> 0);
+}
+
+function getActiveGalleryPinHash() {
+  return localStorage.getItem(GALLERY_PIN_HASH_KEY) || hashPin(DEFAULT_GALLERY_PIN);
+}
+
+/** @param {File} file */
+function readFileAsDataUrl(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(String(reader.result || ""));
+    reader.onerror = () => reject(new Error("Could not read the selected file."));
+    reader.readAsDataURL(file);
+  });
+}
+
+/** @param {string} src */
+function loadImageFromSource(src) {
+  return new Promise((resolve, reject) => {
+    const image = new Image();
+    image.onload = () => resolve(image);
+    image.onerror = () => reject(new Error("Could not decode image."));
+    image.src = src;
+  });
+}
+
+/** @param {File} file */
+async function prepareGalleryUpload(file) {
+  if (file.size > GALLERY_MAX_SOURCE_BYTES) {
+    throw new Error("Please use an image smaller than about 20 MB.");
+  }
+
+  const source = await readFileAsDataUrl(file);
+  const image = /** @type {HTMLImageElement} */ (await loadImageFromSource(source));
+  const scale = Math.min(1, GALLERY_IMAGE_MAX_DIMENSION / Math.max(image.width, image.height));
+  const canvas = document.createElement("canvas");
+  canvas.width = Math.max(1, Math.round(image.width * scale));
+  canvas.height = Math.max(1, Math.round(image.height * scale));
+
+  const ctx = canvas.getContext("2d");
+  if (!ctx) throw new Error("Could not prepare the image canvas.");
+  ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+
+  let quality = 0.88;
+  let result = canvas.toDataURL("image/jpeg", quality);
+  while (result.length > GALLERY_TARGET_DATA_URL_LENGTH && quality > 0.46) {
+    quality -= 0.08;
+    result = canvas.toDataURL("image/jpeg", quality);
+  }
+
+  if (result.length > GALLERY_TARGET_DATA_URL_LENGTH) {
+    throw new Error("Image is still too large after compression. Try cropping it first.");
+  }
+
+  return result;
+}
+
+let galleryPhotos = loadGalleryPhotos();
 
 const HERO_AUTOPLAY_MS = 5200;
 const HERO_FADE_MS = 380;
@@ -485,14 +592,31 @@ if (nameEl && lineEl) {
   }
 }
 
-// Gallery slider (custom list — see GALLERY_PHOTOS)
+// Gallery slider + manager
 const galleryImageEl = document.getElementById("gallery-image");
 const galleryPrevBtn = document.getElementById("gallery-prev");
 const galleryNextBtn = document.getElementById("gallery-next");
 const galleryIndexEl = document.getElementById("gallery-index");
 const galleryTotalEl = document.getElementById("gallery-total");
 const galleryCaptionEl = document.getElementById("gallery-caption");
+const galleryDescriptionEl = document.getElementById("gallery-description");
 const galleryLocationEl = document.getElementById("gallery-location");
+const galleryAdminAuth = document.getElementById("gallery-admin-auth");
+const galleryPinInput = document.getElementById("gallery-pin");
+const galleryPinLabel = document.getElementById("gallery-pin-label");
+const galleryAuthBtn = document.getElementById("gallery-auth-btn");
+const galleryEditor = document.getElementById("gallery-editor");
+const galleryStatusEl = document.getElementById("gallery-admin-status");
+const galleryLockBtn = document.getElementById("gallery-lock-btn");
+const galleryUploadInput = document.getElementById("gallery-upload");
+const galleryCaptionInput = document.getElementById("gallery-caption-input");
+const galleryDescriptionInput = document.getElementById("gallery-description-input");
+const galleryLocationInput = document.getElementById("gallery-location-input");
+const galleryAltInput = document.getElementById("gallery-alt-input");
+const galleryPositionInput = document.getElementById("gallery-position-input");
+const galleryAddBtn = document.getElementById("gallery-add-btn");
+const galleryDeleteBtn = document.getElementById("gallery-delete-btn");
+const galleryResetBtn = document.getElementById("gallery-reset-btn");
 
 if (
   galleryImageEl &&
@@ -501,35 +625,211 @@ if (
   galleryIndexEl &&
   galleryTotalEl &&
   galleryCaptionEl &&
+  galleryDescriptionEl &&
   galleryLocationEl
 ) {
   let galleryCurrent = 0;
-  galleryTotalEl.textContent = String(GALLERY_PHOTOS.length);
-  galleryCaptionEl.textContent = GALLERY_PHOTOS[galleryCurrent].caption;
-  galleryLocationEl.textContent = GALLERY_PHOTOS[galleryCurrent].location || "";
-  galleryImageEl.src = GALLERY_PHOTOS[galleryCurrent].src;
-  galleryImageEl.alt = GALLERY_PHOTOS[galleryCurrent].alt || "Gallery photo";
-  galleryImageEl.style.objectPosition = GALLERY_PHOTOS[galleryCurrent].objectPosition || "center";
+  const hasPin = () => true;
+  const isUnlocked = () => sessionStorage.getItem(GALLERY_ADMIN_SESSION_KEY) === "true";
 
   const flickerMs = prefersReducedMotion() ? 0 : 140;
+
+  function setGalleryStatus(message) {
+    if (galleryStatusEl) galleryStatusEl.textContent = message;
+  }
+
+  function syncEditorFields() {
+    if (!galleryEditor || galleryEditor.hidden || !galleryCaptionInput || !galleryDescriptionInput || !galleryLocationInput || !galleryAltInput || !galleryPositionInput) {
+      return;
+    }
+    const item = galleryPhotos[galleryCurrent];
+    if (!item) return;
+    galleryCaptionInput.value = item.caption || "";
+    galleryDescriptionInput.value = item.description || "";
+    galleryLocationInput.value = item.location || "";
+    galleryAltInput.value = item.alt || "";
+    galleryPositionInput.value = item.objectPosition || "center";
+    if (galleryUploadInput) galleryUploadInput.value = "";
+  }
+
+  function updateManagerUi() {
+    if (!galleryEditor || !galleryAuthBtn || !galleryPinInput || !galleryPinLabel || !galleryLockBtn || !galleryAdminAuth) return;
+    const unlocked = isUnlocked();
+    galleryPinLabel.textContent = "Enter your PIN";
+    galleryPinInput.placeholder = "Unlock manager";
+    galleryAuthBtn.textContent = "Unlock";
+    galleryAdminAuth.hidden = unlocked;
+    galleryEditor.hidden = !unlocked;
+    galleryLockBtn.hidden = !unlocked;
+    if (unlocked) syncEditorFields();
+  }
+
+  function renderGallery(newIndex) {
+    if (!galleryPhotos.length) return;
+    galleryCurrent = (newIndex + galleryPhotos.length) % galleryPhotos.length;
+    const item = galleryPhotos[galleryCurrent];
+    galleryImageEl.src = item.src;
+    galleryImageEl.alt = item.alt || `Gallery image ${galleryCurrent + 1}`;
+    galleryImageEl.style.objectPosition = item.objectPosition || "center";
+    galleryCaptionEl.textContent = item.caption;
+    galleryDescriptionEl.textContent = item.description || "";
+    galleryDescriptionEl.hidden = !item.description;
+    galleryLocationEl.textContent = item.location || "";
+    galleryLocationEl.hidden = !item.location;
+    galleryIndexEl.textContent = String(galleryCurrent + 1);
+    galleryTotalEl.textContent = String(galleryPhotos.length);
+    syncEditorFields();
+  }
 
   function updateGalleryImage(newIndex) {
     galleryImageEl.classList.add("is-changing");
     setTimeout(() => {
-      galleryCurrent = (newIndex + GALLERY_PHOTOS.length) % GALLERY_PHOTOS.length;
-      const item = GALLERY_PHOTOS[galleryCurrent];
-      galleryImageEl.src = item.src;
-      galleryImageEl.alt = item.alt || `Gallery image ${galleryCurrent + 1}`;
-      galleryIndexEl.textContent = String(galleryCurrent + 1);
-      galleryCaptionEl.textContent = item.caption;
-      galleryLocationEl.textContent = item.location || "";
-      galleryImageEl.style.objectPosition = item.objectPosition || "center";
+      renderGallery(newIndex);
       galleryImageEl.classList.remove("is-changing");
     }, flickerMs);
   }
 
+  renderGallery(0);
+  updateManagerUi();
+
   galleryPrevBtn.addEventListener("click", () => updateGalleryImage(galleryCurrent - 1));
   galleryNextBtn.addEventListener("click", () => updateGalleryImage(galleryCurrent + 1));
+
+  if (galleryAuthBtn && galleryPinInput) {
+    galleryAuthBtn.addEventListener("click", () => {
+      const pin = galleryPinInput.value.trim();
+      if (pin.length < 4) {
+        setGalleryStatus("Use a PIN with at least 4 characters.");
+        return;
+      }
+
+      if (getActiveGalleryPinHash() === hashPin(pin)) {
+        sessionStorage.setItem(GALLERY_ADMIN_SESSION_KEY, "true");
+        galleryPinInput.value = "";
+        updateManagerUi();
+        setGalleryStatus("Gallery manager unlocked.");
+      } else {
+        setGalleryStatus("Incorrect PIN.");
+      }
+    });
+  }
+
+  if (galleryLockBtn) {
+    galleryLockBtn.addEventListener("click", () => {
+      sessionStorage.removeItem(GALLERY_ADMIN_SESSION_KEY);
+      updateManagerUi();
+      setGalleryStatus("Gallery manager locked.");
+    });
+  }
+
+  if (
+    galleryEditor &&
+    galleryCaptionInput &&
+    galleryDescriptionInput &&
+    galleryLocationInput &&
+    galleryAltInput &&
+    galleryPositionInput
+  ) {
+    galleryEditor.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      if (!isUnlocked()) {
+        setGalleryStatus("Unlock the gallery manager first.");
+        return;
+      }
+
+      const item = { ...galleryPhotos[galleryCurrent] };
+      item.caption = galleryCaptionInput.value.trim() || "Untitled photo";
+      item.description = galleryDescriptionInput.value.trim();
+      item.location = galleryLocationInput.value.trim();
+      item.alt = galleryAltInput.value.trim() || item.caption;
+      item.objectPosition = galleryPositionInput.value.trim() || "center";
+
+      if (galleryUploadInput?.files?.[0]) {
+        const file = galleryUploadInput.files[0];
+        try {
+          item.src = await prepareGalleryUpload(file);
+        } catch (error) {
+          setGalleryStatus(error instanceof Error ? error.message : "Could not process the selected image.");
+          return;
+        }
+      }
+
+      galleryPhotos[galleryCurrent] = normalizeGalleryPhoto(item);
+      saveGalleryPhotos(galleryPhotos);
+      renderGallery(galleryCurrent);
+      setGalleryStatus("Current photo updated.");
+    });
+  }
+
+  if (
+    galleryAddBtn &&
+    galleryUploadInput &&
+    galleryCaptionInput &&
+    galleryDescriptionInput &&
+    galleryLocationInput &&
+    galleryAltInput &&
+    galleryPositionInput
+  ) {
+    galleryAddBtn.addEventListener("click", async () => {
+      if (!isUnlocked()) {
+        setGalleryStatus("Unlock the gallery manager first.");
+        return;
+      }
+
+      const file = galleryUploadInput.files?.[0];
+      if (!file) {
+        setGalleryStatus("Choose an image before adding a new photo.");
+        return;
+      }
+
+      try {
+        const src = await prepareGalleryUpload(file);
+        galleryPhotos.push(normalizeGalleryPhoto({
+          src,
+          caption: galleryCaptionInput.value.trim() || "New photo",
+          description: galleryDescriptionInput.value.trim(),
+          location: galleryLocationInput.value.trim(),
+          alt: galleryAltInput.value.trim() || galleryCaptionInput.value.trim() || "Gallery photo",
+          objectPosition: galleryPositionInput.value.trim() || "center",
+        }));
+        saveGalleryPhotos(galleryPhotos);
+        renderGallery(galleryPhotos.length - 1);
+        setGalleryStatus("New photo added to the gallery.");
+      } catch (error) {
+        setGalleryStatus(error instanceof Error ? error.message : "Could not add the selected image.");
+      }
+    });
+  }
+
+  if (galleryDeleteBtn) {
+    galleryDeleteBtn.addEventListener("click", () => {
+      if (!isUnlocked()) {
+        setGalleryStatus("Unlock the gallery manager first.");
+        return;
+      }
+      if (galleryPhotos.length <= 1) {
+        setGalleryStatus("Keep at least one photo in the gallery.");
+        return;
+      }
+      galleryPhotos.splice(galleryCurrent, 1);
+      saveGalleryPhotos(galleryPhotos);
+      renderGallery(Math.max(0, galleryCurrent - 1));
+      setGalleryStatus("Current photo deleted.");
+    });
+  }
+
+  if (galleryResetBtn) {
+    galleryResetBtn.addEventListener("click", () => {
+      if (!isUnlocked()) {
+        setGalleryStatus("Unlock the gallery manager first.");
+        return;
+      }
+      galleryPhotos = defaultGalleryPhotos();
+      saveGalleryPhotos(galleryPhotos);
+      renderGallery(0);
+      setGalleryStatus("Gallery reset to the default photos.");
+    });
+  }
 }
 
 function initSectionCarousel({
@@ -696,11 +996,156 @@ function initFeaturedMicrosoftCarousel() {
   startAuto();
 }
 
+/**
+ * Animated neural-network background for the hero section.
+ * Drifting nodes link with edges when close — a math x code x ML signature.
+ * Respects reduced motion and pauses when offscreen or the tab is hidden.
+ */
+function initNeuralCanvas() {
+  const canvas = /** @type {HTMLCanvasElement | null} */ (document.getElementById("neural-canvas"));
+  if (!canvas) return;
+
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return;
+
+  const reduceMotion = prefersReducedMotion();
+
+  let width = 0;
+  let height = 0;
+  let dpr = Math.min(window.devicePixelRatio || 1, 2);
+  /** @type {{ x: number; y: number; vx: number; vy: number }[]} */
+  let nodes = [];
+  let rafId = null;
+  let inView = true;
+
+  /** @returns {{ r: number; g: number; b: number }} */
+  function accentRgb() {
+    let hex = getComputedStyle(document.documentElement).getPropertyValue("--accent").trim();
+    hex = hex.replace("#", "");
+    if (hex.length === 3) hex = hex.split("").map((c) => c + c).join("");
+    const int = parseInt(hex, 16);
+    if (hex.length !== 6 || Number.isNaN(int)) return { r: 184, g: 164, b: 111 };
+    return { r: (int >> 16) & 255, g: (int >> 8) & 255, b: int & 255 };
+  }
+
+  function resize() {
+    const rect = canvas.getBoundingClientRect();
+    width = rect.width;
+    height = rect.height;
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    canvas.width = Math.max(1, Math.floor(width * dpr));
+    canvas.height = Math.max(1, Math.floor(height * dpr));
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    const target = Math.round((width * height) / 16000);
+    const count = Math.max(16, Math.min(64, target));
+    nodes = Array.from({ length: count }, () => ({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      vx: (Math.random() - 0.5) * 0.3,
+      vy: (Math.random() - 0.5) * 0.3,
+    }));
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, width, height);
+    const rgb = accentRgb();
+    const linkDist = Math.min(160, Math.max(108, width / 9));
+
+    if (!reduceMotion) {
+      for (const node of nodes) {
+        node.x += node.vx;
+        node.y += node.vy;
+        if (node.x < 0 || node.x > width) node.vx *= -1;
+        if (node.y < 0 || node.y > height) node.vy *= -1;
+      }
+    }
+
+    for (let i = 0; i < nodes.length; i++) {
+      for (let j = i + 1; j < nodes.length; j++) {
+        const a = nodes[i];
+        const b = nodes[j];
+        const dx = a.x - b.x;
+        const dy = a.y - b.y;
+        const dist = Math.hypot(dx, dy);
+        if (dist < linkDist) {
+          const alpha = (1 - dist / linkDist) * 0.5;
+          ctx.strokeStyle = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${alpha.toFixed(3)})`;
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(a.x, a.y);
+          ctx.lineTo(b.x, b.y);
+          ctx.stroke();
+        }
+      }
+    }
+
+    ctx.fillStyle = `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
+    for (const node of nodes) {
+      ctx.globalAlpha = 0.7;
+      ctx.beginPath();
+      ctx.arc(node.x, node.y, 1.8, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+
+    if (!reduceMotion) {
+      rafId = window.requestAnimationFrame(draw);
+    }
+  }
+
+  function start() {
+    if (reduceMotion) {
+      draw();
+      return;
+    }
+    if (rafId !== null || document.hidden || !inView) return;
+    rafId = window.requestAnimationFrame(draw);
+  }
+
+  function stop() {
+    if (rafId !== null) {
+      window.cancelAnimationFrame(rafId);
+      rafId = null;
+    }
+  }
+
+  resize();
+  start();
+
+  let resizeTimer = null;
+  window.addEventListener("resize", () => {
+    if (resizeTimer !== null) window.clearTimeout(resizeTimer);
+    resizeTimer = window.setTimeout(() => {
+      resize();
+      if (reduceMotion) draw();
+    }, 180);
+  });
+
+  if (reduceMotion) return;
+
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) stop();
+    else start();
+  });
+
+  const io = new IntersectionObserver(
+    (entries) => {
+      inView = Boolean(entries[0]?.isIntersecting);
+      if (inView) start();
+      else stop();
+    },
+    { threshold: 0 }
+  );
+  io.observe(canvas);
+}
+
 initTheme();
 initMobileNav();
 initScrollReveal();
 initHeroCarousel();
 initMathCsMlWidget();
+initNeuralCanvas();
 initFeaturedMicrosoftCarousel();
 
 initSectionCarousel({
