@@ -84,6 +84,19 @@
   <main id="main-content">
 
     <section id="home" class="hero">
+      <canvas id="neural-canvas" class="hero-bg-canvas" aria-hidden="true"></canvas>
+      <div class="hero-symbols" aria-hidden="true">
+        <span class="hero-symbol" style="--x: 6%; --y: 18%; --d: 0s;">∑</span>
+        <span class="hero-symbol" style="--x: 14%; --y: 72%; --d: 1.4s;">∂</span>
+        <span class="hero-symbol" style="--x: 32%; --y: 34%; --d: 2.6s;">∫</span>
+        <span class="hero-symbol" style="--x: 47%; --y: 80%; --d: 0.8s;">∇</span>
+        <span class="hero-symbol" style="--x: 63%; --y: 22%; --d: 3.2s;">π</span>
+        <span class="hero-symbol hero-symbol-code" style="--x: 72%; --y: 64%; --d: 1.9s;">{ }</span>
+        <span class="hero-symbol" style="--x: 84%; --y: 38%; --d: 2.2s;">λ</span>
+        <span class="hero-symbol hero-symbol-code" style="--x: 90%; --y: 74%; --d: 0.4s;">&lt;/&gt;</span>
+        <span class="hero-symbol" style="--x: 24%; --y: 12%; --d: 3.6s;">θ</span>
+        <span class="hero-symbol" style="--x: 55%; --y: 50%; --d: 2.0s;">∞</span>
+      </div>
       <div class="hero-content">
         <p class="tagline">Computer Science • Applied Mathematics • Machine Learning</p>
         <h2>Hi, I'm <span id="typewriter-name"></span><span class="tw-cursor">|</span></h2>
@@ -443,7 +456,74 @@
       </div>
 
       <p class="gallery-caption" id="gallery-caption">Profile portrait - replace with your own caption.</p>
+      <p class="gallery-description" id="gallery-description" hidden></p>
       <p class="gallery-meta"><span id="gallery-index">1</span> / <span id="gallery-total">6</span></p>
+
+      <section class="gallery-admin" id="gallery-admin" aria-label="Gallery manager">
+        <div class="gallery-admin-head">
+          <div>
+            <p class="gallery-admin-kicker">Frontend manager</p>
+            <h3>Update photos without editing code</h3>
+          </div>
+          <button type="button" class="btn secondary-btn gallery-admin-lock-btn" id="gallery-lock-btn" hidden>Lock</button>
+        </div>
+
+        <p class="gallery-admin-note">
+          Uploads and edits are saved in this browser only. It is perfect for fast frontend updates now,
+          and you can later replace it with cloud storage or a backend when you want something larger.
+        </p>
+
+        <div class="gallery-admin-auth" id="gallery-admin-auth">
+          <label class="gallery-field">
+            <span class="gallery-field-label" id="gallery-pin-label">Create a PIN</span>
+            <input type="password" id="gallery-pin" inputmode="numeric" autocomplete="off" placeholder="Enter your PIN" />
+          </label>
+          <button type="button" class="btn primary-btn gallery-admin-action-btn" id="gallery-auth-btn">Save PIN</button>
+        </div>
+
+        <p class="gallery-admin-status" id="gallery-admin-status" role="status" aria-live="polite"></p>
+
+        <form class="gallery-editor" id="gallery-editor" hidden>
+          <div class="gallery-editor-grid">
+            <label class="gallery-field gallery-field-wide">
+              <span class="gallery-field-label">Upload a new image</span>
+              <input type="file" id="gallery-upload" accept="image/png,image/jpeg,image/jpg,image/webp,image/gif" />
+            </label>
+
+            <label class="gallery-field">
+              <span class="gallery-field-label">Caption</span>
+              <input type="text" id="gallery-caption-input" maxlength="100" placeholder="Short caption" />
+            </label>
+
+            <label class="gallery-field gallery-field-wide">
+              <span class="gallery-field-label">Description</span>
+              <textarea id="gallery-description-input" rows="4" maxlength="320" placeholder="Story, context, or what happened in the photo"></textarea>
+            </label>
+
+            <label class="gallery-field">
+              <span class="gallery-field-label">Location badge</span>
+              <input type="text" id="gallery-location-input" maxlength="80" placeholder="Location" />
+            </label>
+
+            <label class="gallery-field">
+              <span class="gallery-field-label">Alt text</span>
+              <input type="text" id="gallery-alt-input" maxlength="120" placeholder="Accessible image description" />
+            </label>
+
+            <label class="gallery-field gallery-field-wide">
+              <span class="gallery-field-label">Object position</span>
+              <input type="text" id="gallery-position-input" maxlength="40" placeholder="Example: center 40%" />
+            </label>
+          </div>
+
+          <div class="gallery-editor-actions">
+            <button type="submit" class="btn primary-btn">Save current photo</button>
+            <button type="button" class="btn secondary-btn" id="gallery-add-btn">Add as new photo</button>
+            <button type="button" class="btn secondary-btn" id="gallery-delete-btn">Delete current photo</button>
+            <button type="button" class="btn secondary-btn" id="gallery-reset-btn">Reset gallery</button>
+          </div>
+        </form>
+      </section>
     </section>
 
   </main>
