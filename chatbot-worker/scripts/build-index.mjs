@@ -20,6 +20,10 @@ const WORKER_DIR = resolve(HERE, "..");
 const SITE_DIR = resolve(WORKER_DIR, "..");
 const OUT_FILE = join(WORKER_DIR, "src", "knowledge.json");
 const MAX_CHUNK_CHARS = 1400;
+// Visitors' questions almost always name Sumit, but most chunks don't. Without this prefix the few
+// chunks that mention the name win every search (tested: 5/12 vs 12/12 questions found the right chunk).
+// Only the embedded text gets the prefix; the stored text the bot reads is unchanged.
+const EMBED_PREFIX = "About Sumit Sah. ";
 const EMBED_BATCH_SIZE = 50;
 
 // ---------- HTML to text ----------
@@ -218,7 +222,12 @@ async function main() {
   const out = [];
   for (let i = 0; i < chunks.length; i += EMBED_BATCH_SIZE) {
     const batch = chunks.slice(i, i + EMBED_BATCH_SIZE);
-    const vectors = await embedBatch(apiKey, model, batch, "RETRIEVAL_DOCUMENT");
+    const vectors = await embedBatch(
+      apiKey,
+      model,
+      batch.map((c) => ({ title: c.title, text: EMBED_PREFIX + c.text })),
+      "RETRIEVAL_DOCUMENT",
+    );
     batch.forEach((chunk, j) => {
       // Round to 6 decimals: plenty of precision, much smaller file.
       out.push({ ...chunk, embedding: vectors[j].map((v) => Math.round(v * 1e6) / 1e6) });

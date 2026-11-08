@@ -47,7 +47,7 @@
 
   const header = el("header", "chatbot-header");
   const titleWrap = el("div");
-  titleWrap.append(el("p", "chatbot-title", "Ask about Sumit"), el("p", "chatbot-subtitle", "AI answers from this site · may make mistakes"));
+  titleWrap.append(el("p", "chatbot-title", "Ask about Sumit"), el("p", "chatbot-subtitle", "AI assistant · may make mistakes"));
   const closeBtn = el("button", "chatbot-close");
   closeBtn.type = "button";
   closeBtn.setAttribute("aria-label", "Close chat");

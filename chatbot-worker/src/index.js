@@ -93,7 +93,9 @@ export default {
       const retrieved = topK(queryEmbedding, knowledge.chunks, TOP_K);
       const contents = buildContents(message, history, retrieved);
       const answer = await generate(env.GEMINI_API_KEY, env.GEMINI_CHAT_MODEL || DEFAULT_CHAT_MODEL, SYSTEM_PROMPT, contents);
-      return json({ answer, sources: sourceSections(retrieved) }, 200, cors);
+      // When the bot couldn't answer, listing sources would wrongly suggest it found something.
+      const couldNotAnswer = /\b(don't|do not) know\b|can only help with/i.test(answer);
+      return json({ answer, sources: couldNotAnswer ? [] : sourceSections(retrieved) }, 200, cors);
     } catch (error) {
       console.error(error);
       if (error instanceof GeminiError && error.status === 429) {

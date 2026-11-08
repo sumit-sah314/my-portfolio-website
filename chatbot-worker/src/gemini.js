@@ -2,7 +2,7 @@
 
 const API_BASE = "https://generativelanguage.googleapis.com/v1beta";
 
-export const DEFAULT_CHAT_MODEL = "gemini-2.5-flash";
+export const DEFAULT_CHAT_MODEL = "gemini-3.5-flash-lite";
 export const DEFAULT_EMBED_MODEL = "gemini-embedding-001";
 // Smaller vectors keep knowledge.json small; 768 is one of the sizes Google recommends.
 export const EMBED_DIMENSIONS = 768;
@@ -76,12 +76,9 @@ export async function generate(apiKey, model, systemPrompt, contents) {
   const data = await call(apiKey, model, "generateContent", {
     systemInstruction: { parts: [{ text: systemPrompt }] },
     contents,
-    generationConfig: {
-      temperature: 0.3,
-      maxOutputTokens: 600,
-      // Short factual answers don't need "thinking"; turning it off saves free-tier quota and latency.
-      thinkingConfig: { thinkingBudget: 0 },
-    },
+    // No thinkingConfig: its format differs between model generations (Gemini 3.x rejects the 2.5-style
+    // thinkingBudget), and the flash-lite default doesn't spend tokens on thinking.
+    generationConfig: { temperature: 0.3, maxOutputTokens: 600 },
   });
 
   const parts = data?.candidates?.[0]?.content?.parts || [];

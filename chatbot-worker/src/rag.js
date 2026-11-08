@@ -96,7 +96,12 @@ export function buildContents(message, history, retrieved) {
   return contents;
 }
 
-/** Unique section names of the retrieved chunks, for the "Sources" line in the widget. */
-export function sourceSections(retrieved) {
-  return [...new Set(retrieved.map(({ chunk }) => chunk.section))];
+/**
+ * Section names for the widget's "From:" line: only chunks scoring close to the best match,
+ * so loosely related context the model was also given isn't presented as a source.
+ */
+export function sourceSections(retrieved, margin = 0.02) {
+  if (!retrieved.length) return [];
+  const best = retrieved[0].score;
+  return [...new Set(retrieved.filter((r) => r.score >= best - margin).map(({ chunk }) => chunk.section))];
 }

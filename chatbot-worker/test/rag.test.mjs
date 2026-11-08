@@ -17,7 +17,13 @@ test("topK returns the closest chunks first", () => {
   ];
   const result = topK([1, 0], chunks, 2);
   assert.deepEqual(result.map((r) => r.chunk.id), ["a", "c"]);
-  assert.deepEqual(sourceSections(result), ["S1"]);
+});
+
+test("sourceSections keeps only chunks close to the best score", () => {
+  const r = (section, score) => ({ chunk: { section }, score });
+  assert.deepEqual(sourceSections([r("Microsoft", 0.74), r("Skills", 0.73), r("Contact", 0.65)]), ["Microsoft", "Skills"]);
+  assert.deepEqual(sourceSections([r("Contact", 0.71), r("Skills", 0.63)]), ["Contact"]);
+  assert.deepEqual(sourceSections([]), []);
 });
 
 test("cleanMessage rejects empty, non-string and overlong input", () => {

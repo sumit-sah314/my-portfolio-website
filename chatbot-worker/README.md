@@ -6,7 +6,7 @@ The "Ask about Sumit" chat bubble on the site. Visitors ask questions; the bot a
 Browser (js/chatbot.js)  ──POST /chat──▶  Cloudflare Worker (src/index.js)
                                             1. embed the question        (Gemini embeddings)
                                             2. find the 4 closest chunks (src/knowledge.json)
-                                            3. answer from those chunks  (gemini-2.5-flash)
+                                            3. answer from those chunks  (gemini-3.5-flash-lite)
 ```
 
 The Gemini API key lives only in the Worker as a secret. It is never in the site's code.
@@ -81,7 +81,7 @@ Then commit `src/knowledge.json`.
 
 - **Rate limit**: 10 messages per minute per visitor IP (`[[ratelimits]]` in `wrangler.toml`). This protects your free Gemini quota from one person or a script.
 - **Allowed sites**: browsers on other websites are refused (`ALLOWED_ORIGINS`). Scripts like curl can still call the Worker directly; the rate limit is what protects the quota.
-- **Free-tier quota**: if Gemini's daily free limit is reached, visitors see "hit its free usage limit, try again later" instead of an error.
+- **Free-tier quota**: Gemini's free tier has per-minute and per-day limits per model, shared by all visitors. When one is reached, visitors see "hit its free usage limit, try again later" instead of an error. Check your current limits and usage at https://aistudio.google.com/rate-limit. (`gemini-2.5-flash` allowed only 20 answers/day on this key, which is why the bot uses `gemini-3.5-flash-lite`.) Each answer also uses one embedding request (limit: 100/minute).
 - **Privacy**: the bot can quote anything in `knowledge/*.md`. Only write what you're happy for any visitor to read.
 - **Accuracy**: the bot is told to answer only from the retrieved content and to say it doesn't know otherwise, but it can still make mistakes. The widget says so.
 
