@@ -1,0 +1,20 @@
+name = "portfolio-chatbot"
+main = "src/index.js"
+compatibility_date = "2025-10-01"
+
+[vars]
+# Sites allowed to call the chatbot from a browser (comma-separated, no trailing slash).
+ALLOWED_ORIGINS = "https://sumit-sah314.github.io,http://localhost:8000,http://127.0.0.1:8000"
+GEMINI_CHAT_MODEL = "gemini-2.5-flash"
+GEMINI_EMBED_MODEL = "gemini-embedding-001"
+
+# Per-visitor limit so one person (or script) can't use up the free Gemini quota.
+[[ratelimits]]
+name = "RATE_LIMITER"
+namespace_id = "1001"
+
+  [ratelimits.simple]
+  limit = 10
+  period = 60
+
+# The API key is NOT stored here. Set it once with:  npx wrangler secret put GEMINI_API_KEY
