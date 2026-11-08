@@ -122,6 +122,13 @@ const DEFAULT_GALLERY_PHOTOS = [
     objectPosition: "20% 82%",
   },
   {
+    src: "assets/images/gallery/google.jpeg",
+    alt: "Riding a colorful Google bike past a row of Google bikes at Google headquarters.",
+    caption: "Cycling around Google headquarters in Mountain View on the iconic colorful Google bikes.",
+    location: "Google Headquarters, Mountain View, Silicon Valley",
+    objectPosition: "center 40%",
+  },
+  {
     src: "assets/images/gallery/jrmf.jpeg",
     alt: "JRFM photo highlight.",
     caption: "JRMF volunteering - playing with kids at a fun event at San Marcos Public Library.",
