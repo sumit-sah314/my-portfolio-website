@@ -191,14 +191,6 @@ const DEFAULT_GALLERY_PHOTOS = [
   },
 ];
 
-const GALLERY_STORAGE_KEY = "portfolio-gallery-photos";
-const GALLERY_PIN_HASH_KEY = "portfolio-gallery-pin-hash";
-const GALLERY_ADMIN_SESSION_KEY = "portfolio-gallery-admin";
-const DEFAULT_GALLERY_PIN = "4170";
-const GALLERY_MAX_SOURCE_BYTES = 20_000_000;
-const GALLERY_IMAGE_MAX_DIMENSION = 1800;
-const GALLERY_TARGET_DATA_URL_LENGTH = 1_250_000;
-
 /** @param {any} item */
 function normalizeGalleryPhoto(item) {
   return {
@@ -211,92 +203,15 @@ function normalizeGalleryPhoto(item) {
   };
 }
 
-function defaultGalleryPhotos() {
-  return DEFAULT_GALLERY_PHOTOS.map((item) => normalizeGalleryPhoto(item));
+const galleryPhotos = DEFAULT_GALLERY_PHOTOS.map((item) => normalizeGalleryPhoto(item));
+
+// Clear data left behind by the old in-browser gallery manager.
+try {
+  ["portfolio-gallery-photos", "portfolio-gallery-pin-hash"].forEach((key) => localStorage.removeItem(key));
+  sessionStorage.removeItem("portfolio-gallery-admin");
+} catch (error) {
+  // Storage can be unavailable (private mode, blocked site data); nothing to clean up then.
 }
-
-function loadGalleryPhotos() {
-  try {
-    const raw = localStorage.getItem(GALLERY_STORAGE_KEY);
-    if (!raw) return defaultGalleryPhotos();
-    const parsed = JSON.parse(raw);
-    if (!Array.isArray(parsed) || parsed.length === 0) return defaultGalleryPhotos();
-    return parsed.map((item) => normalizeGalleryPhoto(item)).filter((item) => item.src);
-  } catch (error) {
-    return defaultGalleryPhotos();
-  }
-}
-
-/** @param {ReturnType<typeof defaultGalleryPhotos>} photos */
-function saveGalleryPhotos(photos) {
-  localStorage.setItem(GALLERY_STORAGE_KEY, JSON.stringify(photos));
-}
-
-/** @param {string} value */
-function hashPin(value) {
-  let hash = 5381;
-  for (const char of value) {
-    hash = (hash * 33) ^ char.charCodeAt(0);
-  }
-  return String(hash >>> 0);
-}
-
-function getActiveGalleryPinHash() {
-  return localStorage.getItem(GALLERY_PIN_HASH_KEY) || hashPin(DEFAULT_GALLERY_PIN);
-}
-
-/** @param {File} file */
-function readFileAsDataUrl(file) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => resolve(String(reader.result || ""));
-    reader.onerror = () => reject(new Error("Could not read the selected file."));
-    reader.readAsDataURL(file);
-  });
-}
-
-/** @param {string} src */
-function loadImageFromSource(src) {
-  return new Promise((resolve, reject) => {
-    const image = new Image();
-    image.onload = () => resolve(image);
-    image.onerror = () => reject(new Error("Could not decode image."));
-    image.src = src;
-  });
-}
-
-/** @param {File} file */
-async function prepareGalleryUpload(file) {
-  if (file.size > GALLERY_MAX_SOURCE_BYTES) {
-    throw new Error("Please use an image smaller than about 20 MB.");
-  }
-
-  const source = await readFileAsDataUrl(file);
-  const image = /** @type {HTMLImageElement} */ (await loadImageFromSource(source));
-  const scale = Math.min(1, GALLERY_IMAGE_MAX_DIMENSION / Math.max(image.width, image.height));
-  const canvas = document.createElement("canvas");
-  canvas.width = Math.max(1, Math.round(image.width * scale));
-  canvas.height = Math.max(1, Math.round(image.height * scale));
-
-  const ctx = canvas.getContext("2d");
-  if (!ctx) throw new Error("Could not prepare the image canvas.");
-  ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
-
-  let quality = 0.88;
-  let result = canvas.toDataURL("image/jpeg", quality);
-  while (result.length > GALLERY_TARGET_DATA_URL_LENGTH && quality > 0.46) {
-    quality -= 0.08;
-    result = canvas.toDataURL("image/jpeg", quality);
-  }
-
-  if (result.length > GALLERY_TARGET_DATA_URL_LENGTH) {
-    throw new Error("Image is still too large after compression. Try cropping it first.");
-  }
-
-  return result;
-}
-
-let galleryPhotos = loadGalleryPhotos();
 
 const HERO_AUTOPLAY_MS = 5200;
 const HERO_FADE_MS = 380;
@@ -606,7 +521,7 @@ if (nameEl && lineEl) {
   }
 }
 
-// Gallery slider + manager
+// Gallery slider
 const galleryImageEl = document.getElementById("gallery-image");
 const galleryPrevBtn = document.getElementById("gallery-prev");
 const galleryNextBtn = document.getElementById("gallery-next");
@@ -615,22 +530,6 @@ const galleryTotalEl = document.getElementById("gallery-total");
 const galleryCaptionEl = document.getElementById("gallery-caption");
 const galleryDescriptionEl = document.getElementById("gallery-description");
 const galleryLocationEl = document.getElementById("gallery-location");
-const galleryAdminAuth = document.getElementById("gallery-admin-auth");
-const galleryPinInput = document.getElementById("gallery-pin");
-const galleryPinLabel = document.getElementById("gallery-pin-label");
-const galleryAuthBtn = document.getElementById("gallery-auth-btn");
-const galleryEditor = document.getElementById("gallery-editor");
-const galleryStatusEl = document.getElementById("gallery-admin-status");
-const galleryLockBtn = document.getElementById("gallery-lock-btn");
-const galleryUploadInput = document.getElementById("gallery-upload");
-const galleryCaptionInput = document.getElementById("gallery-caption-input");
-const galleryDescriptionInput = document.getElementById("gallery-description-input");
-const galleryLocationInput = document.getElementById("gallery-location-input");
-const galleryAltInput = document.getElementById("gallery-alt-input");
-const galleryPositionInput = document.getElementById("gallery-position-input");
-const galleryAddBtn = document.getElementById("gallery-add-btn");
-const galleryDeleteBtn = document.getElementById("gallery-delete-btn");
-const galleryResetBtn = document.getElementById("gallery-reset-btn");
 
 if (
   galleryImageEl &&
@@ -643,40 +542,7 @@ if (
   galleryLocationEl
 ) {
   let galleryCurrent = 0;
-  const hasPin = () => true;
-  const isUnlocked = () => sessionStorage.getItem(GALLERY_ADMIN_SESSION_KEY) === "true";
-
   const flickerMs = prefersReducedMotion() ? 0 : 140;
-
-  function setGalleryStatus(message) {
-    if (galleryStatusEl) galleryStatusEl.textContent = message;
-  }
-
-  function syncEditorFields() {
-    if (!galleryEditor || galleryEditor.hidden || !galleryCaptionInput || !galleryDescriptionInput || !galleryLocationInput || !galleryAltInput || !galleryPositionInput) {
-      return;
-    }
-    const item = galleryPhotos[galleryCurrent];
-    if (!item) return;
-    galleryCaptionInput.value = item.caption || "";
-    galleryDescriptionInput.value = item.description || "";
-    galleryLocationInput.value = item.location || "";
-    galleryAltInput.value = item.alt || "";
-    galleryPositionInput.value = item.objectPosition || "center";
-    if (galleryUploadInput) galleryUploadInput.value = "";
-  }
-
-  function updateManagerUi() {
-    if (!galleryEditor || !galleryAuthBtn || !galleryPinInput || !galleryPinLabel || !galleryLockBtn || !galleryAdminAuth) return;
-    const unlocked = isUnlocked();
-    galleryPinLabel.textContent = "Enter your PIN";
-    galleryPinInput.placeholder = "Unlock manager";
-    galleryAuthBtn.textContent = "Unlock";
-    galleryAdminAuth.hidden = unlocked;
-    galleryEditor.hidden = !unlocked;
-    galleryLockBtn.hidden = !unlocked;
-    if (unlocked) syncEditorFields();
-  }
 
   function renderGallery(newIndex) {
     if (!galleryPhotos.length) return;
@@ -692,7 +558,6 @@ if (
     galleryLocationEl.hidden = !item.location;
     galleryIndexEl.textContent = String(galleryCurrent + 1);
     galleryTotalEl.textContent = String(galleryPhotos.length);
-    syncEditorFields();
   }
 
   function updateGalleryImage(newIndex) {
@@ -704,146 +569,9 @@ if (
   }
 
   renderGallery(0);
-  updateManagerUi();
 
   galleryPrevBtn.addEventListener("click", () => updateGalleryImage(galleryCurrent - 1));
   galleryNextBtn.addEventListener("click", () => updateGalleryImage(galleryCurrent + 1));
-
-  if (galleryAuthBtn && galleryPinInput) {
-    galleryAuthBtn.addEventListener("click", () => {
-      const pin = galleryPinInput.value.trim();
-      if (pin.length < 4) {
-        setGalleryStatus("Use a PIN with at least 4 characters.");
-        return;
-      }
-
-      if (getActiveGalleryPinHash() === hashPin(pin)) {
-        sessionStorage.setItem(GALLERY_ADMIN_SESSION_KEY, "true");
-        galleryPinInput.value = "";
-        updateManagerUi();
-        setGalleryStatus("Gallery manager unlocked.");
-      } else {
-        setGalleryStatus("Incorrect PIN.");
-      }
-    });
-  }
-
-  if (galleryLockBtn) {
-    galleryLockBtn.addEventListener("click", () => {
-      sessionStorage.removeItem(GALLERY_ADMIN_SESSION_KEY);
-      updateManagerUi();
-      setGalleryStatus("Gallery manager locked.");
-    });
-  }
-
-  if (
-    galleryEditor &&
-    galleryCaptionInput &&
-    galleryDescriptionInput &&
-    galleryLocationInput &&
-    galleryAltInput &&
-    galleryPositionInput
-  ) {
-    galleryEditor.addEventListener("submit", async (event) => {
-      event.preventDefault();
-      if (!isUnlocked()) {
-        setGalleryStatus("Unlock the gallery manager first.");
-        return;
-      }
-
-      const item = { ...galleryPhotos[galleryCurrent] };
-      item.caption = galleryCaptionInput.value.trim() || "Untitled photo";
-      item.description = galleryDescriptionInput.value.trim();
-      item.location = galleryLocationInput.value.trim();
-      item.alt = galleryAltInput.value.trim() || item.caption;
-      item.objectPosition = galleryPositionInput.value.trim() || "center";
-
-      if (galleryUploadInput?.files?.[0]) {
-        const file = galleryUploadInput.files[0];
-        try {
-          item.src = await prepareGalleryUpload(file);
-        } catch (error) {
-          setGalleryStatus(error instanceof Error ? error.message : "Could not process the selected image.");
-          return;
-        }
-      }
-
-      galleryPhotos[galleryCurrent] = normalizeGalleryPhoto(item);
-      saveGalleryPhotos(galleryPhotos);
-      renderGallery(galleryCurrent);
-      setGalleryStatus("Current photo updated.");
-    });
-  }
-
-  if (
-    galleryAddBtn &&
-    galleryUploadInput &&
-    galleryCaptionInput &&
-    galleryDescriptionInput &&
-    galleryLocationInput &&
-    galleryAltInput &&
-    galleryPositionInput
-  ) {
-    galleryAddBtn.addEventListener("click", async () => {
-      if (!isUnlocked()) {
-        setGalleryStatus("Unlock the gallery manager first.");
-        return;
-      }
-
-      const file = galleryUploadInput.files?.[0];
-      if (!file) {
-        setGalleryStatus("Choose an image before adding a new photo.");
-        return;
-      }
-
-      try {
-        const src = await prepareGalleryUpload(file);
-        galleryPhotos.push(normalizeGalleryPhoto({
-          src,
-          caption: galleryCaptionInput.value.trim() || "New photo",
-          description: galleryDescriptionInput.value.trim(),
-          location: galleryLocationInput.value.trim(),
-          alt: galleryAltInput.value.trim() || galleryCaptionInput.value.trim() || "Gallery photo",
-          objectPosition: galleryPositionInput.value.trim() || "center",
-        }));
-        saveGalleryPhotos(galleryPhotos);
-        renderGallery(galleryPhotos.length - 1);
-        setGalleryStatus("New photo added to the gallery.");
-      } catch (error) {
-        setGalleryStatus(error instanceof Error ? error.message : "Could not add the selected image.");
-      }
-    });
-  }
-
-  if (galleryDeleteBtn) {
-    galleryDeleteBtn.addEventListener("click", () => {
-      if (!isUnlocked()) {
-        setGalleryStatus("Unlock the gallery manager first.");
-        return;
-      }
-      if (galleryPhotos.length <= 1) {
-        setGalleryStatus("Keep at least one photo in the gallery.");
-        return;
-      }
-      galleryPhotos.splice(galleryCurrent, 1);
-      saveGalleryPhotos(galleryPhotos);
-      renderGallery(Math.max(0, galleryCurrent - 1));
-      setGalleryStatus("Current photo deleted.");
-    });
-  }
-
-  if (galleryResetBtn) {
-    galleryResetBtn.addEventListener("click", () => {
-      if (!isUnlocked()) {
-        setGalleryStatus("Unlock the gallery manager first.");
-        return;
-      }
-      galleryPhotos = defaultGalleryPhotos();
-      saveGalleryPhotos(galleryPhotos);
-      renderGallery(0);
-      setGalleryStatus("Gallery reset to the default photos.");
-    });
-  }
 }
 
 function initSectionCarousel({
