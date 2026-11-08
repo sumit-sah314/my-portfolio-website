@@ -4,16 +4,18 @@ function prefersReducedMotion() {
   return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 }
 
-// ---------- Theme: "paper" (light) and "chalk" (dark) ----------
+// ---------- Theme: "paper" (light), "chalk" (dark), "ocean" (Manim / Intuimation) ----------
 
 const THEME_KEY = "portfolio-theme";
 const THEME_META = {
   paper: { label: "paper", next: "chalk", themeColor: "#f5f1e8" },
-  chalk: { label: "chalk", next: "paper", themeColor: "#141a19" },
+  chalk: { label: "chalk", next: "ocean", themeColor: "#141a19" },
+  ocean: { label: "ocean", next: "paper", themeColor: "#05080d" },
 };
 
 function currentTheme() {
-  return document.documentElement.dataset.theme === "chalk" ? "chalk" : "paper";
+  const t = document.documentElement.dataset.theme;
+  return t === "chalk" || t === "ocean" ? t : "paper";
 }
 
 function applyTheme(id) {

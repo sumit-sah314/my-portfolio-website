@@ -54,6 +54,28 @@
   color-scheme: dark;
 }
 
+/* "ocean": a Manim scene, matching the Intuimation channel —
+   black canvas, NumberPlane-style blue grid, white serif text, Manim blue. */
+[data-theme="ocean"] {
+  --bg-main: #05080d;
+  --surface: #0b121b;
+  --surface-2: #080e16;
+  --surface-border: rgba(88, 196, 221, 0.2);
+  --text-main: #f2f6fa;
+  --text-muted: #a3b3c4;
+  --accent: #58c4dd;
+  --accent-strong: #9cdceb;
+  --accent-soft: rgba(88, 196, 221, 0.16);
+  --highlight: rgba(88, 196, 221, 0.3);
+  --grid-line: rgba(41, 171, 202, 0.1);
+  --margin-line: rgba(88, 196, 221, 0.22);
+  --shadow-ink: rgba(88, 196, 221, 0.16);
+  --topbar-bg: rgba(5, 8, 13, 0.86);
+  --tape: rgba(88, 196, 221, 0.28);
+
+  color-scheme: dark;
+}
+
 /* ---------- Base ---------- */
 
 *,
@@ -80,6 +102,16 @@ body {
   font: 400 16px/1.7 var(--font-body);
   overflow-x: hidden;
   transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Ocean: Manim NumberPlane — faint minor lines plus brighter major lines every 4 cells */
+[data-theme="ocean"] body {
+  background-image:
+    linear-gradient(rgba(41, 171, 202, 0.2) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(41, 171, 202, 0.2) 1px, transparent 1px),
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: 112px 112px, 112px 112px, 28px 28px, 28px 28px;
 }
 
 /* Notebook margin line on wide screens */
@@ -278,7 +310,7 @@ p {
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #f5f1e8 50%, #141a19 50%);
+  background: conic-gradient(#f5f1e8 0 120deg, #141a19 120deg 240deg, #58c4dd 240deg);
   border: 1px solid var(--surface-border);
 }
 
@@ -872,7 +904,8 @@ main {
   mix-blend-mode: multiply;
 }
 
-[data-theme="chalk"] .featured-brand-video {
+[data-theme="chalk"] .featured-brand-video,
+[data-theme="ocean"] .featured-brand-video {
   mix-blend-mode: screen;
 }
 
@@ -1416,7 +1449,8 @@ body {
   --bd-net-opacity: 0.32;
 }
 
-[data-theme="chalk"] {
+[data-theme="chalk"],
+[data-theme="ocean"] {
   --bd-eq-opacity: 0.15;
   --bd-net-opacity: 0.28;
 }
@@ -1424,7 +1458,8 @@ body {
 @media (max-width: 900px) {
   :root,
   [data-theme="paper"],
-  [data-theme="chalk"] {
+  [data-theme="chalk"],
+  [data-theme="ocean"] {
     --bd-eq-opacity: 0.08;
     --bd-net-opacity: 0.18;
   }
