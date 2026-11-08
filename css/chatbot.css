@@ -1,4 +1,4 @@
-/* "Ask about Sumit" chat widget. Uses the site's theme tokens from style.css. */
+/* "Sigma" chat widget. Uses the site's theme tokens from style.css. */
 
 .chatbot-toggle {
   position: fixed;
@@ -7,8 +7,8 @@
   z-index: 950;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 12px 18px;
+  gap: 10px;
+  padding: 6px 18px 6px 6px;
   border: 1px solid var(--accent-soft);
   border-radius: 999px;
   background: var(--surface);
@@ -19,8 +19,60 @@
   transition: transform 0.2s ease, border-color 0.2s ease;
 }
 
-.chatbot-toggle svg {
-  color: var(--accent);
+/* The Σ mark: a gold disc used for the launcher and avatars. */
+.chatbot-orb,
+.chatbot-avatar {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 25%, var(--accent-strong), var(--accent) 70%);
+  color: var(--bg-main);
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 1;
+}
+
+.chatbot-orb {
+  position: relative;
+  width: 36px;
+  height: 36px;
+  font-size: 20px;
+}
+
+/* Soft pulsing halo so the launcher invites a click. */
+.chatbot-orb::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 1px solid var(--accent);
+  opacity: 0;
+  animation: chatbot-halo 2.8s ease-out infinite;
+}
+
+@keyframes chatbot-halo {
+  0% { transform: scale(0.85); opacity: 0.7; }
+  100% { transform: scale(1.35); opacity: 0; }
+}
+
+.chatbot-toggle.is-open .chatbot-orb::after {
+  animation: none;
+}
+
+.chatbot-avatar {
+  width: 26px;
+  height: 26px;
+  font-size: 15px;
+  margin-top: 2px;
+}
+
+.chatbot-avatar-lg {
+  width: 38px;
+  height: 38px;
+  font-size: 22px;
+  margin-top: 0;
+  box-shadow: 0 0 0 3px var(--accent-soft);
 }
 
 .chatbot-toggle:hover {
@@ -33,6 +85,10 @@
 .chatbot-input:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
+}
+
+.chatbot-toggle.is-open {
+  padding: 6px;
 }
 
 .chatbot-toggle.is-open .chatbot-toggle-label {
@@ -55,6 +111,13 @@
   font-family: var(--font-body);
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
   overflow: hidden;
+  transform-origin: bottom right;
+  animation: chatbot-pop 0.22s ease-out;
+}
+
+@keyframes chatbot-pop {
+  from { opacity: 0; transform: translateY(10px) scale(0.96); }
+  to { opacity: 1; transform: none; }
 }
 
 .chatbot-panel[hidden],
@@ -64,18 +127,52 @@
 
 .chatbot-header {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
   gap: 12px;
   padding: 14px 16px;
   border-bottom: 1px solid var(--surface-border);
-  background: var(--surface-2);
+  background:
+    radial-gradient(120% 140% at 0% 0%, var(--accent-soft), transparent 60%),
+    var(--surface-2);
+}
+
+.chatbot-identity {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
 }
 
 .chatbot-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   margin: 0;
+  font-family: var(--font-display);
   font-weight: 700;
-  font-size: 15px;
+  font-size: 19px;
+  letter-spacing: 0.01em;
+}
+
+.chatbot-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 11px;
+  letter-spacing: 0;
+  color: var(--text-muted);
+}
+
+.chatbot-status::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #4cc38a;
+  box-shadow: 0 0 0 2px rgba(76, 195, 138, 0.25);
 }
 
 .chatbot-subtitle {
@@ -110,8 +207,28 @@
   overflow-y: auto;
 }
 
+.chatbot-row {
+  display: flex;
+  gap: 8px;
+  max-width: 92%;
+  animation: chatbot-rise 0.2s ease-out;
+}
+
+.chatbot-row-assistant {
+  align-self: flex-start;
+}
+
+.chatbot-row-user {
+  align-self: flex-end;
+}
+
+@keyframes chatbot-rise {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: none; }
+}
+
 .chatbot-msg {
-  max-width: 88%;
+  min-width: 0;
   padding: 10px 13px;
   border-radius: 14px;
   font-size: 14px;
@@ -125,14 +242,12 @@
 }
 
 .chatbot-msg-assistant {
-  align-self: flex-start;
   background: var(--surface-2);
   border: 1px solid var(--surface-border);
   border-bottom-left-radius: 4px;
 }
 
 .chatbot-msg-user {
-  align-self: flex-end;
   background: var(--accent-soft);
   border: 1px solid var(--accent-soft);
   border-bottom-right-radius: 4px;
@@ -257,7 +372,10 @@
     transition: none;
   }
 
-  .chatbot-typing span {
+  .chatbot-typing span,
+  .chatbot-orb::after,
+  .chatbot-panel,
+  .chatbot-row {
     animation: none;
   }
 }
