@@ -465,6 +465,189 @@ function initGallery() {
   });
 }
 
+// ---------- Backdrop: floating equations + neural nets ----------
+
+const BACKDROP_EQUATIONS = [
+  "\\nabla_\\theta \\mathcal{L}",
+  "\\mathrm{Attention}(Q,K,V)=\\mathrm{softmax}\\!\\left(\\frac{QK^\\top}{\\sqrt{d_k}}\\right)V",
+  "\\frac{\\partial \\mathcal{L}}{\\partial w_{ij}} = \\delta_j\\, a_i",
+  "\\sum_{n=1}^{\\infty} \\frac{1}{n^2} = \\frac{\\pi^2}{6}",
+  "\\hat{f}(\\xi)=\\int_{-\\infty}^{\\infty} f(x)\\,e^{-2\\pi i x\\xi}\\,dx",
+  "p(\\theta\\mid\\mathcal{D}) \\propto p(\\mathcal{D}\\mid\\theta)\\,p(\\theta)",
+  "\\mathrm{ReLU}(x)=\\max(0,x)",
+  "A = U\\Sigma V^\\top",
+  "\\mathbb{E}[X]=\\sum_x x\\,p(x)",
+  "D_{\\mathrm{KL}}(P\\Vert Q)=\\sum P\\log\\frac{P}{Q}",
+  "h_t = \\tanh(W h_{t-1} + U x_t)",
+  "\\det(A-\\lambda I)=0",
+  "\\theta_{t+1}=\\theta_t-\\eta\\,\\hat{m}_t/(\\sqrt{\\hat{v}_t}+\\epsilon)",
+  "\\mathcal{N}(\\mu,\\sigma^2)",
+  "\\lim_{n\\to\\infty}\\left(1+\\frac{1}{n}\\right)^n=e",
+  "y = \\sigma(Wx+b)",
+  "\\oint_C \\mathbf{F}\\cdot d\\mathbf{r}",
+  "\\Sigma",
+  "W_2(\\mu,\\nu)",
+  "\\arg\\min_\\theta \\; \\mathcal{L}(\\theta)",
+];
+
+// Layer sizes for the little network diagrams.
+const BACKDROP_NETS = [
+  [3, 5, 5, 2],
+  [4, 6, 3],
+  [2, 4, 4, 4, 1],
+  [3, 4, 2],
+];
+
+/** Small deterministic PRNG so the layout is stable between visits. */
+function seededRandom(seed) {
+  let s = seed >>> 0;
+  return () => {
+    s = (s * 1664525 + 1013904223) >>> 0;
+    return s / 4294967296;
+  };
+}
+
+function buildNetworkSvg(layers, width, height, rand) {
+  const NS = "http://www.w3.org/2000/svg";
+  const svg = document.createElementNS(NS, "svg");
+  svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
+  svg.setAttribute("width", String(width));
+  svg.setAttribute("height", String(height));
+  svg.classList.add("bd-net");
+
+  const pad = 14;
+  const cols = layers.map((count, li) => {
+    const x = pad + (li * (width - 2 * pad)) / (layers.length - 1);
+    return Array.from({ length: count }, (_, ni) => ({
+      x,
+      y: pad + ((ni + 0.5) * (height - 2 * pad)) / count,
+    }));
+  });
+
+  for (let li = 0; li < cols.length - 1; li++) {
+    for (const a of cols[li]) {
+      for (const b of cols[li + 1]) {
+        const line = document.createElementNS(NS, "line");
+        line.setAttribute("x1", a.x);
+        line.setAttribute("y1", a.y);
+        line.setAttribute("x2", b.x);
+        line.setAttribute("y2", b.y);
+        line.classList.add("bd-edge");
+        svg.append(line);
+
+        // About a third of the edges carry a travelling "signal".
+        if (rand() < 0.35) {
+          const pulse = line.cloneNode();
+          pulse.setAttribute("class", "bd-pulse");
+          pulse.setAttribute("pathLength", "100");
+          pulse.style.animationDelay = `${(li * 0.6 + rand() * 2.4).toFixed(2)}s`;
+          pulse.style.animationDuration = `${(2.4 + rand() * 1.6).toFixed(2)}s`;
+          svg.append(pulse);
+        }
+      }
+    }
+  }
+
+  cols.flat().forEach((n) => {
+    const c = document.createElementNS(NS, "circle");
+    c.setAttribute("cx", n.x);
+    c.setAttribute("cy", n.y);
+    c.setAttribute("r", "4.5");
+    c.classList.add("bd-node");
+    svg.append(c);
+  });
+  return svg;
+}
+
+function initBackdrop() {
+  const host = document.getElementById("backdrop");
+  if (!host) return;
+
+  let lastKey = "";
+
+  function layout() {
+    const width = document.documentElement.clientWidth;
+    // Measure from the footer, not scrollHeight: the backdrop itself would inflate scrollHeight.
+    const footer = document.querySelector("footer");
+    const height = footer ? footer.offsetTop + footer.offsetHeight : document.body.offsetHeight;
+    const key = `${width}x${Math.round(height / 200)}|${Boolean(window.katex)}`;
+    if (key === lastKey) return; // nothing meaningful changed
+    lastKey = key;
+
+    host.replaceChildren();
+    host.style.height = `${height}px`;
+    const rand = seededRandom(314159);
+    const narrow = width < 900;
+
+    // Content column bounds; decorations prefer the margins outside it.
+    const pageWidth = Math.min(width, 1140);
+    const left = (width - pageWidth) / 2;
+    const right = left + pageWidth;
+
+    // Floating equations, one every ~260px of page height.
+    const count = Math.round(height / (narrow ? 380 : 260));
+    for (let i = 0; i < count; i++) {
+      const tex = BACKDROP_EQUATIONS[i % BACKDROP_EQUATIONS.length];
+      const el = document.createElement("span");
+      el.className = "bd-eq";
+      if (window.katex?.render) {
+        window.katex.render(tex, el, { throwOnError: false });
+      } else {
+        el.textContent = tex.replace(/\\[a-zA-Z]+|[{}\\!]/g, " ").replace(/\s+/g, " ");
+      }
+
+      const onLeft = i % 2 === 0;
+      const y = (i + 0.3 + rand() * 0.4) * (height / count);
+      // In the margin when there is room, otherwise hugging the edge behind content.
+      const marginRoom = onLeft ? left : width - right;
+      const x = marginRoom > 160 ? (onLeft ? 8 + rand() * (left - 150) : right - 40 + rand() * (marginRoom - 120)) : onLeft ? -20 + rand() * width * 0.25 : width * (0.55 + rand() * 0.2);
+
+      el.style.left = `${Math.round(x)}px`;
+      el.style.top = `${Math.round(y)}px`;
+      el.style.fontSize = `${Math.round(14 + rand() * 12)}px`;
+      el.style.setProperty("--rot", `${(rand() * 16 - 8).toFixed(1)}deg`);
+      el.style.setProperty("--drift", `${Math.round(12 + rand() * 22)}px`);
+      el.style.animationDuration = `${Math.round(14 + rand() * 14)}s`;
+      el.style.animationDelay = `${(-rand() * 20).toFixed(1)}s`;
+      host.append(el);
+    }
+
+    // Neural nets: one large behind the title page, then alternating margins down the page.
+    const hero = document.getElementById("home");
+    if (hero && !narrow) {
+      const net = buildNetworkSvg([4, 7, 7, 5, 2], 520, 300, rand);
+      net.classList.add("bd-net-hero");
+      net.style.left = `${Math.round(left + pageWidth * 0.28)}px`;
+      net.style.top = `${Math.round(hero.offsetTop + 70)}px`;
+      host.append(net);
+    }
+
+    const netEvery = narrow ? 1600 : 1100;
+    const nets = Math.max(1, Math.floor(height / netEvery));
+    for (let i = 0; i < nets; i++) {
+      const layers = BACKDROP_NETS[i % BACKDROP_NETS.length];
+      const w = narrow ? 180 : 230;
+      const h = narrow ? 120 : 150;
+      const net = buildNetworkSvg(layers, w, h, rand);
+      const onLeft = i % 2 === 1;
+      const x = onLeft ? Math.max(-60, left - w * 0.75) : Math.min(width - w * 0.3, right - w * 0.25);
+      net.style.left = `${Math.round(x)}px`;
+      net.style.top = `${Math.round(900 + i * netEvery + rand() * 200)}px`;
+      host.append(net);
+    }
+  }
+
+  layout();
+  window.addEventListener("load", layout); // KaTeX + images are ready: re-render with real math
+  let timer = null;
+  const relayout = () => {
+    window.clearTimeout(timer);
+    timer = window.setTimeout(layout, 200);
+  };
+  window.addEventListener("resize", relayout);
+  new ResizeObserver(relayout).observe(document.body);
+}
+
 // ---------- Boot ----------
 
 initTheme();
@@ -478,3 +661,4 @@ initTypewriter();
 initFeaturedCarousel("featured-msft-carousel", "featured-msft-dots", "Microsoft");
 initFeaturedCarousel("featured-pytorch-carousel", "featured-pytorch-dots", "PyTorch Conference");
 initGallery();
+initBackdrop();

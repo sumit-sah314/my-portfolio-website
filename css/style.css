@@ -1330,6 +1330,106 @@ main {
   box-shadow: 4px 4px 0 var(--shadow-ink);
 }
 
+/* ---------- Backdrop: floating equations + neural nets ---------- */
+
+body {
+  position: relative;
+}
+
+.backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  user-select: none;
+}
+
+.bd-eq {
+  position: absolute;
+  white-space: nowrap;
+  color: var(--text-main);
+  opacity: var(--bd-eq-opacity);
+  transform: rotate(var(--rot));
+  animation: bd-float ease-in-out infinite alternate;
+}
+
+.bd-eq .katex {
+  font-size: 1em;
+}
+
+@keyframes bd-float {
+  from {
+    transform: translateY(0) rotate(var(--rot));
+  }
+  to {
+    transform: translateY(calc(var(--drift) * -1)) rotate(calc(var(--rot) * -0.5));
+  }
+}
+
+.bd-net {
+  position: absolute;
+  overflow: visible;
+  opacity: var(--bd-net-opacity);
+}
+
+.bd-net-hero {
+  opacity: calc(var(--bd-net-opacity) * 0.5);
+}
+
+.bd-edge {
+  stroke: var(--text-main);
+  stroke-width: 1;
+  opacity: 0.5;
+}
+
+/* A short dash that runs along the edge: a signal moving forward through the net. */
+.bd-pulse {
+  stroke: var(--accent);
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-dasharray: 10 100;
+  stroke-dashoffset: 10;
+  animation: bd-signal linear infinite;
+}
+
+@keyframes bd-signal {
+  from {
+    stroke-dashoffset: 10;
+  }
+  to {
+    stroke-dashoffset: -100;
+  }
+}
+
+.bd-node {
+  fill: var(--bg-main);
+  stroke: var(--accent);
+  stroke-width: 1.6;
+}
+
+:root,
+[data-theme="paper"] {
+  --bd-eq-opacity: 0.17;
+  --bd-net-opacity: 0.32;
+}
+
+[data-theme="chalk"] {
+  --bd-eq-opacity: 0.15;
+  --bd-net-opacity: 0.28;
+}
+
+@media (max-width: 900px) {
+  :root,
+  [data-theme="paper"],
+  [data-theme="chalk"] {
+    --bd-eq-opacity: 0.08;
+    --bd-net-opacity: 0.18;
+  }
+}
+
 /* ---------- Responsive ---------- */
 
 @media (max-width: 900px) {
