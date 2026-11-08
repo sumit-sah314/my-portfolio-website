@@ -1,11 +1,11 @@
 # Portfolio RAG chatbot
 
-The "Ask about Sumit" chat bubble on the site. Visitors ask questions; the bot answers using only the files in `knowledge/` (your resume, plus anything you add), via Google Gemini's free tier.
+The "Ask about Sumit" chat bubble on the site. Visitors ask questions; the bot answers using only your website and the files in `knowledge/` (your resume, plus anything you add), via Google Gemini's free tier.
 
 ```
 Browser (js/chatbot.js)  ──POST /chat──▶  Cloudflare Worker (src/index.js)
                                             1. embed the question        (Gemini embeddings)
-                                            2. find the 4 closest chunks (src/knowledge.json)
+                                            2. find the 8 closest chunks (src/knowledge.json)
                                             3. answer from those chunks  (gemini-3.5-flash-lite)
 ```
 
@@ -13,15 +13,17 @@ The Gemini API key lives only in the Worker as a secret. It is never in the site
 
 ## What the bot knows
 
-`npm run build-index` reads every `knowledge/*.md` file, one chunk per `## ` heading:
+`npm run build-index` reads:
 
-- `knowledge/resume.md`: your resume (copied from `assets/Sumit-Sah-Resume.pdf`)
-- `knowledge/about-me.md`: more about you; starts empty, with examples in a comment
+- `knowledge/resume.md`: your resume (copied from `assets/Sumit-Sah-Resume.pdf`), one chunk per `## ` heading
+- `knowledge/about-me.md`: anything else about you, one chunk per `## ` heading
+- `../index.html`: every website section, one chunk per card (intro, about, featured, experience, projects, awards, social links)
+- `../js/script.js`: the photo gallery captions
 
 Run `npm run build-index -- --dry-run` to print the chunks without calling Gemini.
-Add `--include-site` to also index the website itself (sections, gallery captions, social links).
+Add `--knowledge-only` to skip the website and use only `knowledge/*.md`.
 
-**Rebuild and redeploy whenever you change these files**, or the bot will answer from the old version.
+**Rebuild and redeploy whenever you change the website, the resume, or these files**, or the bot will answer from the old version.
 
 ## One-time setup
 

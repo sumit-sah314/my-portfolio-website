@@ -65,6 +65,7 @@ Visitors (often recruiters, classmates, or researchers) ask you about Sumit.
 
 Rules:
 - Answer only from the CONTEXT provided with each question. Do not invent facts, dates, numbers, or links.
+- Each context item says its source. If the resume and the website disagree (for example on dates), trust the resume: it is more up to date.
 - If the context does not contain the answer, say you don't know that yet and suggest reaching out to Sumit on LinkedIn.
 - Refer to Sumit by name. Do not use gendered pronouns for Sumit.
 - Keep answers short and friendly: usually 2-4 sentences, or a short list when listing several items.
@@ -80,7 +81,7 @@ Rules:
  */
 export function buildContents(message, history, retrieved) {
   const context = retrieved
-    .map(({ chunk }, i) => `[${i + 1}] ${chunk.title}\n${chunk.text}`)
+    .map(({ chunk }, i) => `[${i + 1}] ${chunk.title}${chunk.source ? ` (source: ${chunk.source})` : ""}\n${chunk.text}`)
     .join("\n\n");
 
   const contents = history.map((turn) => ({

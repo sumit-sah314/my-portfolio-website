@@ -3,12 +3,13 @@
 //
 // Sources:
 //   - knowledge/*.md            your resume and notes (one chunk per "## " heading)
-//   - with --include-site:      also ../index.html sections and ../js/script.js gallery captions
+//   - ../index.html             every website section, one chunk per card
+//   - ../js/script.js           photo gallery captions
 //
 // Usage:
 //   npm run build-index                   embed with Gemini and write src/knowledge.json
 //   npm run build-index -- --dry-run      print the chunks only (no API key needed)
-//   npm run build-index -- --include-site also index the website's own content
+//   npm run build-index -- --knowledge-only  skip the website, use only knowledge/*.md
 
 import { readFileSync, writeFileSync, readdirSync, existsSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
@@ -192,17 +193,22 @@ function readApiKey() {
 
 async function main() {
   const dryRun = process.argv.includes("--dry-run");
-  const chunks = chunksFromNotes(join(WORKER_DIR, "knowledge"));
+  // `source` tells the bot where each fact came from, so it can prefer the resume when sources disagree.
+  const chunks = chunksFromNotes(join(WORKER_DIR, "knowledge")).map((c) => ({
+    ...c,
+    source: c.id.startsWith("resume-") ? "resume" : "Sumit's notes",
+  }));
 
-  // Optional: also index the website itself (sections, gallery captions, social links).
-  if (process.argv.includes("--include-site")) {
+  // The website itself: sections, gallery captions, social links.
+  if (!process.argv.includes("--knowledge-only")) {
     const js = readFileSync(join(SITE_DIR, "js", "script.js"), "utf8");
     const html = fillTypewriter(readFileSync(join(SITE_DIR, "index.html"), "utf8"), js);
-    chunks.push(...chunksFromHtml(html), ...contactChunk(html), ...chunksFromGallery(js));
+    const siteChunks = [...chunksFromHtml(html), ...contactChunk(html), ...chunksFromGallery(js)];
+    chunks.push(...siteChunks.map((c) => ({ ...c, source: "website" })));
   }
 
   if (!chunks.length) {
-    console.error("No knowledge found. Add sections to chatbot-worker/knowledge/*.md (or pass --include-site).");
+    console.error("No knowledge found. Add sections to chatbot-worker/knowledge/*.md.");
     process.exit(1);
   }
 

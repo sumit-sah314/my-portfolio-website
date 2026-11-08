@@ -57,6 +57,11 @@ test("buildContents maps roles and puts context in the last turn", () => {
   assert.match(last, /QUESTION:\nWhere did Sumit intern\?/);
 });
 
+test("buildContents labels each context item with its source", () => {
+  const contents = buildContents("q", [], [{ chunk: { title: "Education", text: "TXST", source: "resume" } }]);
+  assert.match(contents[0].parts[0].text, /\[1\] Education \(source: resume\)\nTXST/);
+});
+
 test("htmlToText keeps link URLs and drops hidden/decorative markup", () => {
   const text = htmlToText('<p>See <a href="https://x.dev">my repo</a> &amp; more</p><span aria-hidden="true">∑</span><svg><path/></svg>');
   assert.equal(text, "See my repo (https://x.dev) & more");

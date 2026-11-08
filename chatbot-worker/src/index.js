@@ -6,7 +6,8 @@ import knowledge from "./knowledge.json";
 import { DEFAULT_CHAT_MODEL, DEFAULT_EMBED_MODEL, GeminiError, embedQuery, generate } from "./gemini.js";
 import { SYSTEM_PROMPT, buildContents, cleanHistory, cleanMessage, sourceSections, topK } from "./rag.js";
 
-const TOP_K = 4;
+// 8 short chunks is still a small prompt, and list questions ("what awards...") need several.
+const TOP_K = 8;
 
 function allowedOrigins(env) {
   return String(env.ALLOWED_ORIGINS || "")
