@@ -2,13 +2,13 @@
 // Builds src/knowledge.json: the chatbot's searchable knowledge base.
 //
 // Sources:
-//   - ../index.html             each section, split at its <h3> cards
-//   - ../js/script.js           gallery photo captions
-//   - knowledge/*.md            extra notes you write (split at "## " headings)
+//   - knowledge/*.md            your resume and notes (one chunk per "## " heading)
+//   - with --include-site:      also ../index.html sections and ../js/script.js gallery captions
 //
 // Usage:
-//   npm run build-index              embed with Gemini and write src/knowledge.json
-//   npm run build-index -- --dry-run print the chunks only (no API key needed)
+//   npm run build-index                   embed with Gemini and write src/knowledge.json
+//   npm run build-index -- --dry-run      print the chunks only (no API key needed)
+//   npm run build-index -- --include-site also index the website's own content
 
 import { readFileSync, writeFileSync, readdirSync, existsSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
@@ -188,15 +188,19 @@ function readApiKey() {
 
 async function main() {
   const dryRun = process.argv.includes("--dry-run");
-  const js = readFileSync(join(SITE_DIR, "js", "script.js"), "utf8");
-  const html = fillTypewriter(readFileSync(join(SITE_DIR, "index.html"), "utf8"), js);
+  const chunks = chunksFromNotes(join(WORKER_DIR, "knowledge"));
 
-  const chunks = [
-    ...chunksFromHtml(html),
-    ...contactChunk(html),
-    ...chunksFromGallery(js),
-    ...chunksFromNotes(join(WORKER_DIR, "knowledge")),
-  ];
+  // Optional: also index the website itself (sections, gallery captions, social links).
+  if (process.argv.includes("--include-site")) {
+    const js = readFileSync(join(SITE_DIR, "js", "script.js"), "utf8");
+    const html = fillTypewriter(readFileSync(join(SITE_DIR, "index.html"), "utf8"), js);
+    chunks.push(...chunksFromHtml(html), ...contactChunk(html), ...chunksFromGallery(js));
+  }
+
+  if (!chunks.length) {
+    console.error("No knowledge found. Add sections to chatbot-worker/knowledge/*.md (or pass --include-site).");
+    process.exit(1);
+  }
 
   if (dryRun) {
     for (const c of chunks) console.log(`\n=== [${c.id}] ${c.title} (${c.text.length} chars)\n${c.text}`);

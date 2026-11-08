@@ -1,6 +1,6 @@
 # Portfolio RAG chatbot
 
-The "Ask about Sumit" chat bubble on the site. Visitors ask questions; the bot answers using only the content of this website (plus any notes you add), via Google Gemini's free tier.
+The "Ask about Sumit" chat bubble on the site. Visitors ask questions; the bot answers using only the files in `knowledge/` (your resume, plus anything you add), via Google Gemini's free tier.
 
 ```
 Browser (js/chatbot.js)  ──POST /chat──▶  Cloudflare Worker (src/index.js)
@@ -13,15 +13,15 @@ The Gemini API key lives only in the Worker as a secret. It is never in the site
 
 ## What the bot knows
 
-`npm run build-index` reads:
+`npm run build-index` reads every `knowledge/*.md` file, one chunk per `## ` heading:
 
-- `../index.html`: every section, one chunk per card (experience, projects, awards, featured, about, intro, social links)
-- `../js/script.js`: the photo gallery captions
-- `knowledge/*.md`: extra facts you write (one chunk per `## ` heading), for things not on the site
+- `knowledge/resume.md`: your resume (copied from `assets/Sumit-Sah-Resume.pdf`)
+- `knowledge/about-me.md`: more about you; starts empty, with examples in a comment
 
 Run `npm run build-index -- --dry-run` to print the chunks without calling Gemini.
+Add `--include-site` to also index the website itself (sections, gallery captions, social links).
 
-**Rebuild and redeploy whenever you change the site's content**, or the bot will answer from the old version.
+**Rebuild and redeploy whenever you change these files**, or the bot will answer from the old version.
 
 ## One-time setup
 
@@ -67,7 +67,7 @@ cd chatbot-worker && npm run dev
 
 Open http://localhost:8000. The chat bubble talks to http://localhost:8787 automatically.
 
-## Updating the bot after site changes
+## Updating the bot after changing knowledge/
 
 ```sh
 cd chatbot-worker
