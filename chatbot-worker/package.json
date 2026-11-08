@@ -1,0 +1,16 @@
+{
+  "name": "portfolio-chatbot-worker",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "RAG chatbot backend for Sumit Sah's portfolio, running on Cloudflare Workers with the Gemini API.",
+  "scripts": {
+    "build-index": "node scripts/build-index.mjs",
+    "dev": "wrangler dev --port 8787",
+    "deploy": "wrangler deploy",
+    "test": "node --test \"test/*.test.mjs\""
+  },
+  "devDependencies": {
+    "wrangler": "^4.0.0"
+  }
+}
