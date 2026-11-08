@@ -115,6 +115,20 @@ const PORTFOLIO_PHOTOS = [
 // Gallery photos are managed separately from profile carousel photos.
 const DEFAULT_GALLERY_PHOTOS = [
   {
+    src: "assets/images/gallery/pytorch_conference.jpg",
+    alt: "Sumit Sah beside the PyTorch Conference North America 2026 sponsor wall.",
+    caption: "PyTorch Conference North America 2026 - attended on a scholarship, met the people building PyTorch, and explored Silicon Valley.",
+    location: "PyTorch Conference, Silicon Valley",
+    objectPosition: "20% 82%",
+  },
+  {
+    src: "assets/images/gallery/google.jpeg",
+    alt: "Riding a colorful Google bike past a row of Google bikes at Google headquarters.",
+    caption: "Cycling around Google headquarters in Mountain View on the iconic colorful Google bikes.",
+    location: "Google Headquarters, Mountain View, Silicon Valley",
+    objectPosition: "center 40%",
+  },
+  {
     src: "assets/images/gallery/jrmf.jpeg",
     alt: "JRFM photo highlight.",
     caption: "JRMF volunteering - playing with kids at a fun event at San Marcos Public Library.",
@@ -918,9 +932,9 @@ function initSectionCarousel({
   startAuto();
 }
 
-function initFeaturedMicrosoftCarousel() {
-  const carousel = document.getElementById("featured-msft-carousel");
-  const dotsHost = document.getElementById("featured-msft-dots");
+function initFeaturedCarousel(carouselId, dotsId, photoLabel) {
+  const carousel = document.getElementById(carouselId);
+  const dotsHost = document.getElementById(dotsId);
   if (!carousel || !dotsHost) return;
 
   const slides = Array.from(carousel.querySelectorAll(".featured-media-slide"));
@@ -976,7 +990,7 @@ function initFeaturedMicrosoftCarousel() {
     dot.type = "button";
     dot.className = "featured-media-dot";
     dot.setAttribute("role", "tab");
-    dot.setAttribute("aria-label", `Show Microsoft photo ${i + 1} of ${slides.length}`);
+    dot.setAttribute("aria-label", `Show ${photoLabel} photo ${i + 1} of ${slides.length}`);
     dot.addEventListener("click", () => {
       render(i);
       restartAuto();
@@ -1146,7 +1160,8 @@ initScrollReveal();
 initHeroCarousel();
 initMathCsMlWidget();
 initNeuralCanvas();
-initFeaturedMicrosoftCarousel();
+initFeaturedCarousel("featured-msft-carousel", "featured-msft-dots", "Microsoft");
+initFeaturedCarousel("featured-pytorch-carousel", "featured-pytorch-dots", "PyTorch Conference");
 
 initSectionCarousel({
   containerId: "projects-carousel",

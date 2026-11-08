@@ -1358,6 +1358,21 @@ header {
   object-position: 18% center;
 }
 
+.featured-media img.featured-pytorch-image {
+  object-position: 20% 80%;
+}
+
+.featured-media img.featured-pytorch-night-slide {
+  object-position: center 55%;
+}
+
+/* Long caption on this card: keep the dots clear of it */
+#featured-pytorch-dots {
+  left: auto;
+  right: 12px;
+  transform: none;
+}
+
 .featured-media figcaption {
   position: absolute;
   left: 12px;
@@ -1490,6 +1505,22 @@ header {
     height: 100%;
     min-height: 100%;
     aspect-ratio: auto;
+  }
+
+  .featured-story-reverse {
+    grid-template-columns: minmax(0, 1fr) minmax(320px, 1.2fr);
+  }
+
+  .featured-story-reverse .featured-media {
+    order: 2;
+    align-self: center;
+    height: 340px;
+    border-right: none;
+    border-left: 1px solid var(--surface-border);
+  }
+
+  .featured-story-reverse .featured-body {
+    align-self: center;
   }
 }
 
