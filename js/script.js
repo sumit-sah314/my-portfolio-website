@@ -10,12 +10,13 @@ const THEME_KEY = "portfolio-theme";
 const THEME_META = {
   paper: { label: "paper", next: "chalk", themeColor: "#f5f1e8" },
   chalk: { label: "chalk", next: "ocean", themeColor: "#141a19" },
-  ocean: { label: "ocean", next: "paper", themeColor: "#05080d" },
+  ocean: { label: "ocean", next: "gold", themeColor: "#05080d" },
+  gold: { label: "gold", next: "paper", themeColor: "#0b0b0f" },
 };
 
 function currentTheme() {
   const t = document.documentElement.dataset.theme;
-  return t === "chalk" || t === "ocean" ? t : "paper";
+  return t in THEME_META ? t : "paper";
 }
 
 function applyTheme(id) {

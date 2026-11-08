@@ -76,6 +76,27 @@
   color-scheme: dark;
 }
 
+/* "gold": the site's original dark look — near-black, warm gold accents, soft gold/blue glows. */
+[data-theme="gold"] {
+  --bg-main: #0b0b0f;
+  --surface: #171721;
+  --surface-2: #12121a;
+  --surface-border: rgba(255, 255, 255, 0.1);
+  --text-main: #ffffff;
+  --text-muted: #c7c7c7;
+  --accent: #b8a46f;
+  --accent-strong: #d8c48e;
+  --accent-soft: rgba(184, 164, 111, 0.25);
+  --highlight: rgba(184, 164, 111, 0.3);
+  --grid-line: rgba(255, 255, 255, 0.025);
+  --margin-line: rgba(184, 164, 111, 0.18);
+  --shadow-ink: rgba(0, 0, 0, 0.55);
+  --topbar-bg: rgba(10, 10, 14, 0.8);
+  --tape: rgba(184, 164, 111, 0.35);
+
+  color-scheme: dark;
+}
+
 /* ---------- Base ---------- */
 
 *,
@@ -112,6 +133,17 @@ body {
     linear-gradient(var(--grid-line) 1px, transparent 1px),
     linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
   background-size: 112px 112px, 112px 112px, 28px 28px, 28px 28px;
+}
+
+/* Gold: the original atmosphere — gold and blue glows over a barely-there grid. */
+[data-theme="gold"] body {
+  background-image:
+    radial-gradient(900px 600px at 12% -5%, rgba(184, 164, 111, 0.2), transparent 70%),
+    radial-gradient(800px 600px at 95% 20%, rgba(60, 80, 130, 0.16), transparent 70%),
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: auto, auto, 28px 28px, 28px 28px;
+  background-repeat: no-repeat, no-repeat, repeat, repeat;
 }
 
 /* Notebook margin line on wide screens */
@@ -310,7 +342,7 @@ p {
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  background: conic-gradient(#f5f1e8 0 120deg, #141a19 120deg 240deg, #58c4dd 240deg);
+  background: conic-gradient(#f5f1e8 0 90deg, #141a19 90deg 180deg, #58c4dd 180deg 270deg, #b8a46f 270deg);
   border: 1px solid var(--surface-border);
 }
 
@@ -905,7 +937,8 @@ main {
 }
 
 [data-theme="chalk"] .featured-brand-video,
-[data-theme="ocean"] .featured-brand-video {
+[data-theme="ocean"] .featured-brand-video,
+[data-theme="gold"] .featured-brand-video {
   mix-blend-mode: screen;
 }
 
@@ -1450,7 +1483,8 @@ body {
 }
 
 [data-theme="chalk"],
-[data-theme="ocean"] {
+[data-theme="ocean"],
+[data-theme="gold"] {
   --bd-eq-opacity: 0.15;
   --bd-net-opacity: 0.28;
 }
@@ -1459,7 +1493,8 @@ body {
   :root,
   [data-theme="paper"],
   [data-theme="chalk"],
-  [data-theme="ocean"] {
+  [data-theme="ocean"],
+  [data-theme="gold"] {
     --bd-eq-opacity: 0.08;
     --bd-net-opacity: 0.18;
   }

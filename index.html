@@ -20,12 +20,15 @@
       document.documentElement.classList.add("js");
       var t = null;
       try { t = localStorage.getItem("portfolio-theme"); } catch (e) { /* storage blocked */ }
-      if (t !== "paper" && t !== "chalk" && t !== "ocean") {
+      // Choices saved by the previous site design: "dark" was the gold theme, "light" is closest to paper.
+      if (t === "dark") t = "gold";
+      if (t === "light") t = "paper";
+      if (t !== "paper" && t !== "chalk" && t !== "ocean" && t !== "gold") {
         t = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "chalk" : "paper";
       }
       document.documentElement.dataset.theme = t;
       var m = document.querySelector('meta[name="theme-color"]');
-      if (m) m.setAttribute("content", { paper: "#f5f1e8", chalk: "#141a19", ocean: "#05080d" }[t]);
+      if (m) m.setAttribute("content", { paper: "#f5f1e8", chalk: "#141a19", ocean: "#05080d", gold: "#0b0b0f" }[t]);
     })();
   </script>
 </head>
