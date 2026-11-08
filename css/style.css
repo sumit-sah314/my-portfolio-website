@@ -949,9 +949,11 @@ main {
   object-position: 18% center;
 }
 
+/* The μ character sits left of and below the frame's centre (about 43% / 62%).
+   Shift it to the middle of the card, then zoom ~1.9x around that point. */
 .featured-brand-video {
-  object-position: 56% center;
-  transform: scale(3);
+  object-position: 50% center;
+  transform: translate(14.7%, -22.6%) scale(1.9);
   mix-blend-mode: multiply;
 }
 
@@ -1576,6 +1578,11 @@ body {
 }
 
 @media (max-width: 640px) {
+  /* Phone cards are taller relative to their width, so the video is cropped differently. */
+  .featured-brand-video {
+    transform: translate(17%, -16%) scale(1.75);
+  }
+
   .timeline::before {
     left: 6px;
   }
