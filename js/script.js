@@ -283,9 +283,10 @@ function initFeaturedCarousel(carouselId, dotsId, photoLabel) {
 
   function render(i) {
     index = (i + slides.length) % slides.length;
+    // Slides are stacked; the active one fades in over the others (see .featured-media-slide).
     slides.forEach((slide, idx) => {
       slide.classList.toggle("is-active", idx === index);
-      slide.hidden = idx !== index;
+      slide.setAttribute("aria-hidden", String(idx !== index));
     });
     dotsHost.querySelectorAll("button").forEach((dot, idx) => {
       dot.classList.toggle("is-active", idx === index);
