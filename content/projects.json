@@ -1,0 +1,48 @@
+[
+  {
+    "title": "AI Study Tool (SWE Class Project)",
+    "image": "/assets/images/projects/ai_study_tool.png",
+    "imageAlt": "AI Study Tool project visual",
+    "description": "Built an AI-powered study assistant for software engineering coursework with quiz generation based on notes, progress tracking through charts, weak-topic detection, quiz history retrieval, and visual analytics. Also supported viewing past quiz attempts, reviewing previous answers, and retaking quizzes to reinforce learning.",
+    "links": [
+      { "label": "View AI Study Tool on GitHub", "url": "https://github.com/sumit-sah314/ai-study-tool-repository" }
+    ]
+  },
+  {
+    "title": "Machine Learning Research",
+    "image": "/assets/images/projects/ml_research.jpeg",
+    "imageAlt": "Machine learning research project visual",
+    "description": "Researched adversarial robustness using optimal transport-based models and explored how deep learning robust training techniques can be adapted to classical regression settings for stronger stability and performance. The poster shown here was presented at the Texas State undergraduate research conference.",
+    "links": [
+      { "label": "View ML Learning Journey on GitHub", "url": "https://github.com/sumit-sah314/my-ml-learning-journey" }
+    ]
+  },
+  {
+    "title": "RMF Bias Analysis",
+    "image": "/assets/images/projects/datathon.jpg",
+    "imageAlt": "RMF Bias Analysis datathon project visual",
+    "description": "TXST Datathon 2025 (3rd Place): analyzed 20K+ RateMyProfessor reviews using Python, Pandas, and Matplotlib to identify bias in grading leniency, sampling, and review extremity. Created 5+ visualizations and presented actionable recommendations to improve fairness in student evaluations.",
+    "links": [
+      { "label": "View RMF Bias Analysis on GitHub", "url": "https://github.com/sumit-sah314/professor-rating-bias-analysis" }
+    ]
+  },
+  {
+    "title": "Credit Risk Modeling",
+    "image": "/assets/images/projects/credit-risk.png",
+    "imageAlt": "Credit Risk Modeling project visual",
+    "description": "Built and evaluated classification models to predict credit default risk, including Logistic Regression, Random Forest, and XGBoost. The workflow includes EDA, class-imbalance handling (SMOTE and undersampling), and evaluation with ROC AUC, confusion matrix, precision, recall, and F1 score.",
+    "links": [
+      { "label": "View Credit Risk Modeling on GitHub", "url": "https://github.com/sumit-sah314/credit-risk-modeling" },
+      { "label": "Open Live Streamlit App", "url": "https://credit-risk-modeling-zcog5pbrc3gshwhu2u35bp.streamlit.app/" }
+    ]
+  },
+  {
+    "title": "Intuimation (YouTube Channel)",
+    "image": "/assets/images/projects/yt_channel.png",
+    "imageAlt": "Intuimation YouTube channel visual",
+    "description": "Create visual-first educational videos using Manim to make mathematics, physics, and computer science concepts intuitive, engaging, and easier to understand. Feel free to DM for collaboration!",
+    "links": [
+      { "label": "Visit Intuimation on YouTube", "url": "https://youtube.com/@intuimation.314" }
+    ]
+  }
+]

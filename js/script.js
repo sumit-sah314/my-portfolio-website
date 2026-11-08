@@ -127,16 +127,18 @@ function initScrollReveal() {
 
 // ---------- Hero ----------
 
-const PORTFOLIO_PHOTOS = [
-  { src: "assets/images/profile/profile.png", alt: "Sumit Sah portrait." },
-  { src: "assets/images/profile/microsoft_night.jpg", alt: "Sumit Sah at Microsoft campus at night." },
-];
+/** Filled from content/profile-photos.json. */
+let PORTFOLIO_PHOTOS = [];
 
 function initHeroCarousel() {
   const carousel = document.getElementById("hero-carousel");
   const img = document.getElementById("hero-slide-img");
   const dotsHost = document.getElementById("hero-carousel-dots");
   if (!carousel || !img || !dotsHost) return;
+  if (PORTFOLIO_PHOTOS[0]) {
+    img.src = PORTFOLIO_PHOTOS[0].src;
+    img.alt = PORTFOLIO_PHOTOS[0].alt;
+  }
   if (PORTFOLIO_PHOTOS.length < 2) {
     dotsHost.hidden = true;
     return;
@@ -319,85 +321,131 @@ function initFeaturedCarousel(carouselId, dotsId, photoLabel) {
   start();
 }
 
+// ---------- Content (edited through Pages CMS, stored in content/*.json) ----------
+
+/**
+ * Pages CMS stores image paths with a leading slash ("/assets/..."). The site is served from a
+ * sub-folder on GitHub Pages, so make them relative or they would point at the domain root.
+ */
+function asset(path) {
+  return String(path || "").replace(/^\/+/, "");
+}
+
+async function loadJson(name) {
+  try {
+    const response = await fetch(`content/${name}.json`, { cache: "no-cache" });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const data = await response.json();
+    return Array.isArray(data) ? data : [];
+  } catch (error) {
+    console.error(`Could not load content/${name}.json:`, error);
+    return [];
+  }
+}
+
+function make(tag, className, text) {
+  const node = document.createElement(tag);
+  if (className) node.className = className;
+  if (text !== undefined && text !== null) node.textContent = String(text);
+  return node;
+}
+
+function renderExperience(items) {
+  const host = document.getElementById("experience-list");
+  if (!host) return;
+  host.replaceChildren(
+    ...items.map((item) => {
+      const li = make("li", "timeline-item");
+      const body = make("div", "timeline-body");
+      body.append(make("h3", "", item.title), make("p", "timeline-org", item.organization), make("p", "", item.description));
+      li.append(make("span", "timeline-date", item.dates), body);
+      return li;
+    })
+  );
+}
+
+function renderProjects(items) {
+  const host = document.getElementById("project-list");
+  if (!host) return;
+  host.replaceChildren(
+    ...items.map((item, i) => {
+      const card = make("article", "project-card");
+      if (item.image) {
+        const figure = make("figure", "project-media");
+        const img = make("img");
+        img.src = asset(item.image);
+        img.alt = item.imageAlt || item.title || "";
+        img.loading = "lazy";
+        figure.append(img);
+        card.append(figure);
+      }
+      const body = make("div", "project-body");
+      body.append(make("p", "card-label", `Problem 4.${i + 1}`), make("h3", "", item.title), make("p", "", item.description));
+      const links = make("div", "project-links");
+      (item.links || []).forEach((link) => {
+        if (!link?.url) return;
+        const a = make("a", "text-link", link.label || link.url);
+        a.href = link.url;
+        a.target = "_blank";
+        a.rel = "noopener";
+        links.append(a);
+      });
+      body.append(links);
+      card.append(body);
+      return card;
+    })
+  );
+}
+
+function renderAwards(items) {
+  const host = document.getElementById("award-list");
+  if (!host) return;
+  host.replaceChildren(
+    ...items.map((item, i) => {
+      const card = make("article", "theorem");
+      if (item.image) {
+        const img = make("img", "theorem-image");
+        img.src = asset(item.image);
+        img.alt = item.imageAlt || item.title || "";
+        img.loading = "lazy";
+        if (item.imagePosition) img.style.objectPosition = item.imagePosition;
+        card.append(img);
+      }
+      const body = make("div", "theorem-body");
+      const label = make("p", "theorem-label", `Theorem 5.${i + 1} `);
+      if (item.year) label.append(make("span", "theorem-year", item.year));
+      body.append(label, make("h3", "", item.title), make("p", "", item.description));
+      card.append(body);
+      return card;
+    })
+  );
+}
+
+async function loadContent() {
+  const [profile, gallery, experience, projects, awards] = await Promise.all(
+    ["profile-photos", "gallery", "experience", "projects", "awards"].map(loadJson)
+  );
+
+  PORTFOLIO_PHOTOS = profile.filter((p) => p.image).map((p) => ({ src: asset(p.image), alt: p.alt || "Photo of Sumit Sah" }));
+  GALLERY_PHOTOS = gallery
+    .filter((p) => p.image)
+    .map((p) => ({
+      src: asset(p.image),
+      alt: p.alt || p.location || "Gallery photo",
+      caption: p.caption || "",
+      location: p.location || "",
+      objectPosition: p.imagePosition || "center",
+    }));
+
+  renderExperience(experience);
+  renderProjects(projects);
+  renderAwards(awards);
+}
+
 // ---------- Gallery grid + lightbox ----------
 
-const GALLERY_PHOTOS = [
-  {
-    src: "assets/images/gallery/pytorch_conference.jpg",
-    alt: "Sumit Sah beside the PyTorch Conference North America 2026 sponsor wall.",
-    caption: "PyTorch Conference North America 2026 - attended on a scholarship, met the people building PyTorch, and explored Silicon Valley.",
-    location: "PyTorch Conference, Silicon Valley",
-    objectPosition: "20% 82%",
-  },
-  {
-    src: "assets/images/gallery/google.jpeg",
-    alt: "Riding a colorful Google bike past a row of Google bikes at Google headquarters.",
-    caption: "Cycling around Google headquarters in Mountain View on the iconic colorful Google bikes.",
-    location: "Google Headquarters, Mountain View, Silicon Valley",
-    objectPosition: "center 40%",
-  },
-  {
-    src: "assets/images/gallery/jrmf.jpeg",
-    alt: "JRFM photo highlight.",
-    caption: "JRMF volunteering - playing with kids at a fun event at San Marcos Public Library.",
-    location: "San Marcos Public Library",
-  },
-  {
-    src: "assets/images/gallery/njtemple.jpg",
-    alt: "NJ Temple visit photo.",
-    caption: "An unusual hobby of mine is visiting temples - a peaceful way to worship, strengthen faith, and keep my mind calm.",
-    location: "New Jersey Temple",
-    objectPosition: "center 65%",
-  },
-  {
-    src: "assets/images/gallery/brooklyn.jpg",
-    alt: "Brooklyn Bridge visit photo.",
-    caption: "Brooklyn - one of the best moments of my life: visiting the Brooklyn Bridge, enjoying spectacular views, and watching a sunset I could not take my eyes off.",
-    location: "Brooklyn Bridge, New York",
-  },
-  {
-    src: "assets/images/gallery/bigbend.jpg",
-    alt: "Big Bend trip photo.",
-    caption: "Big Bend adventure - one of my favorite hobbies, exploring trails, hills, and mountains.",
-    location: "Big Bend National Park",
-  },
-  {
-    src: "assets/images/gallery/bayloruniv.jpeg",
-    alt: "Baylor University campus photo.",
-    caption: "Baylor University visit - a memorable MAA conference experience with TXST professors and teammates.",
-    location: "Baylor University",
-  },
-  {
-    src: "assets/images/gallery/pi_day.jpg",
-    alt: "Pi Day event photo.",
-    caption: "Pi Day celebration - selling pies, pieing professors, and one of the most memorable and fun Texas State Math Department events as president.",
-    location: "Texas State University",
-  },
-  {
-    src: "assets/images/gallery/dataspace.jpeg",
-    alt: "DataSpace event photo.",
-    caption: "DataSpace and University Libraries event - a successful team effort with participants, and a fun experience organizing such a big campuswide event.",
-    location: "Texas State University Libraries",
-  },
-  {
-    src: "assets/images/gallery/mathclubdinner.jpeg",
-    alt: "Math Club dinner photo.",
-    caption: "Math Club dinner - sharing Nepali cuisine with our American advisors and officers, and enjoying a fun dinner together.",
-    location: "Texas State Math Department",
-  },
-  {
-    src: "assets/images/gallery/uni.jpg",
-    alt: "University of Washington campus photo.",
-    caption: "University of Washington - such a beautiful campus to visit in my life.",
-    location: "University of Washington",
-  },
-  {
-    src: "assets/images/gallery/golf.jpg",
-    alt: "Golf outing photo.",
-    caption: "Golf - I am not usually a big fan of outdoor games, but I gave golf a shot and it was worth playing.",
-    location: "Golf Course",
-  },
-];
+/** Filled from content/gallery.json. */
+let GALLERY_PHOTOS = [];
 
 // Clear data left behind by the old in-browser gallery manager.
 try {
@@ -657,10 +705,13 @@ initMobileNav();
 initScrollSpy();
 initScrollProgress();
 initScrollReveal();
-initHeroCarousel();
 initEquationNote();
 initTypewriter();
 initFeaturedCarousel("featured-msft-carousel", "featured-msft-dots", "Microsoft");
 initFeaturedCarousel("featured-pytorch-carousel", "featured-pytorch-dots", "PyTorch Conference");
-initGallery();
 initBackdrop();
+
+loadContent().then(() => {
+  initHeroCarousel();
+  initGallery();
+});

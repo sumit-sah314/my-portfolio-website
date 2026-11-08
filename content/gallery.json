@@ -1,0 +1,86 @@
+[
+  {
+    "image": "/assets/images/gallery/pytorch_conference.jpg",
+    "alt": "Sumit Sah beside the PyTorch Conference North America 2026 sponsor wall.",
+    "location": "PyTorch Conference, Silicon Valley",
+    "caption": "PyTorch Conference North America 2026 - attended on a scholarship, met the people building PyTorch, and explored Silicon Valley.",
+    "imagePosition": "20% 82%"
+  },
+  {
+    "image": "/assets/images/gallery/google.jpeg",
+    "alt": "Riding a colorful Google bike past a row of Google bikes at Google headquarters.",
+    "location": "Google Headquarters, Mountain View, Silicon Valley",
+    "caption": "Cycling around Google headquarters in Mountain View on the iconic colorful Google bikes.",
+    "imagePosition": "center 40%"
+  },
+  {
+    "image": "/assets/images/gallery/jrmf.jpeg",
+    "alt": "JRFM photo highlight.",
+    "location": "San Marcos Public Library",
+    "caption": "JRMF volunteering - playing with kids at a fun event at San Marcos Public Library.",
+    "imagePosition": ""
+  },
+  {
+    "image": "/assets/images/gallery/njtemple.jpg",
+    "alt": "NJ Temple visit photo.",
+    "location": "New Jersey Temple",
+    "caption": "An unusual hobby of mine is visiting temples - a peaceful way to worship, strengthen faith, and keep my mind calm.",
+    "imagePosition": "center 65%"
+  },
+  {
+    "image": "/assets/images/gallery/brooklyn.jpg",
+    "alt": "Brooklyn Bridge visit photo.",
+    "location": "Brooklyn Bridge, New York",
+    "caption": "Brooklyn - one of the best moments of my life: visiting the Brooklyn Bridge, enjoying spectacular views, and watching a sunset I could not take my eyes off.",
+    "imagePosition": ""
+  },
+  {
+    "image": "/assets/images/gallery/bigbend.jpg",
+    "alt": "Big Bend trip photo.",
+    "location": "Big Bend National Park",
+    "caption": "Big Bend adventure - one of my favorite hobbies, exploring trails, hills, and mountains.",
+    "imagePosition": ""
+  },
+  {
+    "image": "/assets/images/gallery/bayloruniv.jpeg",
+    "alt": "Baylor University campus photo.",
+    "location": "Baylor University",
+    "caption": "Baylor University visit - a memorable MAA conference experience with TXST professors and teammates.",
+    "imagePosition": ""
+  },
+  {
+    "image": "/assets/images/gallery/pi_day.jpg",
+    "alt": "Pi Day event photo.",
+    "location": "Texas State University",
+    "caption": "Pi Day celebration - selling pies, pieing professors, and one of the most memorable and fun Texas State Math Department events as president.",
+    "imagePosition": ""
+  },
+  {
+    "image": "/assets/images/gallery/dataspace.jpeg",
+    "alt": "DataSpace event photo.",
+    "location": "Texas State University Libraries",
+    "caption": "DataSpace and University Libraries event - a successful team effort with participants, and a fun experience organizing such a big campuswide event.",
+    "imagePosition": ""
+  },
+  {
+    "image": "/assets/images/gallery/mathclubdinner.jpeg",
+    "alt": "Math Club dinner photo.",
+    "location": "Texas State Math Department",
+    "caption": "Math Club dinner - sharing Nepali cuisine with our American advisors and officers, and enjoying a fun dinner together.",
+    "imagePosition": ""
+  },
+  {
+    "image": "/assets/images/gallery/uni.jpg",
+    "alt": "University of Washington campus photo.",
+    "location": "University of Washington",
+    "caption": "University of Washington - such a beautiful campus to visit in my life.",
+    "imagePosition": ""
+  },
+  {
+    "image": "/assets/images/gallery/golf.jpg",
+    "alt": "Golf outing photo.",
+    "location": "Golf Course",
+    "caption": "Golf - I am not usually a big fan of outdoor games, but I gave golf a shot and it was worth playing.",
+    "imagePosition": ""
+  }
+]
