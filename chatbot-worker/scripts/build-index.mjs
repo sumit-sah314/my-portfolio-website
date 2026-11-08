@@ -3,8 +3,8 @@
 //
 // Sources:
 //   - knowledge/*.md            your resume and notes (one chunk per "## " heading)
-//   - ../index.html             every website section, one chunk per card
-//   - ../js/script.js           photo gallery captions
+//   - ../index.html             website sections written in the page (intro, about, featured, contact)
+//   - ../content/*.json         experience, projects, awards, gallery (edited through Pages CMS)
 //
 // Usage:
 //   npm run build-index                   embed with Gemini and write src/knowledge.json
@@ -147,17 +147,46 @@ export function contactChunk(html) {
   return [{ id: "contact", section: "Contact", title: "Contact and social links", text: `Ways to reach Sumit Sah:\n${lines.join("\n")}` }];
 }
 
-/** Gallery captions from DEFAULT_GALLERY_PHOTOS in js/script.js. */
-export function chunksFromGallery(js) {
-  const block = js.match(/const DEFAULT_GALLERY_PHOTOS = \[([\s\S]*?)\n\];/);
-  if (!block) return [];
-  const items = [...block[1].matchAll(/caption:\s*"((?:[^"\\]|\\.)*)"[\s\S]*?location:\s*"((?:[^"\\]|\\.)*)"/g)].map(
-    ([, caption, location]) => `- ${caption} (${location})`,
-  );
+/** Gallery captions from content/gallery.json. */
+export function chunksFromGallery(photos) {
+  const items = (photos || [])
+    .filter((p) => p?.caption)
+    .map((p) => (p.location ? `- ${p.caption} (${p.location})` : `- ${p.caption}`));
   if (!items.length) return [];
   return splitLong(`Photos and moments from Sumit's life, from the site's photo gallery:\n${items.join("\n")}`).map(
     (text, i) => ({ id: `gallery-${i}`, section: "Photo Gallery", title: "Photo Gallery", text }),
   );
+}
+
+/** One chunk per item in content/experience.json, projects.json and awards.json. */
+export function chunksFromContent({ experience = [], projects = [], awards = [] }) {
+  const chunks = [];
+  const add = (key, section, items, toText) => {
+    items.forEach((item, i) => {
+      if (!item?.title) return;
+      splitLong(toText(item)).forEach((piece, j) => {
+        chunks.push({ id: `${key}-${i}-${j}`, section, title: `${section}: ${item.title}`, text: piece });
+      });
+    });
+  };
+  add("experience", "Experience", experience, (e) =>
+    [e.title, e.organization, e.dates, e.description].filter(Boolean).join("\n"),
+  );
+  add("projects", "Projects", projects, (p) =>
+    [p.title, p.description, ...(p.links || []).filter((l) => l?.url).map((l) => `${l.label || "Link"}: ${l.url}`)]
+      .filter(Boolean)
+      .join("\n"),
+  );
+  add("awards", "Awards and Honors", awards, (a) => [a.title, a.year, a.description].filter(Boolean).join("\n"));
+  return chunks;
+}
+
+/** Reads content/<name>.json from the site; a missing file counts as empty. */
+export function readContent(siteDir, name) {
+  const file = join(siteDir, "content", `${name}.json`);
+  if (!existsSync(file)) return [];
+  const data = JSON.parse(readFileSync(file, "utf8"));
+  return Array.isArray(data) ? data : [];
 }
 
 /** Your own notes in knowledge/*.md, one chunk per "## " heading. */
@@ -203,7 +232,15 @@ async function main() {
   if (!process.argv.includes("--knowledge-only")) {
     const js = readFileSync(join(SITE_DIR, "js", "script.js"), "utf8");
     const html = fillTypewriter(readFileSync(join(SITE_DIR, "index.html"), "utf8"), js);
-    const siteChunks = [...chunksFromHtml(html), ...contactChunk(html), ...chunksFromGallery(js)];
+    const content = Object.fromEntries(
+      ["experience", "projects", "awards", "gallery"].map((name) => [name, readContent(SITE_DIR, name)]),
+    );
+    const siteChunks = [
+      ...chunksFromHtml(html),
+      ...contactChunk(html),
+      ...chunksFromContent(content),
+      ...chunksFromGallery(content.gallery),
+    ];
     chunks.push(...siteChunks.map((c) => ({ ...c, source: "website" })));
   }
 

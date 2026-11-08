@@ -1,0 +1,26 @@
+[
+  {
+    "title": "Machine Learning Engineering Intern",
+    "organization": "Microsoft (Full-time) - Redmond, Washington, United States (On-site)",
+    "dates": "May 2026 - Present",
+    "description": "Collaborated with the ODSP-DEEDS team to improve hierarchical RAG systems for stronger Copilot grounding. Evaluated diverse query sets for container summarization and semantic search, and compared flat vs hierarchical retrieval to improve retrieval quality and optimize recall."
+  },
+  {
+    "title": "Data Analysis & Visualisation Assistant",
+    "organization": "Texas State University Libraries (Part-time) - San Marcos, Texas, United States (On-site)",
+    "dates": "Aug 2025 - May 2026",
+    "description": "Assisted students, faculty, and staff with analysis and visualization for research projects, supported DataSpace documentation and tutorials, improved metadata in TXST Dataverse, and helped run workshops and outreach activities."
+  },
+  {
+    "title": "Undergrad Research Assistant - Machine Learning",
+    "organization": "TXST Math - San Marcos, Texas, United States (On-site)",
+    "dates": "May 2025 - May 2026",
+    "description": "Focused on mathematical foundations and implementation of machine learning methods. Developed and tested optimization algorithms (Gradient Descent, SGD), built PyTorch models (fully connected, CNNs, ResNets), and designed experiments across architectures and parameter counts."
+  },
+  {
+    "title": "Academic Mentor & STEM Tutor",
+    "organization": "TRIO Programs (Part-time)",
+    "dates": "Aug 2024 - Aug 2025",
+    "description": "Provided individualized tutoring in Calculus, Physics, and Computer Science for first-generation and low-income college scholars. Served as a Summer Counselor, mentoring high school students from underserved backgrounds to strengthen college readiness and STEM interest."
+  }
+]

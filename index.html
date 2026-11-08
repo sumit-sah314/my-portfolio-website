@@ -3,165 +3,164 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="color-scheme" content="dark light" />
-  <meta name="theme-color" content="#0b0b0f" />
+  <meta name="color-scheme" content="light dark" />
+  <meta name="theme-color" content="#f5f1e8" />
   <title>Sumit Sah | Portfolio</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Fraunces:ital,opsz,wght@0,9..144,600..800;1,9..144,550&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..800;1,9..144,400..700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" />
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/chatbot.css" />
   <!-- Chatbot backend URL (the deployed Cloudflare Worker + /chat). Empty = chatbot shows only on localhost. -->
   <meta name="chatbot-endpoint" content="https://portfolio-chatbot.sumitsah314.workers.dev/chat" />
   <script>
+    // Apply the saved theme (or the system preference) before first paint.
     (function () {
-      try {
-        var t = localStorage.getItem("portfolio-theme");
-        if (t === "light" || t === "ocean" || t === "dark") {
-          document.documentElement.dataset.theme = t;
-          var colors = { dark: "#0b0b0f", light: "#f6f4ef", ocean: "#060a12" };
-          var m = document.querySelector('meta[name="theme-color"]');
-          if (m && colors[t]) m.setAttribute("content", colors[t]);
-        }
-      } catch (e) { /* ignore */ }
+      document.documentElement.classList.add("js");
+      var t = null;
+      try { t = localStorage.getItem("portfolio-theme"); } catch (e) { /* storage blocked */ }
+      // Choices saved by the previous site design: "dark" was the gold theme, "light" is closest to paper.
+      if (t === "dark") t = "gold";
+      if (t === "light") t = "paper";
+      if (t !== "paper" && t !== "chalk" && t !== "ocean" && t !== "gold") {
+        t = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "chalk" : "paper";
+      }
+      document.documentElement.dataset.theme = t;
+      var m = document.querySelector('meta[name="theme-color"]');
+      if (m) m.setAttribute("content", { paper: "#f5f1e8", chalk: "#141a19", ocean: "#05080d", gold: "#0b0b0f" }[t]);
     })();
   </script>
 </head>
 <body>
-  <div class="page-atmosphere" aria-hidden="true"></div>
   <a class="skip-link" href="#main-content">Skip to main content</a>
+  <!-- Decorative backdrop: floating equations + neural nets, filled in by script.js -->
+  <div class="backdrop" id="backdrop" aria-hidden="true"></div>
 
-  <header>
+  <header class="topbar">
     <nav class="navbar" aria-label="Primary navigation">
       <a href="#home" class="logo" aria-label="Sumit Sah — Home"><span class="logo-sigma">Σ</span><span class="logo-paren">(</span><span class="logo-it">it</span><span class="logo-paren">)</span></a>
 
       <ul class="nav-links" id="primary-nav">
-        <li><a href="#home">Home</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="#experience">Experience</a></li>
-        <li><a href="#projects">Projects</a></li>
-        <li><a href="#awards">Awards</a></li>
-        <li><a href="#gallery">Gallery</a></li>
+        <li><a href="#about"><span class="nav-num">§1</span>About</a></li>
+        <li><a href="#featured"><span class="nav-num">§2</span>Featured</a></li>
+        <li><a href="#experience"><span class="nav-num">§3</span>Experience</a></li>
+        <li><a href="#projects"><span class="nav-num">§4</span>Projects</a></li>
+        <li><a href="#awards"><span class="nav-num">§5</span>Awards</a></li>
+        <li><a href="#gallery"><span class="nav-num">§6</span>Gallery</a></li>
+        <li><a href="#contact"><span class="nav-num">∎</span>Contact</a></li>
       </ul>
 
       <div class="nav-right">
-        <button type="button" class="theme-btn" id="theme-btn" aria-label="Cycle theme (current: dark)" title="Theme: dark"></button>
-        <div class="nav-divider" aria-hidden="true"></div>
-        <div class="nav-socials">
-        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=sahsumit.dsml@gmail.com" target="_blank" rel="noopener" aria-label="Email" class="social-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.89 2 1.99 2H20c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>
-        </a>
-        <a href="https://www.tiktok.com/@sumit.sah757" target="_blank" rel="noopener" aria-label="TikTok" class="social-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M16.6 5.82A4.77 4.77 0 0 1 13.8 3h-2.3v12.02a2.64 2.64 0 1 1-2.64-2.64c.17 0 .34.02.5.05V10.1a5 5 0 0 0-.5-.02A4.94 4.94 0 1 0 13.8 15V8.86a7.06 7.06 0 0 0 4.12 1.32V7.9c-.45 0-.9-.07-1.32-.2z"/></svg>
-        </a>
-        <a href="https://linkedin.com/in/sumit-sah-4a487622b" target="_blank" rel="noopener" aria-label="LinkedIn" class="social-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-        </a>
-        <a href="https://youtube.com/@intuimation.314" target="_blank" rel="noopener" aria-label="YouTube" class="social-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-        </a>
-        </div>
+        <button type="button" class="theme-btn" id="theme-btn" aria-label="Switch theme">
+          <span class="theme-btn-label" id="theme-btn-label">paper</span>
+        </button>
         <button type="button" class="menu-toggle" id="menu-toggle" aria-expanded="false" aria-controls="primary-nav" aria-label="Open menu">
-          <span class="menu-toggle-inner" aria-hidden="true">
-            <span class="menu-bar"></span>
-            <span class="menu-bar"></span>
-            <span class="menu-bar"></span>
-          </span>
+          <span class="menu-bar"></span>
+          <span class="menu-bar"></span>
         </button>
       </div>
     </nav>
-    <div class="nav-backdrop" id="nav-backdrop" aria-hidden="true"></div>
+    <div class="scroll-progress" aria-hidden="true"><span id="scroll-progress-bar"></span></div>
   </header>
-
-  <nav class="rail-nav" aria-label="On this page">
-    <a href="#home" class="rail-link" aria-label="Intro"></a>
-    <a href="#about" class="rail-link" aria-label="About"></a>
-    <a href="#experience" class="rail-link" aria-label="Experience"></a>
-    <a href="#projects" class="rail-link" aria-label="Projects"></a>
-    <a href="#awards" class="rail-link" aria-label="Awards"></a>
-    <a href="#featured" class="rail-link" aria-label="Featured"></a>
-    <a href="#gallery" class="rail-link" aria-label="Gallery"></a>
-  </nav>
+  <div class="nav-backdrop" id="nav-backdrop" aria-hidden="true"></div>
 
   <main id="main-content">
 
+    <!-- ============ Title page ============ -->
     <section id="home" class="hero">
-      <canvas id="neural-canvas" class="hero-bg-canvas" aria-hidden="true"></canvas>
-      <div class="hero-symbols" aria-hidden="true">
-        <span class="hero-symbol" style="--x: 6%; --y: 18%; --d: 0s;">∑</span>
-        <span class="hero-symbol" style="--x: 14%; --y: 72%; --d: 1.4s;">∂</span>
-        <span class="hero-symbol" style="--x: 32%; --y: 34%; --d: 2.6s;">∫</span>
-        <span class="hero-symbol" style="--x: 47%; --y: 80%; --d: 0.8s;">∇</span>
-        <span class="hero-symbol" style="--x: 63%; --y: 22%; --d: 3.2s;">π</span>
-        <span class="hero-symbol hero-symbol-code" style="--x: 72%; --y: 64%; --d: 1.9s;">{ }</span>
-        <span class="hero-symbol" style="--x: 84%; --y: 38%; --d: 2.2s;">λ</span>
-        <span class="hero-symbol hero-symbol-code" style="--x: 90%; --y: 74%; --d: 0.4s;">&lt;/&gt;</span>
-        <span class="hero-symbol" style="--x: 24%; --y: 12%; --d: 3.6s;">θ</span>
-        <span class="hero-symbol" style="--x: 55%; --y: 50%; --d: 2.0s;">∞</span>
-      </div>
-      <div class="hero-content">
-        <p class="tagline">Computer Science • Applied Mathematics • Machine Learning</p>
-        <h2>Hi, I'm <span id="typewriter-name"></span><span class="tw-cursor">|</span></h2>
-        <p class="hero-note"><span id="typewriter-line"></span><span class="tw-cursor">|</span></p>
-        <p class="hero-text">
-          I build machine learning, data visualization, and mathematical storytelling projects
-          that connect code, research, and creativity.
-        </p>
+      <div class="hero-grid">
+        <div class="hero-content">
+          <p class="paper-meta">
+            <span>arXiv:2026.SUM</span>
+            <span aria-hidden="true">·</span>
+            <span>Texas State University</span>
+          </p>
+          <p class="tagline">Computer Science • Applied Mathematics • Machine Learning</p>
+          <h1 class="hero-title">Hi, I'm <span class="hero-name">Sumit Sah.</span></h1>
+          <p class="hero-note"><span id="typewriter-line">I go by Sum. Yeah, like the summation in math - a math lover, lol.</span><span class="tw-cursor" aria-hidden="true">|</span></p>
 
-        <div class="math-cs-ml-widget" id="math-cs-ml-widget" aria-live="polite">
-          <p class="widget-kicker">Favorite Equations: Math x Code x ML</p>
-          <div class="widget-row">
-            <span class="widget-formula" id="insight-formula">P(A|B) = P(B|A)P(A) / P(B)</span>
-            <span class="widget-meaning" id="insight-meaning">Bayesian updating turns prior beliefs into data-driven probabilities.</span>
+          <div class="abstract">
+            <p class="abstract-label">Abstract</p>
+            <p class="hero-text">
+              I build machine learning, data visualization, and mathematical storytelling projects
+              that connect code, research, and creativity.
+            </p>
+          </div>
+
+          <div class="hero-actions">
+            <a href="assets/Sumit-Sah-Resume.pdf" class="btn btn-primary" target="_blank">View Resume <span aria-hidden="true">→</span></a>
+            <div class="hero-socials" aria-label="Social links">
+              <a href="https://mail.google.com/mail/?view=cm&fs=1&to=sahsumit.dsml@gmail.com" target="_blank" rel="noopener" aria-label="Email" class="social-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.89 2 1.99 2H20c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>
+              </a>
+              <a href="https://linkedin.com/in/sumit-sah-4a487622b" target="_blank" rel="noopener" aria-label="LinkedIn" class="social-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+              </a>
+              <a href="https://youtube.com/@intuimation.314" target="_blank" rel="noopener" aria-label="YouTube" class="social-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+              </a>
+              <a href="https://www.tiktok.com/@sumit.sah757" target="_blank" rel="noopener" aria-label="TikTok" class="social-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M16.6 5.82A4.77 4.77 0 0 1 13.8 3h-2.3v12.02a2.64 2.64 0 1 1-2.64-2.64c.17 0 .34.02.5.05V10.1a5 5 0 0 0-.5-.02A4.94 4.94 0 1 0 13.8 15V8.86a7.06 7.06 0 0 0 4.12 1.32V7.9c-.45 0-.9-.07-1.32-.2z"/></svg>
+              </a>
+            </div>
           </div>
         </div>
 
-        <div class="hero-buttons">
-          <a href="assets/Sumit-Sah-Resume.pdf" class="btn primary-btn" target="_blank">View Resume</a>
+        <figure class="hero-figure">
+          <div class="hero-carousel" id="hero-carousel" role="region" aria-roledescription="carousel" aria-label="Profile photos">
+            <img id="hero-slide-img" src="assets/images/profile/profile.png" alt="Portrait of Sumit Sah" class="hero-image" />
+            <div class="hero-carousel-dots" id="hero-carousel-dots"></div>
+          </div>
+          <figcaption><span class="fig-label">Fig. 1.</span> The author, Sumit Sah.</figcaption>
+        </figure>
+      </div>
+
+      <!-- Margin note: rotating favourite equation -->
+      <aside class="equation-note" id="math-cs-ml-widget" aria-live="polite">
+        <p class="widget-kicker">Favorite Equations: Math x Code x ML</p>
+        <div class="widget-row">
+          <span class="widget-formula" id="insight-formula">P(A|B) = P(B|A)P(A) / P(B)</span>
+          <span class="widget-meaning" id="insight-meaning">Bayesian updating turns prior beliefs into data-driven probabilities.</span>
         </div>
-      </div>
+        <span class="equation-tag" id="insight-tag">(1)</span>
+      </aside>
 
-      <div
-        class="hero-image-wrap hero-carousel"
-        id="hero-carousel"
-        role="region"
-        aria-roledescription="carousel"
-        aria-label="Profile photos"
-      >
-        <img
-          id="hero-slide-img"
-          src="assets/images/profile/profile.png"
-          alt="Portrait of Sumit Sah"
-          class="hero-image"
-        />
-        <div class="hero-carousel-dots" id="hero-carousel-dots"></div>
-      </div>
     </section>
 
+    <!-- ============ §1 About ============ -->
     <section id="about" class="section section-reveal">
-      <h2>About Me</h2>
-      <p>
-        I'm an Applied Mathematics and Computer Science student at Texas State University, interested in machine learning,
-        AI, and data science. I love figuring out how things work, especially when math and code come together to solve
-        real problems. I want to understand how AI learns from data, why it sometimes fails, and how to make it more reliable.
-      </p>
-      <p>
-        I've done research in adversarial machine learning, AI robustness, and AI web agents, and interned as a machine
-        learning engineer at Microsoft. Outside of school, I build projects, try new tech, and share what I learn.
-      </p>
+      <header class="section-head">
+        <span class="section-num">§1</span>
+        <h2>About Me</h2>
+      </header>
+      <div class="about-body">
+        <p class="about-lede">
+          I'm an Applied Mathematics and Computer Science student at Texas State University, interested in machine learning,
+          AI, and data science. I love figuring out how things work, especially when math and code come together to solve
+          real problems. I want to understand how AI learns from data, why it sometimes fails, and how to make it more reliable.
+        </p>
+        <p>
+          I've done research in adversarial machine learning, AI robustness, and AI web agents, and interned as a machine
+          learning engineer at Microsoft. Outside of school, I build projects, try new tech, and share what I learn.
+        </p>
+      </div>
     </section>
 
+    <!-- ============ §2 Featured ============ -->
     <section id="featured" class="section section-reveal">
-      <h2>Featured</h2>
+      <header class="section-head">
+        <span class="section-num">§2</span>
+        <h2>Featured</h2>
+      </header>
 
       <div class="featured-grid">
         <article class="featured-story featured-story-wide">
           <figure class="featured-media">
             <div class="featured-media-carousel" id="featured-msft-carousel" role="region" aria-roledescription="carousel" aria-label="Microsoft internship highlights">
               <img class="featured-media-slide featured-msft-slide is-active" src="assets/images/gallery/msft.jpg" alt="Microsoft campus moment during internship" loading="lazy" />
-              <img class="featured-media-slide featured-msft-bridge-slide" src="assets/images/gallery/msft_bridge.jpg" alt="Microsoft bridge view during internship" loading="lazy" hidden />
-              <img class="featured-media-slide" src="assets/images/projects/microsoft.jpg" alt="Microsoft internship update highlight" loading="lazy" hidden />
+              <img class="featured-media-slide" src="assets/images/gallery/msft_bridge.jpg" alt="Microsoft bridge view during internship" loading="lazy" />
+              <img class="featured-media-slide" src="assets/images/projects/microsoft.jpg" alt="Microsoft internship update highlight" loading="lazy" />
               <div class="featured-media-dots" id="featured-msft-dots" aria-label="Select Microsoft highlight"></div>
             </div>
             <figcaption>Internship highlight • Redmond, WA</figcaption>
@@ -179,11 +178,11 @@
           </div>
         </article>
 
-        <article class="featured-story featured-story-wide featured-story-reverse">
+        <article class="featured-story featured-story-wide">
           <figure class="featured-media">
             <div class="featured-media-carousel" id="featured-pytorch-carousel" role="region" aria-roledescription="carousel" aria-label="PyTorch Conference highlights">
               <img class="featured-media-slide featured-pytorch-image is-active" src="assets/images/gallery/pytorch_conference.jpg" alt="Sumit Sah with an attendee badge beside the PyTorch Conference North America 2026 sponsor wall" loading="lazy" />
-              <img class="featured-media-slide featured-pytorch-night-slide" src="assets/images/gallery/pytorchnight.jpeg" alt="Sumit Sah with arms outstretched in front of the lit-up Community Bash sign at PyTorch Conference" loading="lazy" hidden />
+              <img class="featured-media-slide featured-pytorch-night-slide" src="assets/images/gallery/pytorchnight.jpeg" alt="Sumit Sah with arms outstretched in front of the lit-up Community Bash sign at PyTorch Conference" loading="lazy" />
               <div class="featured-media-dots" id="featured-pytorch-dots" aria-label="Select PyTorch Conference highlight"></div>
             </div>
             <figcaption>Scholarship recipient • Silicon Valley</figcaption>
@@ -217,8 +216,8 @@
           </div>
         </article>
 
-        <article class="featured-story featured-story-brand">
-          <figure class="featured-media featured-media-brand">
+        <article class="featured-story">
+          <figure class="featured-media">
             <video class="featured-brand-video featured-intuimation-video" autoplay muted loop playsinline preload="metadata" aria-label="Intuimation YouTube feature video">
               <source src="assets/images/projects/intuimation.mp4" type="video/mp4" />
             </video>
@@ -231,255 +230,82 @@
               Create visual-first lessons with Manim to make math, physics, and computer science
               concepts intuitive, engaging, and easier to retain.
             </p>
-            <p><a class="featured-link" href="https://youtube.com/@intuimation.314" target="_blank" rel="noopener">Visit Intuimation channel</a></p>
+            <p><a class="text-link" href="https://youtube.com/@intuimation.314" target="_blank" rel="noopener">Visit Intuimation channel</a></p>
           </div>
         </article>
       </div>
     </section>
 
+    <!-- ============ §3 Experience ============ -->
     <section id="experience" class="section section-reveal">
-      <h2>Experience</h2>
+      <header class="section-head">
+        <span class="section-num">§3</span>
+        <h2>Experience</h2>
+      </header>
 
-      <div class="card">
-        <h3>Machine Learning Engineering Intern</h3>
-        <p>Microsoft (Full-time) - Redmond, Washington, United States (On-site)</p>
-        <span>May 2026 - Present</span>
-        <p>
-          Collaborated with the ODSP-DEEDS team to improve hierarchical RAG systems for stronger Copilot grounding.
-          Evaluated diverse query sets for container summarization and semantic search, and compared flat vs hierarchical retrieval
-          to improve retrieval quality and optimize recall.
-        </p>
-      </div>
-
-      <div class="card">
-        <h3>Data Analysis & Visualisation Assistant</h3>
-        <p>Texas State University Libraries (Part-time) - San Marcos, Texas, United States (On-site)</p>
-        <span>Aug 2025 - May 2026</span>
-        <p>
-          Assisted students, faculty, and staff with analysis and visualization for research projects,
-          supported DataSpace documentation and tutorials, improved metadata in TXST Dataverse,
-          and helped run workshops and outreach activities.
-        </p>
-      </div>
-
-      <div class="card">
-        <h3>Undergrad Research Assistant - Machine Learning</h3>
-        <p>TXST Math - San Marcos, Texas, United States (On-site)</p>
-        <span>May 2025 - May 2026</span>
-        <p>
-          Focused on mathematical foundations and implementation of machine learning methods.
-          Developed and tested optimization algorithms (Gradient Descent, SGD), built PyTorch models (fully connected, CNNs, ResNets),
-          and designed experiments across architectures and parameter counts.
-        </p>
-      </div>
-
-      <div class="card">
-        <h3>Academic Mentor & STEM Tutor</h3>
-        <p>TRIO Programs (Part-time)</p>
-        <span>Aug 2024 - Aug 2025</span>
-        <p>
-          Provided individualized tutoring in Calculus, Physics, and Computer Science for first-generation and low-income college scholars.
-          Served as a Summer Counselor, mentoring high school students from underserved backgrounds to strengthen college readiness and STEM interest.
-        </p>
-      </div>
+      <ol class="timeline" id="experience-list"><!-- filled from content/experience.json --></ol>
     </section>
 
+    <!-- ============ §4 Projects ============ -->
     <section id="projects" class="section section-reveal">
-      <h2>Projects</h2>
+      <header class="section-head">
+        <span class="section-num">§4</span>
+        <h2>Projects</h2>
+      </header>
 
-      <div class="section-carousel" id="projects-carousel" aria-label="Projects carousel">
-        <div class="section-carousel-slider">
-          <article class="card section-carousel-card project-slide">
-            <figure class="section-carousel-media">
-              <img src="assets/images/projects/ai_study_tool.png" alt="AI Study Tool project visual" loading="lazy" />
-            </figure>
-            <h3>AI Study Tool (SWE Class Project)</h3>
-            <p>
-              Built an AI-powered study assistant for software engineering coursework with quiz generation based on notes,
-              progress tracking through charts, weak-topic detection, quiz history retrieval, and visual analytics.
-              Also supported viewing past quiz attempts, reviewing previous answers, and retaking quizzes to reinforce learning.
-            </p>
-            <p><a href="https://github.com/sumit-sah314/ai-study-tool-repository" target="_blank" rel="noopener">View AI Study Tool on GitHub</a></p>
-          </article>
-
-          <article class="card section-carousel-card project-slide">
-            <figure class="section-carousel-media">
-              <img src="assets/images/projects/ml_research.jpeg" alt="Machine learning research project visual" loading="lazy" />
-            </figure>
-            <h3>Machine Learning Research</h3>
-            <p>
-              Researched adversarial robustness using optimal transport-based models and explored how deep learning robust training
-              techniques can be adapted to classical regression settings for stronger stability and performance.
-              The poster shown here was presented at the Texas State undergraduate research conference.
-            </p>
-            <p><a href="https://github.com/sumit-sah314/my-ml-learning-journey" target="_blank" rel="noopener">View ML Learning Journey on GitHub</a></p>
-          </article>
-
-          <article class="card section-carousel-card project-slide">
-            <figure class="section-carousel-media">
-              <img src="assets/images/projects/yt_channel.png" alt="Intuimation YouTube channel visual" loading="lazy" />
-            </figure>
-            <h3>Intuimation (YouTube Channel)</h3>
-            <p>
-              Create visual-first educational videos using Manim to make mathematics, physics,
-              and computer science concepts intuitive, engaging, and easier to understand.
-              Feel free to DM for collaboration!
-            </p>
-            <p><a href="https://youtube.com/@intuimation.314" target="_blank" rel="noopener">Visit Intuimation on YouTube</a></p>
-          </article>
-
-          <article class="card section-carousel-card project-slide">
-            <figure class="section-carousel-media">
-              <img src="assets/images/projects/datathon.jpg" alt="RMF Bias Analysis datathon project visual" loading="lazy" />
-            </figure>
-            <h3>RMF Bias Analysis</h3>
-            <p>
-              TXST Datathon 2025 (3rd Place): analyzed 20K+ RateMyProfessor reviews using Python,
-              Pandas, and Matplotlib to identify bias in grading leniency, sampling, and review extremity.
-              Created 5+ visualizations and presented actionable recommendations to improve fairness
-              in student evaluations.
-            </p>
-            <p><a href="https://github.com/sumit-sah314/professor-rating-bias-analysis" target="_blank" rel="noopener">View RMF Bias Analysis on GitHub</a></p>
-          </article>
-
-          <article class="card section-carousel-card project-slide">
-            <figure class="section-carousel-media">
-              <img src="assets/images/projects/credit-risk.png" alt="Credit Risk Modeling project visual" loading="lazy" />
-            </figure>
-            <h3>Credit Risk Modeling</h3>
-            <p>
-              Built and evaluated classification models to predict credit default risk, including Logistic Regression,
-              Random Forest, and XGBoost. The workflow includes EDA, class-imbalance handling (SMOTE and undersampling),
-              and evaluation with ROC AUC, confusion matrix, precision, recall, and F1 score.
-            </p>
-            <p><a href="https://github.com/sumit-sah314/credit-risk-modeling" target="_blank" rel="noopener">View Credit Risk Modeling on GitHub</a></p>
-            <p><a href="https://credit-risk-modeling-zcog5pbrc3gshwhu2u35bp.streamlit.app/" target="_blank" rel="noopener">Open Live Streamlit App</a></p>
-          </article>
-        </div>
-
-        <div class="section-carousel-controls" aria-label="Project carousel controls">
-          <button class="gallery-nav" id="projects-prev" aria-label="Previous project">&#10094;</button>
-          <p class="section-carousel-meta"><span id="projects-index">1</span> / <span id="projects-total">5</span></p>
-          <button class="gallery-nav" id="projects-next" aria-label="Next project">&#10095;</button>
-        </div>
-      </div>
+      <div class="project-grid" id="project-list"><!-- filled from content/projects.json --></div>
     </section>
 
+    <!-- ============ §5 Awards ============ -->
     <section id="awards" class="section section-reveal">
-      <h2>Awards and Honors</h2>
+      <header class="section-head">
+        <span class="section-num">§5</span>
+        <h2>Awards and Honors</h2>
+      </header>
 
-      <div class="section-carousel" id="awards-carousel" aria-label="Awards carousel">
-        <div class="section-carousel-slider">
-          <article class="card section-carousel-card award-slide">
-            <figure class="section-carousel-media">
-              <img class="award-outstanding-image" src="assets/images/awards/outstanding.png" alt="Outstanding Undergraduate Student Award photo" loading="lazy" />
-            </figure>
-            <h3>Outstanding Undergraduate Student Award</h3>
-            <p>Recognized by the TXST Mathematics Department for academic achievement, contributions to the department, serving as President of the Math Club, and delivering departmental talks.</p>
-            <span>2026</span>
-          </article>
-
-          <article class="card section-carousel-card award-slide">
-            <figure class="section-carousel-media">
-              <img src="assets/images/awards/math_bowl.jpeg" alt="MAA Math Bowl second runner-up team award" loading="lazy" />
-            </figure>
-            <h3>MAA Math Bowl 2nd Runner-Up (Team TXST)</h3>
-            <p>MAA Math Bowl (Second Runner-Up): Represented Texas State University at the 105th Annual Mathematical Association of America Regional Conference at Baylor University and competed against 25 teams.</p>
-            <span>2026</span>
-          </article>
-
-          <article class="card section-carousel-card award-slide">
-            <figure class="section-carousel-media">
-              <img src="assets/images/awards/deanslist.png" alt="Dean's List recognition visual" loading="lazy" />
-            </figure>
-            <h3>Dean's / President's List</h3>
-            <p>Recognized for outstanding academic performance at Texas State University by being named to the Dean's List.
-              Achieved a perfect 4.0/4.0 GPA multiple semesters, placing among the top students for academic excellence.
-            </p>
-            <span>Multiple Semesters</span>
-          </article>
-
-          <article class="card section-carousel-card award-slide">
-            <figure class="section-carousel-media">
-              <img src="assets/images/awards/rmf_bias.jpg" alt="RMF Bias Analysis Recognition" loading="lazy" />
-            </figure>
-            <h3>RMF Bias Analysis Recognition</h3>
-            <p>Recognized for presenting and analyzing bias-focused RMF results with clear methodology and communication.</p>
-            <span>2026</span>
-          </article>
-
-          <article class="card section-carousel-card award-slide">
-            <figure class="section-carousel-media">
-              <img src="assets/images/awards/presidents-honor.jpg" alt="President's Honor Scholarship recognition" loading="lazy" />
-            </figure>
-            <h3>President's Honor Scholarship</h3>
-            <p>Issued by Texas State University in recognition of outstanding academic credentials. The scholarship provides $48,000 over four years.</p>
-            <span>Jan 2024</span>
-          </article>
-
-          <article class="card section-carousel-card award-slide">
-            <figure class="section-carousel-media">
-              <img src="assets/images/awards/calcbee.jpeg" alt="Calculus Bee Champion at Texas State University" loading="lazy" />
-            </figure>
-            <h3>Calculus Bee Champion (TXST)</h3>
-            <p>Won the Texas State University Calculus Bee through fast and accurate problem solving.</p>
-            <span>2024</span>
-          </article>
-
-          <article class="card section-carousel-card award-slide">
-            <figure class="section-carousel-media">
-              <img src="assets/images/awards/boss.png" alt="BOSS honorable scholarships recognition" loading="lazy" />
-            </figure>
-            <h3>Named BOSS Scholar</h3>
-            <p>Recipient of multiple scholarships, including the Lullene and Anderson Family Association Scholarship, Merry Kontz Honors College Scholarship, Student Government Scholarship, and Department of Mathematics Scholarship.</p>
-            <span>2025 - 2026</span>
-          </article>
-
-          <article class="card section-carousel-card award-slide">
-            <figure class="section-carousel-media">
-              <img class="award-nominations-image" src="assets/images/awards/nominations.jpeg" alt="Academic award nominations recognition" loading="lazy" />
-            </figure>
-            <h3>Award Nominations</h3>
-            <p>Nominated for Rising Star Student Employee and the TSUS Regents Scholar Award in recognition of academic leadership, service, and student impact.</p>
-            <span>2026</span>
-          </article>
-        </div>
-
-        <div class="section-carousel-controls" aria-label="Awards carousel controls">
-          <button class="gallery-nav" id="awards-prev" aria-label="Previous award">&#10094;</button>
-          <p class="section-carousel-meta"><span id="awards-index">1</span> / <span id="awards-total">8</span></p>
-          <button class="gallery-nav" id="awards-next" aria-label="Next award">&#10095;</button>
-        </div>
-      </div>
+      <div class="theorem-grid" id="award-list"><!-- filled from content/awards.json --></div>
     </section>
 
+    <!-- ============ §6 Gallery ============ -->
     <section id="gallery" class="section section-reveal">
-      <h2>Photo Gallery</h2>
+      <header class="section-head">
+        <span class="section-num">§6</span>
+        <h2>Photo Gallery</h2>
+      </header>
+      <p class="section-intro">Appendix: field notes. Tap a photo to read its story.</p>
 
-      <div class="gallery-slider" aria-label="Photo gallery slider">
-        <button class="gallery-nav" id="gallery-prev" aria-label="Previous photo">&#10094;</button>
+      <div class="gallery-grid" id="gallery-grid"></div>
 
-        <figure class="gallery-frame">
-          <img id="gallery-image" src="assets/images/gallery/microsoft.jpg" alt="Gallery photo" loading="lazy" />
-          <p class="gallery-location" id="gallery-location">San Marcos Public Library</p>
+      <dialog class="lightbox" id="lightbox" aria-label="Photo viewer">
+        <button type="button" class="lightbox-close" id="lightbox-close" aria-label="Close photo">✕</button>
+        <figure class="lightbox-figure">
+          <img id="lightbox-image" alt="" />
+          <figcaption>
+            <p class="lightbox-location" id="lightbox-location"></p>
+            <p class="lightbox-caption" id="lightbox-caption"></p>
+          </figcaption>
         </figure>
-
-        <button class="gallery-nav" id="gallery-next" aria-label="Next photo">&#10095;</button>
-      </div>
-
-      <p class="gallery-caption" id="gallery-caption">Profile portrait - replace with your own caption.</p>
-      <p class="gallery-description" id="gallery-description" hidden></p>
-      <p class="gallery-meta"><span id="gallery-index">1</span> / <span id="gallery-total">6</span></p>
+        <div class="lightbox-controls">
+          <button type="button" class="round-btn" id="lightbox-prev" aria-label="Previous photo">←</button>
+          <p class="lightbox-count"><span id="lightbox-index">1</span> / <span id="lightbox-total">1</span></p>
+          <button type="button" class="round-btn" id="lightbox-next" aria-label="Next photo">→</button>
+        </div>
+      </dialog>
     </section>
 
   </main>
 
-  <footer>
+  <!-- ============ Q.E.D. ============ -->
+  <footer id="contact" class="footer">
     <div class="footer-content">
+      <p class="qed" aria-hidden="true">Q.E.D. ∎</p>
       <h2>Contact My Socials</h2>
       <p class="footer-text">Let us connect on social platforms.</p>
 
       <div class="footer-socials" aria-label="Social media links">
+        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=sahsumit.dsml@gmail.com" target="_blank" rel="noopener" aria-label="Email" class="social-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.89 2 1.99 2H20c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>
+        </a>
         <a href="https://www.instagram.com/sum.sah314/" target="_blank" rel="noopener" aria-label="Instagram" class="social-icon">
           <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2zm0 1.8A3.95 3.95 0 0 0 3.8 7.75v8.5a3.95 3.95 0 0 0 3.95 3.95h8.5a3.95 3.95 0 0 0 3.95-3.95v-8.5a3.95 3.95 0 0 0-3.95-3.95h-8.5z"/><path d="M12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 1.8a3.2 3.2 0 1 0 0 6.4 3.2 3.2 0 0 0 0-6.4z"/><circle cx="17.4" cy="6.6" r="1.2"/></svg>
         </a>
@@ -492,6 +318,9 @@
         <a href="https://linkedin.com/in/sumit-sah-4a487622b" target="_blank" rel="noopener" aria-label="LinkedIn" class="social-icon">
           <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
         </a>
+        <a href="https://youtube.com/@intuimation.314" target="_blank" rel="noopener" aria-label="YouTube" class="social-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+        </a>
       </div>
 
       <p class="footer-credit">© 2026 Sumit Sah. Built with HTML, CSS, JavaScript, Git, and GitHub.</p>
@@ -499,7 +328,6 @@
   </footer>
 
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
   <script src="js/script.js"></script>
   <script src="js/chatbot.js"></script>
 </body>

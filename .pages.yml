@@ -1,0 +1,168 @@
+# Pages CMS config: the admin panel for this site.
+# Open https://app.pagescms.org, sign in with GitHub, and pick this repository.
+# Every save is a commit to the repo; GitHub Pages republishes the site a minute or two later.
+#
+# Content lives in content/*.json (each file is a list). js/script.js renders it,
+# and chatbot-worker/scripts/build-index.mjs feeds the same files to Sigma.
+
+media:
+  - name: gallery
+    label: Gallery photos
+    input: assets/images/gallery
+    output: /assets/images/gallery
+    categories: [image]
+    rename: safe
+  - name: profile
+    label: Profile photos
+    input: assets/images/profile
+    output: /assets/images/profile
+    categories: [image]
+    rename: safe
+  - name: projects
+    label: Project images
+    input: assets/images/projects
+    output: /assets/images/projects
+    categories: [image]
+    rename: safe
+  - name: awards
+    label: Award images
+    input: assets/images/awards
+    output: /assets/images/awards
+    categories: [image]
+    rename: safe
+
+content:
+  - name: gallery
+    label: Photo Gallery
+    type: file
+    path: content/gallery.json
+    format: json
+    list: true
+    fields:
+      - name: image
+        label: Photo
+        type: image
+        required: true
+        options:
+          media: gallery
+      - name: location
+        label: Location
+        type: string
+        description: Shown on the photo tile, e.g. "Big Bend National Park".
+      - name: caption
+        label: Caption
+        type: text
+        description: The story shown when someone opens the photo.
+      - name: alt
+        label: Image description (for screen readers)
+        type: string
+        description: Briefly describe what is in the photo.
+      - name: imagePosition
+        label: Crop focus (optional)
+        type: string
+        description: Which part of the photo to keep when it is cropped, e.g. "center 40%" or "20% 80%". Leave empty for the center.
+
+  - name: profile
+    label: Profile Photos
+    type: file
+    path: content/profile-photos.json
+    format: json
+    list: true
+    fields:
+      - name: image
+        label: Photo
+        type: image
+        required: true
+        options:
+          media: profile
+      - name: alt
+        label: Image description (for screen readers)
+        type: string
+        description: Shown in the hero polaroid ("Fig. 1"). The first photo appears first.
+
+  - name: experience
+    label: Experience
+    type: file
+    path: content/experience.json
+    format: json
+    list: true
+    fields:
+      - name: title
+        label: Role
+        type: string
+        required: true
+      - name: organization
+        label: Organization and location
+        type: string
+      - name: dates
+        label: Dates
+        type: string
+        description: e.g. "May 2026 - Present". The first item gets the filled timeline dot.
+      - name: description
+        label: Description
+        type: text
+
+  - name: projects
+    label: Projects
+    type: file
+    path: content/projects.json
+    format: json
+    list: true
+    fields:
+      - name: title
+        label: Title
+        type: string
+        required: true
+      - name: image
+        label: Image
+        type: image
+        options:
+          media: projects
+      - name: imageAlt
+        label: Image description (for screen readers)
+        type: string
+      - name: description
+        label: Description
+        type: text
+      - name: links
+        label: Links
+        type: object
+        list: true
+        fields:
+          - name: label
+            label: Link text
+            type: string
+          - name: url
+            label: URL
+            type: string
+
+  - name: awards
+    label: Awards and Honors
+    type: file
+    path: content/awards.json
+    format: json
+    list: true
+    fields:
+      - name: title
+        label: Title
+        type: string
+        required: true
+      - name: year
+        label: Year
+        type: string
+        description: e.g. "2026", "Jan 2024" or "Multiple Semesters".
+      - name: image
+        label: Image
+        type: image
+        options:
+          media: awards
+      - name: imageAlt
+        label: Image description (for screen readers)
+        type: string
+      - name: imagePosition
+        label: Crop focus (optional)
+        type: string
+        description: e.g. "center 68%". Leave empty for the center.
+      - name: description
+        label: Description
+        type: text

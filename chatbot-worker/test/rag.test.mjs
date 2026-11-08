@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { buildContents, cleanHistory, cleanMessage, cosine, sourceSections, topK } from "../src/rag.js";
-import { chunksFromGallery, chunksFromHtml, chunksFromNotes, contactChunk, fillTypewriter, htmlToText } from "../scripts/build-index.mjs";
+import { chunksFromContent, chunksFromGallery, chunksFromHtml, chunksFromNotes, contactChunk, fillTypewriter, htmlToText } from "../scripts/build-index.mjs";
 
 test("cosine similarity", () => {
   assert.equal(cosine([1, 0], [1, 0]), 1);
@@ -99,15 +99,19 @@ test("contactChunk shows the email address and skips in-page links", () => {
 });
 
 test("chunksFromGallery reads captions and locations", () => {
-  const js = `const DEFAULT_GALLERY_PHOTOS = [
-  {
-    src: "a.jpg",
-    caption: "Hiking \\"fun\\"",
-    location: "Big Bend",
-  },
-];`;
-  const [chunk] = chunksFromGallery(js);
-  assert.match(chunk.text, /Hiking .*\(Big Bend\)/);
+  const [chunk] = chunksFromGallery([{ image: "/a.jpg", caption: 'Hiking "fun"', location: "Big Bend" }, { image: "/b.jpg" }]);
+  assert.match(chunk.text, /Hiking "fun" \(Big Bend\)/);
+});
+
+test("chunksFromContent makes one chunk per experience, project and award", () => {
+  const chunks = chunksFromContent({
+    experience: [{ title: "Intern", organization: "Microsoft", dates: "2026", description: "RAG work" }],
+    projects: [{ title: "Credit Risk", description: "Models", links: [{ label: "Live app", url: "https://x.app" }, { label: "empty" }] }],
+    awards: [{ title: "Calculus Bee", year: "2024", description: "Won" }, { description: "no title, skipped" }],
+  });
+  assert.deepEqual(chunks.map((c) => c.title), ["Experience: Intern", "Projects: Credit Risk", "Awards and Honors: Calculus Bee"]);
+  assert.match(chunks[1].text, /Live app: https:\/\/x\.app/);
+  assert.doesNotMatch(chunks[1].text, /empty/);
 });
 
 test("chunksFromNotes skips sections that are only comments", async () => {

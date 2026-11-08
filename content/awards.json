@@ -1,0 +1,66 @@
+[
+  {
+    "title": "Outstanding Undergraduate Student Award",
+    "year": "2026",
+    "image": "/assets/images/awards/outstanding.png",
+    "imageAlt": "Outstanding Undergraduate Student Award photo",
+    "imagePosition": "80% 24%",
+    "description": "Recognized by the TXST Mathematics Department for academic achievement, contributions to the department, serving as President of the Math Club, and delivering departmental talks."
+  },
+  {
+    "title": "MAA Math Bowl 2nd Runner-Up (Team TXST)",
+    "year": "2026",
+    "image": "/assets/images/awards/math_bowl.jpeg",
+    "imageAlt": "MAA Math Bowl second runner-up team award",
+    "imagePosition": "",
+    "description": "MAA Math Bowl (Second Runner-Up): Represented Texas State University at the 105th Annual Mathematical Association of America Regional Conference at Baylor University and competed against 25 teams."
+  },
+  {
+    "title": "Dean's / President's List",
+    "year": "Multiple Semesters",
+    "image": "/assets/images/awards/deanslist.png",
+    "imageAlt": "Dean's List recognition visual",
+    "imagePosition": "",
+    "description": "Recognized for outstanding academic performance at Texas State University by being named to the Dean's List. Achieved a perfect 4.0/4.0 GPA multiple semesters, placing among the top students for academic excellence."
+  },
+  {
+    "title": "RMF Bias Analysis Recognition",
+    "year": "2026",
+    "image": "/assets/images/awards/rmf_bias.jpg",
+    "imageAlt": "RMF Bias Analysis Recognition",
+    "imagePosition": "",
+    "description": "Recognized for presenting and analyzing bias-focused RMF results with clear methodology and communication."
+  },
+  {
+    "title": "President's Honor Scholarship",
+    "year": "Jan 2024",
+    "image": "/assets/images/awards/presidents-honor.jpg",
+    "imageAlt": "President's Honor Scholarship recognition",
+    "imagePosition": "",
+    "description": "Issued by Texas State University in recognition of outstanding academic credentials. The scholarship provides $48,000 over four years."
+  },
+  {
+    "title": "Calculus Bee Champion (TXST)",
+    "year": "2024",
+    "image": "/assets/images/awards/calcbee.jpeg",
+    "imageAlt": "Calculus Bee Champion at Texas State University",
+    "imagePosition": "",
+    "description": "Won the Texas State University Calculus Bee through fast and accurate problem solving."
+  },
+  {
+    "title": "Named BOSS Scholar",
+    "year": "2025 - 2026",
+    "image": "/assets/images/awards/boss.png",
+    "imageAlt": "BOSS honorable scholarships recognition",
+    "imagePosition": "",
+    "description": "Recipient of multiple scholarships, including the Lullene and Anderson Family Association Scholarship, Merry Kontz Honors College Scholarship, Student Government Scholarship, and Department of Mathematics Scholarship."
+  },
+  {
+    "title": "Award Nominations",
+    "year": "2026",
+    "image": "/assets/images/awards/nominations.jpeg",
+    "imageAlt": "Academic award nominations recognition",
+    "imagePosition": "center 68%",
+    "description": "Nominated for Rising Star Student Employee and the TSUS Regents Scholar Award in recognition of academic leadership, service, and student impact."
+  }
+]
